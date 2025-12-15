@@ -15,7 +15,6 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 
 type JobCategory = {
-  _id: string;
   title: string;
   name: string;
   subCategories: string[];
@@ -24,7 +23,12 @@ type JobCategory = {
 type SubCategoryEditProps = {
   title?: string;
   trigger: React.ReactNode;
-  category: JobCategory;
+  category?: JobCategory;
+};
+
+type SubCategoryFormData = {
+  name: string;
+  subCategories: string[];
 };
 
 export function SubCategoryEdit({
@@ -32,15 +36,21 @@ export function SubCategoryEdit({
   trigger,
   category,
 }: SubCategoryEditProps) {
-  const [inputFields, setInputFields] = useState<JobCategory>(category);
+  const [inputFields, setInputFields] = useState<SubCategoryFormData>(() => ({
+    name: category?.name || "",
+    subCategories: category?.subCategories || [],
+  }));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("category", category);
-
-  // keep state in sync if category changes
+  // Sync state only when category._id changes to avoid infinite loops
   useEffect(() => {
-    setInputFields(category);
+    if (category) {
+      setInputFields({
+        name: category.name || "",
+        subCategories: category.subCategories || [],
+      });
+    }
   }, [category]);
 
   const handleAddInput = () => {
@@ -70,19 +80,29 @@ export function SubCategoryEdit({
     });
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputFields((prev) => ({
+      ...prev,
+      name: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setLoading(true);
     setError(null);
 
     try {
-      const res = await myFetch(`/categories/update/${category._id}`, {
-        method: "PATCH",
+      const res = await myFetch(`/categories/create`, {
+        method: "POST",
         body: {
-          name: inputFields?.name,
+          name: inputFields.name,
           subCategories: inputFields.subCategories,
         },
       });
+
+      console.log("res", res);
 
       if (!res?.success) {
         throw new Error(res?.message || "Update failed");
@@ -105,7 +125,11 @@ export function SubCategoryEdit({
           {/* Category title */}
           <div className="grid gap-2">
             <Label className="text-lg">{title}</Label>
-            <Input value={inputFields.name} disabled className="bg-gray-100" />
+            <Input
+              value={inputFields.name}
+              className="bg-gray-100"
+              onChange={(e) => handleNameChange(e)}
+            />
           </div>
 
           {/* Sub categories */}
@@ -124,8 +148,8 @@ export function SubCategoryEdit({
               </div>
 
               <div className="space-y-2">
-                {inputFields?.subCategories?.map((sub, index) => (
-                  <div key={`${index}`} className="flex items-center gap-2">
+                {inputFields.subCategories.map((sub, index) => (
+                  <div key={index} className="flex items-center gap-2">
                     <Input
                       type="text"
                       value={sub}

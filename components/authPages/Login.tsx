@@ -34,6 +34,8 @@ export default function LoginForm() {
         body: data,
       });
 
+      console.log("res", res);
+
       if (res?.success) {
         toast.success(res?.message);
         setCookie("accessToken", res?.data?.accessToken);
@@ -98,7 +100,7 @@ export default function LoginForm() {
           Forgot Password
         </Link>
       </div>
-
+      {/* 
       <AdminOtp2
         title="Log In"
         trigger={
@@ -106,7 +108,10 @@ export default function LoginForm() {
             Log In
           </button>
         }
-      />
+      /> */}
+      <button className="bg-white text-[#0288A6] w-full py-2 cursor-pointer">
+        Log In
+      </button>
     </form>
   );
 }

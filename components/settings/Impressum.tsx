@@ -7,7 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
 
-export default function PrivacyPolicy({ data }: { data: string }) {
+export default function Impressum({ data }: { data: string }) {
   const editor = useRef(null);
   const [content, setContent] = useState(data || "");
 
@@ -22,7 +22,7 @@ export default function PrivacyPolicy({ data }: { data: string }) {
     try {
       const res = await myFetch("/disclaimers/create-update", {
         method: "POST",
-        body: { content: value, type: "privacy-policy" },
+        body: { content: value, type: "impressum" },
       });
 
       if (res?.success) {
@@ -39,25 +39,25 @@ export default function PrivacyPolicy({ data }: { data: string }) {
   return (
     <section className="p-3">
       <div className="">
-        <JoditEditor
-          className="border-none "
-          ref={editor}
-          tabIndex={1}
-          value={content}
-          config={{
-            height: isLargeScreen ? 600 : 470,
-            theme: "",
-            readonly: false,
-            toolbarSticky: false,
-          }}
-          onBlur={(newContent) => setContent(newContent)}
-        />
+        <div className="">
+          <JoditEditor
+            className="border-none "
+            ref={editor}
+            value={content}
+            config={{
+              height: isLargeScreen ? 600 : 470,
+              theme: "",
+              readonly: false,
+            }}
+            onBlur={(newContent) => setContent(newContent)}
+          />
+        </div>
       </div>
 
       <Button
         onClick={() => handleOnSave(content)}
         htmlType="submit"
-        className="btn-design font-bold px-10 text-[14px] lg:text-lg rounded-full transform transition-all duration-300 ease-in-out 0.5s ease  mt-4 text-white"
+        className="btn-design font-bold px-10 text-[14px] 2xl:text-lg rounded-full transform transition-all duration-300 ease-in-out 0.5s ease  mt-4 text-white"
       >
         Publish
       </Button>

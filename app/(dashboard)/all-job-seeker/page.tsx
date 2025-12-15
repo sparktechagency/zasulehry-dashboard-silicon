@@ -1,10 +1,12 @@
 import AllJobSeeker from "@/components/dashboard/jobSeeker/JobSeeker";
+import { myFetch } from "@/utils/myFetch";
 import React from "react";
 
-export default function JobSeeker() {
+export default async function JobSeeker() {
+  const res = await myFetch("/users");
   return (
-    <div>
-      <AllJobSeeker />
-    </div>
+    <>
+      <AllJobSeeker data={res.data} />
+    </>
   );
 }

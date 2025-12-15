@@ -1,11 +1,11 @@
 "use client";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
+import Button from "../share/Button";
 
 type Inputs = {
   newPassword: string;
@@ -61,7 +61,7 @@ export default function NewPassword() {
       <Input
         className="placeholder:text-white text-white"
         placeholder="Enter Your New Password"
-        {...register("newPassword")}
+        {...register("newPassword", { required: true })}
         type="password"
       />
 
@@ -70,12 +70,12 @@ export default function NewPassword() {
       <Input
         className="placeholder:text-white text-white"
         placeholder="Enter Your Confirm Password"
-        {...register("confirmPassword")}
+        {...register("confirmPassword", { required: true })}
         type="password"
       />
 
-      <Button className="custom-btn w-full" type="submit">
-        Confirm
+      <Button type="submit" className="bg-white text-[#0288A6]">
+        Continue
       </Button>
     </form>
   );

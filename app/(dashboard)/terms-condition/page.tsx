@@ -1,14 +1,16 @@
 import TermsCondition from "@/components/settings/TermsConditions";
+import { myFetch } from "@/utils/myFetch";
 import React from "react";
 
-export default function Condition() {
+export default async function Condition() {
+  const res = await myFetch("/disclaimers/terms-and-conditions");
   return (
-    <div>
+    <>
       <h1 className="text-lg 2xl:text-2xl font-medium px-4 capitalize">
-        term & condition
+        Term & Condition
       </h1>
 
-      <TermsCondition />
-    </div>
+      <TermsCondition data={res?.data?.content} />
+    </>
   );
 }

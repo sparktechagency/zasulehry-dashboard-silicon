@@ -11,70 +11,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Message } from "./Message";
 import SearchBar from "@/components/share/SearchBar";
-import kamran from "../../../public/share/kamran.png";
-import Image from "next/image";
-
 import TablePagination from "@/components/share/Pagination";
 import Delete from "@/components/share/Delete";
+import CustomImage from "@/share/CustomImage";
 
-const employers = [
-  {
-    id: 2,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 4,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 5,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 6,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 7,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Solved",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
-
-export default function SupportUser() {
+export default function SupportUser({ data }: { data: any }) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -111,18 +52,24 @@ export default function SupportUser() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer) => (
-              <TableRow key={employer.id}>
+            {data?.map((employer: any) => (
+              <TableRow key={employer._id}>
                 <TableCell className="font-medium">#22025</TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Image src={kamran} alt="avatar" width={40} height={40} />
+                  <CustomImage
+                    src={employer?.attachment}
+                    title={employer.name}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
                   <Message title={employer.name} />
                 </TableCell>
 
                 <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.contact}</TableCell>
-                <TableCell>{employer.location}</TableCell>
+                <TableCell>{employer.phone}</TableCell>
+                <TableCell>{employer.address || "No Location"}</TableCell>
                 <TableCell>
                   <Badge
                     className={`${

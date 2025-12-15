@@ -15,6 +15,7 @@ import kamran from "../../../public/share/kamran.png";
 import Block from "@/components/share/Block";
 import TablePagination from "@/components/share/Pagination";
 import Link from "next/link";
+import CustomImage from "@/share/CustomImage";
 
 const employers = [
   {
@@ -75,7 +76,7 @@ const employers = [
 
 const option = ["All", "Active", "Blocked"];
 
-export default function AllJobSeeker() {
+export default function AllJobSeeker({ data }: any) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -99,12 +100,14 @@ export default function AllJobSeeker() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer) => (
-              <TableRow key={employer.id} className="bg-white">
-                <TableCell className="font-medium">#22025</TableCell>
+            {data?.map((employer: any) => (
+              <TableRow key={employer._id} className="bg-white">
+                <TableCell className="font-medium">
+                  #{employer._id.slice(0, 6)}
+                </TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Image src={kamran} alt="avatar" width={40} height={40} />
+                  {/* <CustomImage src={employer.} alt="avatar" width={40} height={40} /> */}
                   {/* <JobDetailsModal
                     trigger={
                       <span className="cursor-pointer"> {employer.name}</span>
@@ -116,12 +119,12 @@ export default function AllJobSeeker() {
                 </TableCell>
 
                 <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.contact}</TableCell>
-                <TableCell>{employer.location}</TableCell>
+                <TableCell>{employer.contact || "No Contact"}</TableCell>
+                <TableCell>{employer?.location[0] || "No Location"}</TableCell>
                 <TableCell>
                   <Badge
                     className={`bg-${
-                      employer.status === "Active" ? "green-600" : "red-500"
+                      employer?.status === "Active" ? "green-600" : "red-500"
                     } text-white w-20 h-8 2xl:h-9`}
                   >
                     {employer.status}
@@ -142,7 +145,7 @@ export default function AllJobSeeker() {
                         <Eye className=" text-white size-5 2xl:size-7" />
                       </div>
                     </Link>
-                    <Block />
+                    <Block item={employer} />
                   </div>
                 </TableCell>
               </TableRow>

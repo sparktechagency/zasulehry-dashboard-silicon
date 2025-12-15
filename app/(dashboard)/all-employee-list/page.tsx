@@ -1,11 +1,13 @@
 import AllEmployeeList from "@/components/dashboard/allEmployeeList/AllEmployeeList";
+import { myFetch } from "@/utils/myFetch";
 
 import React from "react";
 
-export default function AllEmployee() {
+export default async function AllEmployee() {
+  const res = await myFetch("/users?role=Employer");
   return (
-    <div>
-      <AllEmployeeList />
-    </div>
+    <>
+      <AllEmployeeList res={res?.data} />
+    </>
   );
 }

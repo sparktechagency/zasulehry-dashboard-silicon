@@ -1,14 +1,8 @@
 "use client";
 
-import Button from "@/components/share/Button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
+import ForgotPasswordForm from "@/components/authPages/ForgotPasswordForm";
 
 export default function page() {
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-  };
   return (
     <div className=" min-h-screen flex items-center justify-center bg-linear-to-r from-[#083E4B] to-[#0288A6]">
       {/* Login card */}
@@ -21,36 +15,7 @@ export default function page() {
           to reset your password.
         </p>
 
-        <form className="space-y-5 mt-6" onSubmit={handleSubmit}>
-          <div>
-            <Label htmlFor="email" className="block text-md mb-1 text-white">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter Your Email"
-              className="w-full rounded-md px-3 h-11  "
-            />
-          </div>
-          <div>
-            <Label htmlFor="number" className="block text-md mb-1 text-white">
-              Contact Number
-            </Label>
-            <Input
-              id="number"
-              type="number"
-              placeholder="Enter Your Contact Number"
-              className="w-full rounded-md px-3 h-11  "
-            />
-          </div>
-
-          <Link href="/verify-otp">
-            <Button type="submit" className="bg-white text-[#0288A6]">
-              Continue
-            </Button>
-          </Link>
-        </form>
+        <ForgotPasswordForm />
       </div>
     </div>
   );

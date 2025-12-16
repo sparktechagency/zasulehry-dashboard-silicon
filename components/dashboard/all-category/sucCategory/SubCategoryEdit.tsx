@@ -179,7 +179,7 @@ export function SubCategoryEdit({
             <Button
               type="submit"
               className="btn-design w-full"
-              disabled={loading}
+              // disabled={loading}
             >
               {loading ? "Saving..." : "Publish"}
             </Button>

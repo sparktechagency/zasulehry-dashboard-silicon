@@ -17,8 +17,9 @@ export default function Block({ item }: { item?: string | any }) {
       confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await myFetch(`/users/status/${id}`);
-        console.log("res", res);
+        await myFetch(`/users/status/${id}`, {
+          method: "PATCH",
+        });
 
         Swal.fire({
           title: "Blocked!",

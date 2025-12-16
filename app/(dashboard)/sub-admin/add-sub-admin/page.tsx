@@ -1,9 +1,8 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
-import { useState } from "react";
 import {
   LayoutGrid,
   User,
@@ -22,6 +21,9 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
 
 const radio = [
   { id: 1, label: "Overview", icon: LayoutGrid, path: "/" },
@@ -74,33 +76,44 @@ const radio = [
   // { id: 16, label: "Log Out", icon: LogOut, path: "/login" },
 ];
 
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export default function CreateAdmin() {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
-    userName: "",
-    email: "",
-    password: "",
-    repaidPassword: "",
-    selectedMethod: "",
-    selectedOptions: [],
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    try {
+      const res = await myFetch("/users/create-admin", {
+        method: "POST",
+        body: data,
+      });
+
+      if (res.success) {
+        toast.success(res?.message || "Sub Admin created successfully");
+        reset();
+      } else {
+        toast.error(res.message || "Failed to create Sub Admin");
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An error occurred";
+      toast.error(errorMessage);
+    }
   };
-
-  function toggleItem(name: string) {
-    setSelectedItems((prev) =>
-      prev.includes(name)
-        ? prev.filter((item) => item !== name)
-        : [...prev, name]
-    );
-  }
 
   return (
     <div className="w-[60%] mx-auto">
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Link href="/sub-admin">
           <div className="flex items-center gap-2 mb-4 text-black">
             <ArrowLeft className="w-5 h-5" />
@@ -112,24 +125,28 @@ export default function CreateAdmin() {
           <div>
             <label className="text-[#333333] font-medium mb-">User Name</label>
             <Input
-              name="userName"
-              value={formData.userName}
-              onChange={handleInputChange}
+              type="text"
               placeholder="Enter Sub Admin Name"
               className="bg-white mt-1"
+              {...register("name", { required: "User name is required" })}
             />
+            {errors.name && (
+              <p className="text-red-500 mt-1">{errors.name.message}</p>
+            )}
           </div>
           <div>
             <label className="text-[#333333] font-medium mb-1">
               Email (Optional)
             </label>
             <Input
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
+              type="email"
               placeholder="Enter Email"
               className="bg-white mt-1"
+              {...register("email", { required: true })}
             />
+            {errors.email && (
+              <p className="text-red-500 mt-1">{errors.email.message}</p>
+            )}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -137,15 +154,16 @@ export default function CreateAdmin() {
             <label className="text-[#333333] font-medium mb-1">Password</label>
             <Input
               type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
               placeholder="Enter New Password"
               className="bg-white mt-1"
+              {...register("password", { required: "Password is required" })}
             />
+            {errors.password && (
+              <p className="text-red-500 mt-1">{errors.password.message}</p>
+            )}
           </div>
           <div>
-            <label className="text-[#333333] font-medium mb-1">
+            {/* <label className="text-[#333333] font-medium mb-1">
               Repaid Password
             </label>
             <Input
@@ -155,7 +173,7 @@ export default function CreateAdmin() {
               onChange={handleInputChange}
               placeholder="Enter Repaid Password"
               className="bg-white mt-1"
-            />
+            /> */}
           </div>
         </div>
 
@@ -180,12 +198,12 @@ export default function CreateAdmin() {
             </div> */}
 
         <div>
-          <label className="text-color font-medium mb-1 text-xl">
+          {/* <label className="text-color font-medium mb-1 text-xl">
             Select Method
-          </label>
+          </label> */}
           {/* import { Check } from "lucide-react"; // ✅ for white check icon */}
 
-          <div className="border border-[#0288A6]  p-3 mt-4">
+          {/* <div className="border border-[#0288A6]  p-3 mt-4">
             <div className="grid grid-cols-2  xl:grid-cols-3 gap-3">
               {radio.map((item) => {
                 const isChecked = selectedItems.includes(item.label);
@@ -213,7 +231,7 @@ export default function CreateAdmin() {
                 );
               })}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <button className="btn-design py-3 w-80 mt-6 lg:text-xl" type="submit">

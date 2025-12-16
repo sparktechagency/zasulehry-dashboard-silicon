@@ -6,34 +6,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 import TablePagination from "@/components/share/Pagination";
 import Delete from "@/components/share/Delete";
-import Block from "./Block";
+import { myFetch } from "@/utils/myFetch";
+import Block from "@/components/share/Block";
 
-const employers = [
-  {
-    id: 2,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
-
-export default function AllEmployeeList() {
+export default async function AllEmployeeList() {
+  const res = await myFetch("/users?role=Admin", {
+    tags: ["admin-list"],
+  });
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -48,21 +30,21 @@ export default function AllEmployeeList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer) => (
-              <TableRow key={employer.id}>
-                <TableCell className="">{employer.name}</TableCell>
+            {res?.data?.map((admin: any) => (
+              <TableRow key={admin._id}>
+                <TableCell className="">{admin.name}</TableCell>
 
-                <TableCell>{employer.email}</TableCell>
+                <TableCell>{admin.email}</TableCell>
                 {/* <TableCell>13445454</TableCell> */}
 
                 <TableCell>
-                  <Badge className="bg-green-500 text-white h-7">
-                    {employer.status}
-                  </Badge>
+                  <p className="bg-green-500 text-white h-7 w-20 rounded flex items-center justify-center">
+                    {admin.status}
+                  </p>
                 </TableCell>
                 <TableCell>
                   <div className="flex">
-                    <Block />
+                    <Block item={admin} />
                     <Delete />
                   </div>
                 </TableCell>

@@ -11,76 +11,20 @@ import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import Link from "next/link";
 import SearchBar from "@/components/share/SearchBar";
-import Image from "next/image";
-import google from "../../../public/share/google.png";
 import Block from "@/components/share/Block";
 import TablePagination from "@/components/share/Pagination";
 
-const employers = [
-  {
-    id: 2,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Blocked",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 4,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 5,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 6,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 7,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
+const statusOption = [
+  { label: "All", value: "All" },
+  { label: "Active", value: "Active" },
+  { label: "Inactive", value: "Inactive" },
 ];
 
 export default function AllEmployeeList({ res }: { res?: any }) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
-        <SearchBar
-          title="All Employee List"
-          options={["All", "Active", "Blocked"]}
-        />
+        <SearchBar title="All Employee List" options={statusOption} />
 
         <Table>
           <TableHeader>

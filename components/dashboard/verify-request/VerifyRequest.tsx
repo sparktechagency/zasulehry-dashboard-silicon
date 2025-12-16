@@ -21,65 +21,9 @@ import Image from "next/image";
 import kamran from "../../../public/share/kamran.png";
 import TablePagination from "@/components/share/Pagination";
 import Delete from "@/components/share/Delete";
+import CustomImage from "@/share/CustomImage";
 
-const employers = [
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Verified",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: "#22025",
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Pending",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
-
-export default function VerifyRequest() {
+export default function VerifyRequest({ res }: any) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -114,33 +58,39 @@ export default function VerifyRequest() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer, index) => (
+            {res?.map((employer: any, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{employer.id}</TableCell>
-
-                <TableCell className="flex items-center gap-2">
-                  <Image src={kamran} alt="avatar" width={40} height={40} />
-                  <RequestModal name="kamran" />
-                  {/* {employer.name} */}
+                <TableCell className="font-medium">
+                  #{employer._id.slice(0, 5)}
                 </TableCell>
 
-                <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.contact}</TableCell>
-                <TableCell>{employer.location}</TableCell>
+                <TableCell className="flex items-center gap-2">
+                  <CustomImage
+                    src={employer?.user?.image}
+                    title="avatar"
+                    width={40}
+                    height={40}
+                  />
+                  <RequestModal item={employer} name={employer?.user?.name} />
+                </TableCell>
+
+                <TableCell>{employer?.user?.email}</TableCell>
+                <TableCell>{employer?.user?.phone || "No"}</TableCell>
+                <TableCell>{employer?.user?.address || "No"}</TableCell>
                 <TableCell>
                   <Badge
                     className={`${
                       employer.status === "Pending"
                         ? "bg-red-500"
                         : "bg-green-500"
-                    } text-white h-7 text-sm h-8 2xl:h-10`}
+                    } text-white text-sm  2xl:h-10`}
                   >
                     {employer.status}
                   </Badge>
                 </TableCell>
                 <TableCell>
                   <div className="flex">
-                    <RequestModal />
+                    <RequestModal item={employer} />
                     <Delete />
                   </div>
                 </TableCell>

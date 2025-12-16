@@ -2,9 +2,12 @@ import { SquarePen } from "lucide-react";
 import CategoryHeader from "../CategoryHeader";
 import { SubCategoryEdit } from "./SubCategoryEdit";
 import { myFetch } from "@/utils/myFetch";
+import DeleteCategory from "./DeleteCategory";
 
 export default async function SubCategory({}) {
-  const res = await myFetch("/categories");
+  const res = await myFetch("/categories", {
+    tags: ["categories"],
+  });
   return (
     <section className="px-6">
       <CategoryHeader />
@@ -19,7 +22,8 @@ export default async function SubCategory({}) {
               <h2 className="font-semibold text-gray-800 2xl:text-lg">
                 {category.name}
               </h2>
-              <div>
+              <div className="flex items-center gap-4">
+                <DeleteCategory id={category?._id} />
                 <SubCategoryEdit
                   title="Edit Category"
                   category={category}

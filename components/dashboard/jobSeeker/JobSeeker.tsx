@@ -74,7 +74,11 @@ const employers = [
   },
 ];
 
-const option = ["All", "Active", "Blocked"];
+const statusOption = [
+  { label: "All", value: "All" },
+  { label: "Active", value: "Active" },
+  { label: "Inactive", value: "Inactive" },
+];
 
 export default function AllJobSeeker({ data }: any) {
   return (
@@ -82,8 +86,8 @@ export default function AllJobSeeker({ data }: any) {
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <SearchBar
           title="All Job Seeker List"
-          options={option}
-          palaceholder="unique id email address or name "
+          options={statusOption}
+          palaceholder="Search by name"
         />
 
         {/* table data */}
@@ -120,7 +124,7 @@ export default function AllJobSeeker({ data }: any) {
 
                 <TableCell>{employer.email}</TableCell>
                 <TableCell>{employer.contact || "No Contact"}</TableCell>
-                <TableCell>{employer?.location[0] || "No Location"}</TableCell>
+                <TableCell>{employer?.address || "No Location"}</TableCell>
                 <TableCell>
                   <Badge
                     className={`bg-${

@@ -2,8 +2,8 @@ import Button from "@/components/share/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import card1 from "../../../public/card1.png";
-import card2 from "../../../public/card2.png";
+import PdfViewer from "@/share/ViewerPdf";
+import { formatUrl } from "@/utils/formatUrl";
 
 const user = {
   name: "Karman Khan",
@@ -14,7 +14,7 @@ const user = {
   image: "https://i.ibb.co.com/xNXnsd1/Ellipse-7.png", // Replace with actual image path
 };
 
-export default function RequestModal({ name }: any) {
+export default function RequestModal({ name, item }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -45,56 +45,28 @@ export default function RequestModal({ name }: any) {
                 Personal Information
               </h1>
               <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Name</span> : {user.name}
+                <span className="font-semibold">Name</span> : {item?.user?.name}
               </p>
               <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Email</span> : {user.email}
+                <span className="font-semibold">Email</span> :{" "}
+                {item?.user?.email}
               </p>
               <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Contact</span> : {user.contact}
+                <span className="font-semibold">Contact</span> :{" "}
+                {item?.user?.phone || "No"}
               </p>
               <p className="text-xs 2xl:text-lg">
                 <span className="font-semibold">Location</span> :{" "}
-                {user.location}
+                {item?.user?.address || "No Address"}
               </p>
-              <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Role.</span> : {user.role}
-              </p>
-
-              {/* Warning note */}
             </div>
           </div>
 
           {/* id card */}
           {/* Avatar */}
           <div className="flex gap-4">
-            <a
-              href="http://localhost:3000/card1.png"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {" "}
-              <Image
-                src={card1}
-                alt={user.name}
-                width={300}
-                height={300}
-                className="object-cover"
-              />
-            </a>
-            <a
-              href="http://localhost:3000/card2.png"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src={card2}
-                alt={user.name}
-                width={300}
-                height={300}
-                className="object-cover"
-              />
-            </a>
+            <PdfViewer fileUrl={formatUrl(item?.documents[0])} />
+            <PdfViewer fileUrl={formatUrl(item?.documents[1])} />
           </div>
           {/* footer section */}
           <div className="mt-4 flex items-center justify-end gap-3 bg-white ">

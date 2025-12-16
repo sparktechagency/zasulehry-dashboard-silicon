@@ -1,9 +1,11 @@
 import VerifyRequest from "@/components/dashboard/verify-request/VerifyRequest";
+import { myFetch } from "@/utils/myFetch";
 
-export default function VRequest() {
+export default async function VRequest() {
+  const res = await myFetch("/verifications");
   return (
-    <div>
-      <VerifyRequest />
-    </div>
+    <>
+      <VerifyRequest res={res?.data} />
+    </>
   );
 }

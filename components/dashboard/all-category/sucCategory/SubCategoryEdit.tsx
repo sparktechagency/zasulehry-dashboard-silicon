@@ -13,8 +13,10 @@ import { Minus, Plus } from "lucide-react";
 import Button from "@/components/share/Button";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
+import { revalidate } from "@/utils/revalidateTags";
 
 type JobCategory = {
+  _id?: string;
   title: string;
   name: string;
   subCategories: string[];
@@ -86,28 +88,37 @@ export function SubCategoryEdit({
       name: e.target.value,
     }));
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setLoading(true);
     setError(null);
 
-    try {
-      const res = await myFetch(`/categories/create`, {
-        method: "POST",
-        body: {
-          name: inputFields.name,
-          subCategories: inputFields.subCategories,
-        },
-      });
+    const isEdit = Boolean(category?._id);
 
-      console.log("res", res);
+    try {
+      const res = await myFetch(
+        isEdit
+          ? `/categories/update/${category?._id}` // PATCH
+          : `/categories/create`, // POST
+        {
+          method: isEdit ? "PATCH" : "POST",
+          body: {
+            name: inputFields.name,
+            subCategories: inputFields.subCategories,
+          },
+        }
+      );
 
       if (!res?.success) {
-        throw new Error(res?.message || "Update failed");
+        toast.error(res?.message || "Operation failed");
       } else {
-        toast.success("Category updated successfully");
+        toast.success(
+          isEdit
+            ? "Category updated successfully"
+            : "Category created successfully"
+        );
+        revalidate("categories");
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -140,7 +151,7 @@ export function SubCategoryEdit({
                 <button
                   type="button"
                   onClick={handleAddInput}
-                  className="text-green-600 hover:text-green-700"
+                  className="text-green-600 hover:text-green-700 cursor-pointer"
                   aria-label="Add sub category"
                 >
                   <Plus />
@@ -148,7 +159,7 @@ export function SubCategoryEdit({
               </div>
 
               <div className="space-y-2">
-                {inputFields.subCategories.map((sub, index) => (
+                {inputFields?.subCategories?.map((sub, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <Input
                       type="text"

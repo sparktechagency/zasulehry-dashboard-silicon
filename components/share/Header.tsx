@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Bell } from "lucide-react";
 import header from "../../public/header.png";
+import { useEffect, useState } from "react";
+import { myFetch } from "@/utils/myFetch";
+import CustomImage from "@/share/CustomImage";
 
 const auth = [
   { path: "/login" },
@@ -36,6 +39,17 @@ export default function Header() {
   const pathname = usePathname();
   const isAuthPage = auth.some((item) => item.path === pathname);
   // const activePath = path.find((item) => item.path === pathname);
+
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await myFetch("/users/profile");
+      setData(res?.data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <header className="h-14 overflow-hidden bg-white px-10 w-full">
       {!isAuthPage && (
@@ -52,17 +66,18 @@ export default function Header() {
 
             <Link href="/my-profile">
               <div className="flex items-center gap-2">
-                <Image
-                  src={header}
+                <CustomImage
+                  src={data?.image}
                   width={40}
                   height={40}
-                  alt="User Avatar"
-                  className="w-8 h-8 rounded-full"
-                  unoptimized={true}
+                  title="User Avatar"
+                  className="w-10 h-10 rounded-full"
                 />
                 <div className="leading-tight ">
-                  <p className="font-semibold text-sm text-gray-700">Zishan</p>
-                  <p className=" text-[10px] text-gray-700">Admin</p>
+                  <p className="font-semibold text-sm text-gray-700">
+                    {data?.name}
+                  </p>
+                  <p className=" text-[12px] text-gray-700">{data?.role}</p>
                 </div>
               </div>
             </Link>

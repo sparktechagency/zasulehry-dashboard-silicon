@@ -9,6 +9,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { Button } from "@/components/ui/button";
 
 export default function AdminOtp({ trigger }: { trigger: React.ReactNode }) {
   // const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -43,24 +44,22 @@ export default function AdminOtp({ trigger }: { trigger: React.ReactNode }) {
             </InputOTP>
           </div>
 
-          <p className="text-sm font-medium my-4">
+          {/* <p className="text-sm font-medium my-4">
             Resent in 0:{timer < 10 ? `0${timer}` : timer}
-          </p>
+          </p> */}
 
-          <AdminOtp2
+          {/* <AdminOtp2
             title="Change Password"
             trigger={
               <button className="w-full btn-design font-semibold py-2 rounded cursor-pointer">
                 Confirm
               </button>
             }
-          />
-          {/* 
-          <Link href="/">
-            <Button type="submit" className="btn-design text-lg">
-              Confirm
-            </Button>
-          </Link> */}
+          /> */}
+
+          <Button type="submit" className="btn-design text-lg w-full mt-6">
+            Confirm
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -34,8 +34,6 @@ export default function ChangePassword() {
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
-
     try {
       const res = await myFetch("/auth/change-password", {
         method: "POST",

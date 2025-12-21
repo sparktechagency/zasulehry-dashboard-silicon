@@ -90,8 +90,6 @@ export default function CreateAdmin() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
     try {
       const res = await myFetch("/users/create-admin", {
         method: "POST",

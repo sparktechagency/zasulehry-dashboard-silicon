@@ -80,7 +80,6 @@ export default function EditProfile({
         method: "PATCH",
         body: payload,
       });
-      console.log("res", res);
 
       if (res.success) {
         toast.success("Profile updated successfully!");

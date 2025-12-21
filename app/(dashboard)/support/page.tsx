@@ -4,7 +4,6 @@ import React from "react";
 
 export default async function Support() {
   const res = await myFetch("/supports");
-  console.log("res", res);
 
   return (
     <>

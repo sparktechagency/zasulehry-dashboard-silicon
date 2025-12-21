@@ -34,8 +34,6 @@ export default function LoginForm() {
         body: data,
       });
 
-      console.log("res", res);
-
       if (res?.success) {
         toast.success(res?.message);
         setCookie("accessToken", res?.data?.accessToken);

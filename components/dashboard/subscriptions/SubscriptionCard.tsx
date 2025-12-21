@@ -1,18 +1,20 @@
-import Button from "@/components/share/Button";
-
 import { Info } from "lucide-react";
 import SubscriptionInfoModal from "./SubcriptionInfoModal";
 
 import Link from "next/link";
 import { myFetch } from "@/utils/myFetch";
+import { Button } from "@/components/ui/button";
+import DeletePackage from "./DeletePackage";
 
 export default async function SubscriptionCard() {
-  const res = await myFetch("/packages");
+  const res = await myFetch("/packages", {
+    tags: ["package"],
+  });
   return (
     <>
       <div className="grid grid-cols-3 gap-6 ">
         {res?.data?.map((item: any) => (
-          <div key={item._id} className="">
+          <div key={item._id} className="my-5">
             <div>
               <h2 className="text-xl font-semibold text-center btn-design mb-5 py-1 rounded-md">
                 {item?.name}
@@ -30,6 +32,7 @@ export default async function SubscriptionCard() {
                   </div>
                   <div className="absolute -bottom-4 right-0 flex mt-2 ">
                     <SubscriptionInfoModal
+                      description={item.description}
                       trigger={
                         <span className="ml-16">
                           <Info />
@@ -51,12 +54,17 @@ export default async function SubscriptionCard() {
                   </div>
                 ))}
               </div>
-
-              <Link href={`/subscription-form/${item?._id}`}>
-                <Button className="btn-design text-lg mt-10 xl:h-10">
-                  Edit
-                </Button>
-              </Link>
+              <div className="grid grid-cols-2 gap-5 flex-1 items-end">
+                <Link href={`/subscription-form-update/${item?._id}`}>
+                  <Button
+                    variant={"outline"}
+                    className="text-lg mt-10 xl:h-10 w-full"
+                  >
+                    Edit
+                  </Button>
+                </Link>
+                <DeletePackage id={item?._id} />
+              </div>
             </div>
           </div>
         ))}

@@ -1,3 +1,4 @@
+"use client";
 import Button from "@/components/share/Button";
 
 import Image from "next/image";
@@ -6,21 +7,45 @@ import WorkInformation from "./WorkInformation";
 import ImageDetailsShow from "./ImageDetailsShow";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-
-const user = {
-  name: "Kamran Khan",
-  email: "Admin@Instantlabour.Co.Uk",
-  contact: "01333327633",
-  location: "Dhaka Bangladesh",
-  role: "Employer",
-  image: "https://i.ibb.co.com/xNXnsd1/Ellipse-7.png", // Replace with actual image path
-};
-const work = {
-  category: "senior business analytics",
-  experience: "12 Years",
-};
+import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
+import { revalidate } from "@/utils/revalidateTags";
 
 export default function JobDetails({ data }: any) {
+  console.log("data", data);
+
+  const user = {
+    name: data?.user?.name,
+    email: data?.user?.email,
+    contact: data?.user?.phone,
+    location: data?.user?.address,
+    image: data?.user?.image,
+  };
+  const work = {
+    category: data?.experiences?.category || "No Data",
+    experience: data?.experiences?.experience || "No Data",
+  };
+
+  const handleUpdateStatus = async (id: string) => {
+    console.log("click", id);
+
+    try {
+      const res = await myFetch(`/users/status/${id}`, {
+        method: "PATCH",
+      });
+
+      console.log("res", res);
+      if (res.success) {
+        toast.success(res.message);
+
+        await revalidate("job-seeker");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err?.message : "Something went wrong");
+    }
+  };
   return (
     <section className="sm:max-w-[1000px] mx-auto">
       <Link href="/all-job-seeker">
@@ -34,7 +59,11 @@ export default function JobDetails({ data }: any) {
           {/* Card */}
           <div className="bg-white p-3 flex flex-col md:flex-row gap-6">
             <Image
-              src={user.image}
+              src={
+                user?.image
+                  ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${user.image}`
+                  : "/default.png"
+              }
               alt={user.name}
               width={200}
               height={60}
@@ -47,13 +76,17 @@ export default function JobDetails({ data }: any) {
                 <PersonalInformation user={user} />
               </div>
               <div className="border border-[#0288A6] rounded-xl p-3 flex-1">
-                <WorkInformation user={work} />
+                <WorkInformation
+                  user={work}
+                  resume={data?.resume}
+                  url={data?.resumeUrl}
+                />
               </div>
             </div>
           </div>
 
           {/* image section */}
-          <ImageDetailsShow />
+          <ImageDetailsShow images={data?.attachments} data={data} />
 
           {/* footer section */}
         </div>
@@ -70,7 +103,10 @@ export default function JobDetails({ data }: any) {
               Message
             </Button>
           </Link>
-          <Button className="bg-[#D21D1D]  text-white  px-6 rounded-full">
+          <Button
+            onClick={() => handleUpdateStatus(data?.user?._id)}
+            className="bg-[#D21D1D]  text-white  px-6 rounded-full"
+          >
             Block
           </Button>
         </div>

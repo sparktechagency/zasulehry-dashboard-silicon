@@ -74,6 +74,7 @@ export const sidebarMenu = [
 ];
 
 import Image from "next/image";
+import { deleteCookie } from "cookies-next/client";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -90,6 +91,8 @@ export default function Sidebar() {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
+        deleteCookie("accessToken");
+        deleteCookie("role");
         router.push("/login");
 
         Swal.fire({

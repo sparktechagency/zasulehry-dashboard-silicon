@@ -3,7 +3,15 @@ import Image from "next/image";
 import React from "react";
 import pdf from "../../../public/pdf.png";
 
-export default function WorkInformation({ user }: { user: any }) {
+export default function WorkInformation({
+  user,
+  resume,
+  url,
+}: {
+  user: any;
+  resume: string;
+  url: string;
+}) {
   return (
     <div className="flex-1 space-y-2 text-gray-800 ">
       <h1 className="text-[#0288A6]  font-medium capitalize underline underline-offset-4">
@@ -20,13 +28,16 @@ export default function WorkInformation({ user }: { user: any }) {
       <div className="flex justify-between items-center">
         <div className="font-semibold flex gap-2">
           <Image src={pdf} alt="pdf" />
-          <div>
-            <p>example pdf</p>
-            <p>01.02.2024</p>
-          </div>
-        </div>{" "}
+          {resume ? (
+            <p className="text-sm text-blue-600 hover:underline cursor-pointer">
+              {resume.split("/").pop()}
+            </p>
+          ) : (
+            "No Resume"
+          )}
+        </div>
         <p className="flex gap-2 text-[#0288A6] cursor-pointer">
-          <a href="/link.pdf" target="_blank" rel="noopener noreferrer">
+          <a href={url} target="_blank" rel="noopener noreferrer">
             <button className="text-[#0288A6] cursor-pointer">
               <Eye />
             </button>

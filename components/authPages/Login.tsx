@@ -98,8 +98,8 @@ export default function LoginForm() {
           Forgot Password
         </Link>
       </div>
-      {/* 
-      <AdminOtp2
+
+      {/* <AdminOtp2
         title="Log In"
         trigger={
           <button className="bg-white text-[#0288A6] w-full py-2 cursor-pointer">

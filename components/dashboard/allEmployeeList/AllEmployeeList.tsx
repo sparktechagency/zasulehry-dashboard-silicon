@@ -58,7 +58,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
                 <TableCell>
                   <Badge
                     className={`${
-                      employer.status === "Blocked"
+                      employer.status === "Inactive"
                         ? "bg-red-600"
                         : "bg-green-600"
                     } text-white w-20 h-7 2xl:h-9`}

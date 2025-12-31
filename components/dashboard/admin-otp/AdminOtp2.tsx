@@ -51,12 +51,12 @@ export default function AdminOtp2({
             </InputOTP>
           </div>
 
-          <p className="text-sm font-medium my-4">
+          {/* <p className="text-sm font-medium my-4">
             Resent in 0:{timer < 10 ? `0${timer}` : timer}
-          </p>
+          </p> */}
 
           <Link href="/">
-            <Button type="submit" className="btn-design text-lg">
+            <Button type="submit" className="btn-design text-lg mt-6">
               Confirm
             </Button>
           </Link>

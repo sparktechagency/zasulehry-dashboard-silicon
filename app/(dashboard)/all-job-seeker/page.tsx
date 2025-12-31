@@ -7,20 +7,32 @@ export default async function JobSeeker({ searchParams }: any) {
   const status = (await searchParams)?.status || "";
 
   const params = new URLSearchParams();
+  params.append("role", "Job Seeker");
   if (name) params.append("searchTerm", name);
   if (status) params.append("status", status);
 
-  const queryString = params.toString();
-  const url = `/users${queryString ? `?${queryString}` : ""}`;
+  let data: any[] = [];
 
-  const res = await myFetch(url, {
-    method: "GET",
-    tags: ["job-seeker"],
-  });
+  try {
+    const res = await myFetch(`/users?${params.toString()}`, {
+      tags: ["job-seeker"],
+    });
+
+    if (res?.success) {
+      data = res.data ?? [];
+    } else {
+      console.error("Failed to fetch job seekers:", res?.message);
+    }
+  } catch (err) {
+    console.error(
+      "Error fetching job seekers:",
+      err instanceof Error ? err.message : err
+    );
+  }
 
   return (
     <>
-      <AllJobSeeker data={res?.data || []} />
+      <AllJobSeeker data={data} />
     </>
   );
 }

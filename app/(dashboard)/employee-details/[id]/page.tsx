@@ -1,22 +1,28 @@
 import GivePackage from "@/components/dashboard/allEmployeeList/EmployeDetailsModal";
 import { SwitchDemo } from "@/components/dashboard/allEmployeeList/Switch";
 import Button from "@/components/share/Button";
+import { getImageSrc } from "@/components/share/getImage";
+import { myFetch } from "@/utils/myFetch";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import EmployeeStatusChange from "../EmployeeStatusChange";
 
-const user = {
-  name: "Kamran Khan",
-  email: "Admin@Instantlabour.Co.Uk",
-  contact: "01333327633",
-  location: "Dhaka Bangladesh",
-  role: "Employer",
-  subscription: "Standard",
-  image: "https://i.ibb.co.com/xNXnsd1/Ellipse-7.png", // Replace with actual image path
-};
+export default async function page({ params }: { params: { id: string } }) {
+  const { id } = await params;
+  const res = await myFetch(`/employers/single/${id}`);
+  console.log("id-----", res?.data?.user?._id);
 
-export default function page() {
+  const user = {
+    name: res?.data?.user?.name,
+    email: res?.data?.user?.email,
+    contact: res?.data?.user?.phone || "No",
+    location: res?.data?.user?.address || "No",
+    image: res?.data?.user?.image,
+    role: res?.data?.user?.role || "No",
+  };
+
   return (
     <div>
       <div className="p-6">
@@ -41,7 +47,7 @@ export default function page() {
         <div className="bg-white p-5 flex flex-col md:flex-row gap-6 items-start rounded-md">
           {/* Avatar */}
           <Image
-            src={user.image}
+            src={getImageSrc(user?.image)}
             alt={user.name}
             width={200}
             height={200}
@@ -68,10 +74,10 @@ export default function page() {
             <p>
               <span className="font-semibold">Role</span> : {user.role}
             </p>
-            <p>
+            {/* <p>
               <span className="font-semibold">subscription</span> :{" "}
               {user.subscription}
-            </p>
+            </p> */}
 
             {/* Warning note */}
           </div>
@@ -95,9 +101,7 @@ export default function page() {
                 Message
               </Button>
             </Link>
-            <Button className="bg-[#D21D1D]  text-white  px-6 rounded-full">
-              Block
-            </Button>
+            <EmployeeStatusChange id={res?.data?.user?._id} />
           </div>
         </div>
       </div>

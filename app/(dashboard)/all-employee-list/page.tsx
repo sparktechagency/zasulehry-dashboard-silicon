@@ -1,24 +1,42 @@
 import AllEmployeeList from "@/components/dashboard/allEmployeeList/AllEmployeeList";
 import { myFetch } from "@/utils/myFetch";
 
-import React from "react";
+type Props = {
+  searchParams?: {
+    name?: string;
+    status?: string;
+  };
+};
 
-export default async function AllEmployee({ searchParams }: any) {
+export default async function AllEmployee({ searchParams }: Props) {
   const name = (await searchParams)?.name || "";
   const status = (await searchParams)?.status || "";
 
-  // Build URL conditionally to avoid empty query params
-  const params = new URLSearchParams({ role: "Employer" });
+  const params = new URLSearchParams();
+  params.append("role", "Employer");
+
   if (name) params.append("searchTerm", name);
   if (status) params.append("status", status);
 
-  const url = `/users?${params.toString()}`;
+  let data: any[] = [];
 
-  const res = await myFetch(url);
+  try {
+    const res = await myFetch(`/users?${params.toString()}`, {
+      tags: ["employee-list"],
+    });
+
+    if (res?.success) {
+      data = res.data ?? [];
+    } else {
+      console.error("Employee fetch failed:", res?.message);
+    }
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+  }
 
   return (
-    <>
-      <AllEmployeeList res={res?.data || []} />
-    </>
+    <div className="w-full">
+      <AllEmployeeList res={data} />
+    </div>
   );
 }

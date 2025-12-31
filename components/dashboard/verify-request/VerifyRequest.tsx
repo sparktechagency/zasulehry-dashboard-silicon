@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import RequestModal from "./RequestModal";
 import TablePagination from "@/components/share/Pagination";
-import Delete from "@/components/share/Delete";
 import CustomImage from "@/share/CustomImage";
 
 export default function VerifyRequest({ res }: any) {
@@ -79,8 +78,10 @@ export default function VerifyRequest({ res }: any) {
                   <Badge
                     className={`w-20 ${
                       employer.status === "Pending"
-                        ? "bg-red-500"
-                        : "bg-green-500"
+                        ? "bg-yellow-200"
+                        : employer.status === "Approved"
+                        ? "bg-green-500"
+                        : "bg-red-500"
                     } text-white text-sm  2xl:h-10`}
                   >
                     {employer.status}

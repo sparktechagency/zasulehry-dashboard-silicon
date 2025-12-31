@@ -1,11 +1,17 @@
+"use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import PdfViewer from "@/share/ViewerPdf";
 import { formatUrl } from "@/utils/formatUrl";
 import { Button } from "@/components/ui/button";
+import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
+import { revalidate } from "@/utils/revalidateTags";
+import { useState } from "react";
 
 export default function RequestModal({ name, item }: any) {
+  const [open, setOpen] = useState(false);
   const userItem = item.user;
   const users = {
     name: userItem.name,
@@ -15,8 +21,28 @@ export default function RequestModal({ name, item }: any) {
     image: userItem?.image,
   };
 
+  const handleUpdateStatus = async (value: string) => {
+    try {
+      const res = await myFetch(`/verifications/update/${item?._id}`, {
+        method: "PATCH",
+        body: { status: value },
+      });
+
+      if (res.success) {
+        toast.success(res.message || "Support marked as resolved!");
+        await revalidate("verification");
+      } else {
+        toast.error((res as any)?.error?.[0]?.message || "Failed to update");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setOpen(false);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
           className={`${
@@ -64,14 +90,25 @@ export default function RequestModal({ name, item }: any) {
           {/* id card */}
           {/* Avatar */}
           <div className="flex gap-4">
-            <PdfViewer fileUrl={formatUrl(item?.documents[0])} />
-            <PdfViewer fileUrl={formatUrl(item?.documents[1])} />
+            <PdfViewer fileUrl={item?.documents} />
           </div>
           {/* footer section */}
-          <div className="mt- flex justify-end">
+          <div className="mt- flex justify-end gap-4">
             {item.status === "Pending" && (
-              <div>
-                <Button className="bg-[#0288A6] text-white h-10 rounded-full cursor-pointer  shadow-md">
+              <div className="mt- flex justify-end gap-2">
+                <Button
+                  type="submit"
+                  onClick={() => handleUpdateStatus("Rejected")}
+                  className="bg-red-600 text-white h-10 rounded-full cursor-pointer  shadow-md"
+                >
+                  Decline
+                </Button>
+
+                <Button
+                  type="submit"
+                  onClick={() => handleUpdateStatus("Approved")}
+                  className="bg-[#0288A6] text-white h-10 rounded-full cursor-pointer  shadow-md"
+                >
                   Approve
                 </Button>
               </div>

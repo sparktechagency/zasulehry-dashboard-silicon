@@ -1,56 +1,67 @@
 "use client";
 
-import { Download } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-export default function PdfViewer({ fileUrl }: { fileUrl: string }) {
-  const [numPages, setNumPages] = useState<number | null>(null);
+type PdfViewerProps = {
+  fileUrl: string[]; // Array of file URLs
+};
+
+export default function PdfViewer({ fileUrl }: PdfViewerProps) {
   const [width, setWidth] = useState(800);
 
   useEffect(() => {
     const updateWidth = () => {
-      setWidth(Math.min(800, window.innerWidth - 4));
+      setWidth(Math.min(800, window.innerWidth - 32)); // padding margin
     };
     updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
+  if (!fileUrl || fileUrl.length === 0) {
+    return <p className="text-gray-500">No PDF files available.</p>;
+  }
+
   return (
-    <div className="">
-      <div className="flex justify-end">
-        <a
-          href={fileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          download
-          className="bg-[#FF5900] hover:bg-[#FF5900]/90 text-white font-semibold py-2 px-4 rounded flex items-center gap-2"
-        >
-          <Download />
-          <span>Download</span>
-        </a>
-      </div>
-      <div>
-        <Document
-          file={fileUrl}
-          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-          loading={<div className="p-8 text-center">Loading...</div>}
-        >
-          {numPages &&
-            Array.from(new Array(numPages), (_, index) => (
-              <div key={`page_${index + 1}`} className="flex justify-center">
-                <Page
-                  pageNumber={index + 1}
-                  width={width}
-                  renderTextLayer={false}
-                  renderAnnotationLayer={false}
-                />
+    <div className="space-y-6">
+      {/* File List */}
+      <div className="bg-white  rounded p-4 space-y-2">
+        {fileUrl.map((url, index) => {
+          const fileName = url.split("/").pop();
+          return (
+            <div
+              key={url}
+              className="flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-2 rounded transition gap-6"
+            >
+              <div className="flex items-center gap-5">
+                <FileText className="text-gray-500 w-5 h-5" />
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  {fileName && `PDF File${index + 1}.pdf`}
+                </a>
               </div>
-            ))}
-        </Document>
+              <div>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#FF5900] hover:bg-[#FF5900]/90 text-white font-semibold py-1 px-3 rounded flex items-center gap-1 text-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  Download
+                </a>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

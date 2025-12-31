@@ -8,39 +8,27 @@ import {
 } from "@/components/ui/table";
 // import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import RequestModal from "./RequestModal";
 import TablePagination from "@/components/share/Pagination";
 import CustomImage from "@/share/CustomImage";
+import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
+
+const statusOption = [
+  { label: "All", value: "All" },
+  { label: "Approved", value: "Approved" },
+  { label: "Rejected", value: "Rejected" },
+  { label: "Pending", value: "Pending" },
+];
 
 export default function VerifyRequest({ res }: any) {
   return (
     <>
-      <div className="bg-[#f9f9f9] p-6 rounded-lg">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Verify Request</h2>
-          <div>
-            <Select>
-              <SelectTrigger className="w-28 border-[#0288A6]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="block">Verified</SelectItem>
-                  <SelectItem value="Pending">Pending</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+      <div className="flex justify-end">
+        <SelectBar options={statusOption} />
+      </div>
+      <div className="bg-[#f9f9f9] p- rounded-lg">
+        <div className="flex items-center justify-between mb-4"></div>
 
         <Table>
           <TableHeader>

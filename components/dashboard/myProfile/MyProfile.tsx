@@ -11,7 +11,9 @@ export default function MyProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await myFetch("/users/profile");
+      const res = await myFetch("/users/profile", {
+        tags: ["profile"],
+      });
       setData(res?.data);
     };
     fetchData();

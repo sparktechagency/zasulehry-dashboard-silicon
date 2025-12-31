@@ -11,7 +11,6 @@ import {
   CheckCheck,
   Shield,
   UserStar,
-  MessageCircleMore,
   LogOut,
   UserPen,
   CreditCard,
@@ -92,7 +91,7 @@ export default function Sidebar() {
     }).then((result) => {
       if (result.isConfirmed) {
         router.push("/login");
-        ("/login");
+
         Swal.fire({
           title: "Logged Out",
           text: "Your have been Log Out.",

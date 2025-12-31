@@ -38,14 +38,18 @@ export default async function AllEmployeeList() {
                 {/* <TableCell>13445454</TableCell> */}
 
                 <TableCell>
-                  <p className="bg-green-500 text-white h-7 w-20 rounded flex items-center justify-center">
+                  <p
+                    className={` ${
+                      admin.status === "Active" ? "bg-green-500" : "bg-red-500"
+                    } text-white h-7 w-20 rounded flex items-center justify-center`}
+                  >
                     {admin.status}
                   </p>
                 </TableCell>
                 <TableCell>
                   <div className="flex">
                     <Block item={admin} />
-                    <Delete />
+                    <Delete id={admin?._id} />
                   </div>
                 </TableCell>
               </TableRow>

@@ -17,8 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import RequestModal from "./RequestModal";
-import Image from "next/image";
-import kamran from "../../../public/share/kamran.png";
 import TablePagination from "@/components/share/Pagination";
 import Delete from "@/components/share/Delete";
 import CustomImage from "@/share/CustomImage";
@@ -79,7 +77,7 @@ export default function VerifyRequest({ res }: any) {
                 <TableCell>{employer?.user?.address || "No"}</TableCell>
                 <TableCell>
                   <Badge
-                    className={`${
+                    className={`w-20 ${
                       employer.status === "Pending"
                         ? "bg-red-500"
                         : "bg-green-500"
@@ -89,9 +87,9 @@ export default function VerifyRequest({ res }: any) {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <div className="flex">
+                  <div className="flex items-center justify-center mr-3">
                     <RequestModal item={employer} />
-                    <Delete />
+                    {/* <Delete /> */}
                   </div>
                 </TableCell>
               </TableRow>

@@ -1,10 +1,19 @@
 import JobDetails from "@/components/dashboard/jobSeeker/JobDetails";
+import { myFetch } from "@/utils/myFetch";
 import React from "react";
 
-export default function page() {
+export default async function page({
+  searchParams,
+}: {
+  searchParams: { id: string };
+}) {
+  const { id } = await searchParams;
+  const res = await myFetch(`/job-seekers/single/${id}`);
+  console.log("res", res);
+
   return (
-    <div>
-      <JobDetails />
-    </div>
+    <>
+      <JobDetails data={res?.data} />
+    </>
   );
 }

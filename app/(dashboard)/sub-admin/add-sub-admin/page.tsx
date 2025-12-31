@@ -2,79 +2,20 @@
 
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
-
 import {
-  LayoutGrid,
-  User,
-  List,
-  SquarePlus,
-  UserPlus,
-  Plus,
-  Phone,
-  CheckCheck,
-  Shield,
-  UserStar,
-  MessageCircleMore,
-  CreditCard,
-  PanelBottom,
-  FileTerminal,
-  Users,
-} from "lucide-react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
-
-const radio = [
-  { id: 1, label: "Overview", icon: LayoutGrid, path: "/" },
-  { id: 2, label: "All Job Seeker", icon: User, path: "/all-job-seeker" },
-  {
-    id: 3,
-    label: "All Employer List",
-    icon: Users,
-    path: "/all-employee-list",
-  },
-  { id: 4, label: "Category System", icon: List, path: "/all-category" },
-  {
-    id: 5,
-    label: "Subscription Plan",
-    icon: SquarePlus,
-    path: "/subscription",
-  },
-  {
-    id: 6,
-    label: "Subscribed  Users",
-    icon: UserPlus,
-    path: "/subscriber-users",
-  },
-  {
-    id: 20,
-    label: "Payment/Invoices",
-    icon: CreditCard,
-    path: "/payment-invoices",
-  },
-  { id: 7, label: "Upload Document", icon: Plus, path: "/upload-document" },
-
-  { id: 9, label: "Support Request", icon: Phone, path: "/support" },
-  {
-    id: 10,
-    label: "Verify Request",
-    icon: CheckCheck,
-    path: "/verify-request",
-  },
-  { id: 11, label: "Privacy Policy", icon: Shield, path: "/privacy-policy" },
-  {
-    id: 12,
-    label: "Terms & Condition",
-    icon: FileTerminal,
-    path: "/terms-condition",
-  },
-  { id: 14, label: "Impressum", icon: PanelBottom, path: "/impressum" },
-  { id: 13, label: "Create Sub Admin", icon: UserStar, path: "/sub-admin" },
-  { id: 15, label: "Inbox", icon: MessageCircleMore, path: "/inbox" },
-  // { id: 8, label: "My Profile", icon: UserPen, path: "/my-profile" },
-  // { id: 16, label: "Log Out", icon: LogOut, path: "/login" },
-];
+import { sidebarMenu } from "@/sidebar/Sidebar";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   name: string;
@@ -89,29 +30,60 @@ export default function CreateAdmin() {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
+
+  // ✅ MULTI SELECT STATE
+  const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
+  const router = useRouter();
+
+  /* ======================
+     Select handlers
+  ====================== */
+  const handleSelect = (value: string) => {
+    setSelectedMenus((prev) =>
+      prev.includes(value) ? prev : [...prev, value]
+    );
+  };
+
+  const removeMenu = (value: string) => {
+    setSelectedMenus((prev) => prev.filter((v) => v !== value));
+  };
+
+  /* ======================
+     Submit
+  ====================== */
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const payload = {
+      ...data,
+      adminPermissions: selectedMenus,
+    };
+
+    console.log("payload", payload);
+
     try {
       const res = await myFetch("/users/create-admin", {
         method: "POST",
-        body: data,
+        body: payload,
       });
+
+      console.log("res", res);
 
       if (res.success) {
         toast.success(res?.message || "Sub Admin created successfully");
         reset();
+        setSelectedMenus([]);
+        router.push("/sub-admin");
       } else {
         toast.error(res.message || "Failed to create Sub Admin");
       }
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An error occurred";
-      toast.error(errorMessage);
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <div className="w-[60%] mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Header */}
         <Link href="/sub-admin">
           <div className="flex items-center gap-2 mb-4 text-black">
             <ArrowLeft className="w-5 h-5" />
@@ -119,119 +91,104 @@ export default function CreateAdmin() {
           </div>
         </Link>
 
+        {/* Inputs */}
         <div className="grid grid-cols-2 gap-4 mt-5">
           <div>
-            <label className="text-[#333333] font-medium mb-">User Name</label>
+            <label className="text-[#333333] font-medium">User Name</label>
             <Input
-              type="text"
               placeholder="Enter Sub Admin Name"
-              className="bg-white mt-1"
-              {...register("name", { required: "User name is required" })}
+              className="placeholder:text-black mt-1 bg-white"
+              {...register("name", {
+                required: "User name is required",
+              })}
             />
             {errors.name && (
               <p className="text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
+
           <div>
-            <label className="text-[#333333] font-medium mb-1">
-              Email (Optional)
-            </label>
+            <label className="text-[#333333] font-medium">Email</label>
             <Input
               type="email"
               placeholder="Enter Email"
-              className="bg-white mt-1"
-              {...register("email", { required: true })}
+              className="placeholder:text-black mt-1 bg-white"
+              {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
               <p className="text-red-500 mt-1">{errors.email.message}</p>
             )}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+
+        <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="text-[#333333] font-medium mb-1">Password</label>
+            <label className="text-[#333333] font-medium">Password</label>
             <Input
               type="password"
-              placeholder="Enter New Password"
-              className="bg-white mt-1"
-              {...register("password", { required: "Password is required" })}
+              placeholder="Enter Password"
+              className="placeholder:text-black mt-1 bg-white"
+              {...register("password", {
+                required: "Password is required",
+              })}
             />
             {errors.password && (
               <p className="text-red-500 mt-1">{errors.password.message}</p>
             )}
           </div>
-          <div>
-            {/* <label className="text-[#333333] font-medium mb-1">
-              Repaid Password
-            </label>
-            <Input
-              type="password"
-              name="repaidPassword"
-              value={formData.repaidPassword}
-              onChange={handleInputChange}
-              placeholder="Enter Repaid Password"
-              className="bg-white mt-1"
-            /> */}
+
+          {/* Select */}
+          <div className="mt-7">
+            <Select onValueChange={handleSelect}>
+              <SelectTrigger className="w-full !h-11">
+                <SelectValue placeholder="Select menu" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {sidebarMenu.map((item: any) => (
+                  <SelectItem
+                    key={item.path}
+                    value={item.path}
+                    disabled={selectedMenus.includes(item.path)}
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Selected Items */}
+            {selectedMenus.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {selectedMenus.map((menu) => {
+                  const label =
+                    sidebarMenu.find((i: any) => i.path === menu)?.label ||
+                    menu;
+
+                  return (
+                    <span
+                      key={menu}
+                      className="flex items-center gap-1
+                                 bg-[#0288A6] text-white
+                                 px-3 py-1 rounded-full text-sm"
+                    >
+                      {label}
+                      <button
+                        type="button"
+                        onClick={() => removeMenu(menu)}
+                        className="ml-1 hover:text-red-200"
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* select radio */}
-        {/* <div>
-              <label className="text-[#0288A6] font-medium mb-1 text-xl">
-                Select Method
-              </label>
-              <RadioGroup
-                defaultValue=""
-                className="border border-[#0288A6] rounded-lg p-3 mt-4"
-              >
-                <div className="grid grid-cols-3 gap-3">
-                  {radio.map((item) => (
-                    <div className="flex gap-2" key={item.name}>
-                      <RadioGroupItem value={item.name} id={item.name} />
-                      <Label htmlFor="r1">{item.name}</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div> */}
-
-        <div>
-          {/* <label className="text-color font-medium mb-1 text-xl">
-            Select Method
-          </label> */}
-          {/* import { Check } from "lucide-react"; // ✅ for white check icon */}
-
-          {/* <div className="border border-[#0288A6]  p-3 mt-4">
-            <div className="grid grid-cols-2  xl:grid-cols-3 gap-3">
-              {radio.map((item) => {
-                const isChecked = selectedItems.includes(item.label);
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    className="flex gap-2 items-center cursor-pointer text-[#343434]"
-                    onClick={() => toggleItem(item.label)}
-                  >
-                    <div
-                      className={`
-                            w-5 h-5 flex items-center justify-center rounded-full
-                            border border-[#0288A6]
-                            ${isChecked ? "bg-[#0288A6]" : "bg-white"}
-                          `}
-                    >
-                      {isChecked && <Check size={14} className="text-white" />}
-                    </div>
-                    <Icon className="w-5 h-5 shrink-0 text-[#343434]" />
-                    <label className="cursor-pointer font-medium">
-                      {item.label}
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
-          </div> */}
-        </div>
-
+        {/* Submit */}
         <button className="btn-design py-3 w-80 mt-6 lg:text-xl" type="submit">
           Confirm
         </button>

@@ -13,7 +13,10 @@ export default async function JobSeeker({ searchParams }: any) {
   const queryString = params.toString();
   const url = `/users${queryString ? `?${queryString}` : ""}`;
 
-  const res = await myFetch(url);
+  const res = await myFetch(url, {
+    method: "GET",
+    tags: ["job-seeker"],
+  });
 
   return (
     <>

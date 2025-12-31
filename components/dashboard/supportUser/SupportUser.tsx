@@ -12,17 +12,21 @@ import { Badge } from "@/components/ui/badge";
 import { Message } from "./Message";
 import SearchBar from "@/components/share/SearchBar";
 import TablePagination from "@/components/share/Pagination";
-import Delete from "@/components/share/Delete";
 import CustomImage from "@/share/CustomImage";
+import SupportStatusChange from "./SupportStatusChange";
+import { Lock, Unlock } from "lucide-react";
+
+const statusOption = [
+  { label: "All", value: "All" },
+  { label: "Resolved", value: "Resolved" },
+  { label: "Pending", value: "Pending" },
+];
 
 export default function SupportUser({ data }: { data: any }) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
-        <SearchBar
-          title="Support Request"
-          options={["All", "Solved", "Pending"]}
-        />
+        <SearchBar title="Support Request" options={statusOption} />
 
         {/* <div>
             <Select>
@@ -73,7 +77,7 @@ export default function SupportUser({ data }: { data: any }) {
                 <TableCell>
                   <Badge
                     className={`${
-                      employer.status === "Solved"
+                      employer.status === "Resolved"
                         ? "bg-green-600"
                         : "bg-[#D21D1D]"
                     } text-white w-20 h-8 text-sm 2xl:h-10`}
@@ -82,9 +86,19 @@ export default function SupportUser({ data }: { data: any }) {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <div className="flex">
+                  <div className="flex items-center">
                     <Message />
-                    <Delete />
+                    {/* <Delete id={employer?._id} /> */}
+                    <SupportStatusChange
+                      item={employer}
+                      trigger={
+                        employer?.status === "Resolved" ? (
+                          <Unlock className="cursor-pointer" />
+                        ) : (
+                          <Lock className="text-red-600 size-5 2xl:size-7 cursor-pointer" />
+                        )
+                      }
+                    />
                   </div>
                 </TableCell>
               </TableRow>

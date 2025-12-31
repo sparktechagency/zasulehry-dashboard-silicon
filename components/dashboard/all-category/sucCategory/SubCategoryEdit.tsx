@@ -14,12 +14,17 @@ import Button from "@/components/share/Button";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { revalidate } from "@/utils/revalidateTags";
+import { useForm, useFieldArray } from "react-hook-form";
+
+/* =======================
+   Types
+======================= */
 
 type JobCategory = {
   _id?: string;
   title: string;
   name: string;
-  subCategories: string[];
+  subCategories: string[]; // API shape
 };
 
 type SubCategoryEditProps = {
@@ -30,83 +35,75 @@ type SubCategoryEditProps = {
 
 type SubCategoryFormData = {
   name: string;
-  subCategories: string[];
+  subCategories: { value: string }[]; // RHF field array shape
 };
+
+/* =======================
+   Component
+======================= */
 
 export function SubCategoryEdit({
   title,
   trigger,
   category,
 }: SubCategoryEditProps) {
-  const [inputFields, setInputFields] = useState<SubCategoryFormData>(() => ({
-    name: category?.name || "",
-    subCategories: category?.subCategories || [],
-  }));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
-  // Sync state only when category._id changes to avoid infinite loops
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<SubCategoryFormData>({
+    defaultValues: {
+      name: "",
+      subCategories: [],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray<
+    SubCategoryFormData,
+    "subCategories"
+  >({
+    control,
+    name: "subCategories",
+  });
+
+  /* =======================
+     Sync category → form
+  ======================= */
   useEffect(() => {
     if (category) {
-      setInputFields({
+      reset({
         name: category.name || "",
-        subCategories: category.subCategories || [],
+        subCategories: category.subCategories?.map((s) => ({ value: s })) || [],
       });
     }
-  }, [category]);
+  }, [category, reset]);
 
-  const handleAddInput = () => {
-    setInputFields((prev) => ({
-      ...prev,
-      subCategories: [...prev.subCategories, ""],
-    }));
-  };
-
-  const handleRemoveInput = (index: number) => {
-    setInputFields((prev) => ({
-      ...prev,
-      subCategories: prev.subCategories.filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleInputValueChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-
-    setInputFields((prev) => {
-      const updated = [...prev.subCategories];
-      updated[index] = value;
-      return { ...prev, subCategories: updated };
-    });
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputFields((prev) => ({
-      ...prev,
-      name: e.target.value,
-    }));
-  };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  /* =======================
+     Submit
+  ======================= */
+  const onSubmit = async (data: SubCategoryFormData) => {
     setLoading(true);
     setError(null);
 
     const isEdit = Boolean(category?._id);
 
+    const payload = {
+      name: data.name,
+      subCategories: data.subCategories.map((s) => s.value),
+    };
+
     try {
       const res = await myFetch(
-        isEdit
-          ? `/categories/update/${category?._id}` // PATCH
-          : `/categories/create`, // POST
+        isEdit ? `/categories/update/${category?._id}` : `/categories/create`,
         {
           method: isEdit ? "PATCH" : "POST",
-          body: {
-            name: inputFields.name,
-            subCategories: inputFields.subCategories,
-          },
+          body: payload,
         }
       );
 
@@ -119,6 +116,7 @@ export function SubCategoryEdit({
             : "Category created successfully"
         );
         revalidate("categories");
+        setOpen(false);
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -127,20 +125,27 @@ export function SubCategoryEdit({
     }
   };
 
+  /* =======================
+     UI
+  ======================= */
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Category title */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Category name */}
           <div className="grid gap-2">
             <Label className="text-lg">{title}</Label>
             <Input
-              value={inputFields.name}
               className="bg-gray-100"
-              onChange={(e) => handleNameChange(e)}
+              {...register("name", {
+                required: "Category name is required",
+              })}
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
 
           {/* Sub categories */}
@@ -150,29 +155,27 @@ export function SubCategoryEdit({
                 <Label className="text-lg">Sub Categories</Label>
                 <button
                   type="button"
-                  onClick={handleAddInput}
-                  className="text-green-600 hover:text-green-700 cursor-pointer"
-                  aria-label="Add sub category"
+                  onClick={() => append({ value: "" })}
+                  className="text-green-600 hover:text-green-700"
                 >
                   <Plus />
                 </button>
               </div>
 
               <div className="space-y-2">
-                {inputFields?.subCategories?.map((sub, index) => (
-                  <div key={index} className="flex items-center gap-2">
+                {fields.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-2">
                     <Input
-                      type="text"
-                      value={sub}
-                      onChange={(e) => handleInputValueChange(index, e)}
                       className="flex-1 bg-white"
                       placeholder="Enter sub category"
+                      {...register(`subCategories.${index}.value` as const, {
+                        required: "Sub category is required",
+                      })}
                     />
                     <button
                       type="button"
-                      onClick={() => handleRemoveInput(index)}
+                      onClick={() => remove(index)}
                       className="text-red-500 hover:text-red-700"
-                      aria-label={`Remove ${sub}`}
                     >
                       <Minus />
                     </button>

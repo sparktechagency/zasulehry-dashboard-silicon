@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import Button from "@/components/share/Button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
+import { revalidate } from "@/utils/revalidateTags";
 
 type FormData = {
   name: string;
@@ -21,6 +22,7 @@ type FormData = {
 
 function SubscriptionIdSuscription() {
   const { id } = useParams<{ id?: string }>();
+  const router = useRouter();
 
   const { register, handleSubmit, watch, setValue } = useForm<FormData>({
     defaultValues: {
@@ -56,7 +58,6 @@ function SubscriptionIdSuscription() {
       description: data.description,
       benefits: data.benefits,
     };
-    console.log("add form", add);
 
     try {
       const res = await myFetch(`/packages/create`, {
@@ -64,10 +65,10 @@ function SubscriptionIdSuscription() {
         body: add,
       });
 
-      console.log("res", res);
-
       if (res?.success) {
         toast.success(res?.message);
+        revalidate("package");
+        router.push("/subscription");
       } else {
         toast.error(res?.message);
       }

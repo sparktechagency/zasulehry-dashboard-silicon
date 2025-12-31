@@ -1,6 +1,7 @@
 "use client";
 
 import { myFetch } from "@/utils/myFetch";
+import { revalidate } from "@/utils/revalidateTags";
 import { Lock, Unlock } from "lucide-react";
 import React from "react";
 import Swal from "sweetalert2";
@@ -26,6 +27,7 @@ export default function Block({ item }: { item?: string | any }) {
           text: "Your User has been Blocked",
           icon: "success",
         });
+        await revalidate("job-seeker");
       }
     });
   };

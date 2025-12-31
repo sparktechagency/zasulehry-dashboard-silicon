@@ -10,69 +10,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import SearchBar from "@/components/share/SearchBar";
-import Image from "next/image";
-import kamran from "../../../public/share/kamran.png";
 import Block from "@/components/share/Block";
 import TablePagination from "@/components/share/Pagination";
 import Link from "next/link";
-import CustomImage from "@/share/CustomImage";
-
-const employers = [
-  {
-    id: 2,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 3,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Blocked",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 4,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 5,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 6,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-  {
-    id: 7,
-    name: "kamran",
-    email: "Admin@instantlabour.Com",
-    contact: "01333327633",
-    location: "Dhaka Bangladesh",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
 
 const statusOption = [
   { label: "All", value: "All" },
@@ -144,7 +84,7 @@ export default function AllJobSeeker({ data }: any) {
                       }
                     /> */}
 
-                    <Link href={`/job-seeker-details`}>
+                    <Link href={`/job-seeker-details?id=${employer?._id}`}>
                       <div className="bg-[#0288A6] p-1 rounded cursor-pointer">
                         <Eye className=" text-white size-5 2xl:size-7" />
                       </div>

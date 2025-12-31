@@ -20,7 +20,7 @@ const work = {
   experience: "12 Years",
 };
 
-export default function JobDetails() {
+export default function JobDetails({ data }: any) {
   return (
     <section className="sm:max-w-[1000px] mx-auto">
       <Link href="/all-job-seeker">

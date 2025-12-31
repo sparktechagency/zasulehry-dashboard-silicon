@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
+import { revalidate } from "@/utils/revalidateTags";
 
 type Inputs = {
   name: string;
@@ -83,6 +84,7 @@ export default function EditProfile({
 
       if (res.success) {
         toast.success("Profile updated successfully!");
+        await revalidate("profile");
         // setProfile("profile");
       } else {
         toast.success(res?.message || "Failed to update profile.");

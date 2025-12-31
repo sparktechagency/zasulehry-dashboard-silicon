@@ -1,10 +1,12 @@
 "use client";
 
+import { myFetch } from "@/utils/myFetch";
+import { revalidate } from "@/utils/revalidateTags";
 import React from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Swal from "sweetalert2";
 
-export default function Delete() {
+export default function Delete({ id }: { id: string }) {
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -14,13 +16,21 @@ export default function Delete() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
+        const res = await myFetch(`/users/${id}`, {
+          method: "DELETE",
         });
+
+        if (res.success) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          revalidate("admin-list");
+          revalidate("support");
+        }
       }
     });
   };

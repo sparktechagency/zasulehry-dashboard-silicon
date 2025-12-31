@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { myFetch } from "@/utils/myFetch";
+import { revalidate } from "@/utils/revalidateTags";
 import React from "react";
 import Swal from "sweetalert2";
 
@@ -29,6 +30,7 @@ export default function DeletePackage({ id }: { id: string }) {
           text: "Your package has been deleted.",
           icon: "success",
         });
+        await revalidate("package");
       } else {
         Swal.fire({
           title: "Error!",

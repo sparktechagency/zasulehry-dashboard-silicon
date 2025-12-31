@@ -1,20 +1,20 @@
-import Button from "@/components/share/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import PdfViewer from "@/share/ViewerPdf";
 import { formatUrl } from "@/utils/formatUrl";
-
-const user = {
-  name: "Karman Khan",
-  email: "Admin@Instantlabour.Co.Uk",
-  contact: "01333327633",
-  location: "Dhaka Bangladesh",
-  role: "Employer",
-  image: "https://i.ibb.co.com/xNXnsd1/Ellipse-7.png", // Replace with actual image path
-};
+import { Button } from "@/components/ui/button";
 
 export default function RequestModal({ name, item }: any) {
+  const userItem = item.user;
+  const users = {
+    name: userItem.name,
+    email: userItem.email,
+    contact: userItem.phone,
+    location: userItem.address,
+    image: userItem?.image,
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,8 +32,8 @@ export default function RequestModal({ name, item }: any) {
           <div className="bg-white p-5 flex flex-col md:flex-row gap-4 items-start">
             {/* Avatar */}
             <Image
-              src={user.image}
-              alt={user.name}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${users.image}`}
+              alt={users.name}
               width={200}
               height={200}
               className=" rounded-full w-[150px] h-[150px] object-cover"
@@ -45,19 +45,18 @@ export default function RequestModal({ name, item }: any) {
                 Personal Information
               </h1>
               <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Name</span> : {item?.user?.name}
+                <span className="font-semibold">Name</span> : {users?.name}
               </p>
               <p className="text-xs 2xl:text-lg">
-                <span className="font-semibold">Email</span> :{" "}
-                {item?.user?.email}
+                <span className="font-semibold">Email</span> : {users?.email}
               </p>
               <p className="text-xs 2xl:text-lg">
                 <span className="font-semibold">Contact</span> :{" "}
-                {item?.user?.phone || "No"}
+                {users?.contact || "No"}
               </p>
               <p className="text-xs 2xl:text-lg">
                 <span className="font-semibold">Location</span> :{" "}
-                {item?.user?.address || "No Address"}
+                {users?.location || "No Address"}
               </p>
             </div>
           </div>
@@ -69,15 +68,14 @@ export default function RequestModal({ name, item }: any) {
             <PdfViewer fileUrl={formatUrl(item?.documents[1])} />
           </div>
           {/* footer section */}
-          <div className="mt-4 flex items-center justify-end gap-3 bg-white ">
-            <div className="flex gap-3">
-              <Button className="bg-[#D21D1D]  text-white  px-6 rounded-full hover:bg-[#740909]">
-                Decline
-              </Button>
-              <Button className="bg-[#0288A6] text-white  px-6 rounded-full hover:bg-[#0e505f]">
-                Approve
-              </Button>
-            </div>
+          <div className="mt- flex justify-end">
+            {item.status === "Pending" && (
+              <div>
+                <Button className="bg-[#0288A6] text-white h-10 rounded-full cursor-pointer  shadow-md">
+                  Approve
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>

@@ -1,10 +1,12 @@
 import Users from "@/components/dashboard/SubscriberUsers/Users";
+import { myFetch } from "@/utils/myFetch";
 import React from "react";
 
-export default function SubscriberUsers() {
+export default async function SubscriberUsers() {
+  const res = await myFetch(`/subscriptions/subscribers`);
   return (
     <>
-      <Users />
+      <Users users={res?.data} />
     </>
   );
 }

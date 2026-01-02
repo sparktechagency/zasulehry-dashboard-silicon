@@ -18,24 +18,11 @@ import {
 } from "@/components/ui/select";
 import SunscriberDetails from "./SubscriberDetails";
 import Image from "next/image";
-import google from "../../../public/share/google.png";
-import Delete from "@/components/share/Delete";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
+import dayjs from "dayjs";
 
-const employers = [
-  {
-    id: "#12560",
-    name: "kamran",
-    package: "basic 1.99 per day",
-    startDate: "04.07.2025",
-    endDate: "06.08.2025",
-    status: "Active",
-    avatar: "/avatar.jpg", // Replace with your actual path
-  },
-];
-
-export default function Users() {
+export default function Users({ users }: any) {
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -72,35 +59,52 @@ export default function Users() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {employers.map((employer, index) => (
+            {users?.map((user: any, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">0{employer.id}</TableCell>
+                <TableCell className="font-medium">
+                  #{user?._id.slice(0, 5)}
+                </TableCell>
 
                 <TableCell className="flex items-center gap-2">
-                  <Image src={google} alt="avatar" width={32} height={32} />
+                  <Image
+                    src={
+                      `${process.env.NEXT_PUBLIC_IMAGE_URL}${user?.image}` ||
+                      "/default.png "
+                    }
+                    alt="avatar"
+                    width={32}
+                    height={32}
+                  />
                   <SunscriberDetails
                     trigger={
-                      <span className="cursor-pointer"> {employer.name}</span>
+                      <span className="cursor-pointer"> {user.name}</span>
                     }
                   />
                 </TableCell>
 
-                <TableCell>{employer.package}</TableCell>
-                <TableCell>{employer.startDate}</TableCell>
-                <TableCell>{employer.endDate}</TableCell>
+                <TableCell>{user?.subscription?.price}</TableCell>
+                <TableCell>
+                  {dayjs(user?.subscription?.currentPeriodStart).format(
+                    "YYYY-MM-DD"
+                  )}
+                </TableCell>
+                <TableCell>
+                  {dayjs(user?.subscription?.currentPeriodEnd).format(
+                    "YYYY-MM-DD"
+                  )}
+                </TableCell>
                 <TableCell>
                   <Badge
                     className={`${
-                      employer.status === "Expired"
-                        ? "bg-red-600"
-                        : "bg-green-600"
+                      user.status !== "Active" ? "bg-red-600" : "bg-green-600"
                     } text-white w-20`}
                   >
-                    {employer.status}
+                    {user.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="flex gap-1">
+                <TableCell className="flex pl-7 gap-1">
                   <SunscriberDetails
+                    item={user}
                     trigger={
                       <div className="bg-[#0288A6] m-1 p-1 rounded cursor-pointer">
                         <Eye className=" text-white size-5 2xl:size-7" />
@@ -114,7 +118,7 @@ export default function Users() {
                   >
                     <Trash2 size={22} className=" text-white" />
                   </span> */}
-                  <Delete />
+                  {/* <Delete /> */}
                 </TableCell>
               </TableRow>
             ))}

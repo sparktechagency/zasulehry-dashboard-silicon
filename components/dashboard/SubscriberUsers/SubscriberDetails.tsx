@@ -1,27 +1,12 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import userImage from "../../../public/subscriber.png";
-
-const user = {
-  name: "Kamran Khan",
-  email: "Admin@Instantlabour.Co.Uk",
-  contact: "01333327633",
-  location: "Dhaka Bangladesh",
-  role: "Employer",
-  image: userImage, // Replace with actual image path
-};
-
-const features = [
-  "Unlimited Job Posts",
-  "Unlimited Contact Access",
-  "Priority Customer Support",
-  "Enhanced Analytics And Insights",
-  "Access To Exclusive Features",
-];
+// import userImage from "../../../public/subscriber.png";
 
 export default function SunscriberDetails({
+  item,
   trigger,
 }: {
+  item?: any;
   trigger: React.ReactNode;
 }) {
   return (
@@ -38,8 +23,11 @@ export default function SunscriberDetails({
           <div className="bg-white p-5 flex  md:flex-row gap-6 items-start">
             {/* Avatar */}
             <Image
-              src={user.image}
-              alt={user.name}
+              src={
+                `${process.env.NEXT_PUBLIC_IMAGE_URL}${item?.image}` ||
+                "/default.png "
+              }
+              alt={item?.name}
               width={200}
               height={200}
               className="rounded-full object-cover"
@@ -52,21 +40,20 @@ export default function SunscriberDetails({
                   personal information
                 </h1>
                 <p className="text-xs 2xl:text-lg">
-                  <span className="font-semibold">Name</span> : {user.name}
+                  <span className="font-semibold">Name</span> : {item?.name}
                 </p>
                 <p className="text-xs 2xl:text-lg">
-                  <span className="font-semibold">Email</span> : {user.email}
+                  <span className="font-semibold">Email</span> : {item?.email}
                 </p>
                 <p className="text-xs 2xl:text-lg">
-                  <span className="font-semibold">Contact</span> :{" "}
-                  {user.contact}
+                  <span className="font-semibold">Contact</span> : {item?.phone}
                 </p>
                 <p className="text-xs 2xl:text-lg">
                   <span className="font-semibold">Location</span> :{" "}
-                  {user.location}
+                  {item?.address}
                 </p>
                 <p className="text-xs 2xl:text-lg">
-                  <span className="font-semibold">Role.</span> : {user.role}
+                  <span className="font-semibold">Role.</span> : {item?.role}
                 </p>
               </div>
 
@@ -79,11 +66,13 @@ export default function SunscriberDetails({
                   30 Days
                 </div>
                 <ul className="text-left text-gray-700 space-y-2 list-disc list-inside">
-                  {features.map((feature, index) => (
-                    <li key={index} className="text-xs 2xl:text-lg">
-                      {feature}
-                    </li>
-                  ))}
+                  {item?.subscription?.package?.benefits?.map(
+                    (feature: any, index: number) => (
+                      <li key={index} className="text-xs 2xl:text-lg">
+                        {feature}
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             </div>

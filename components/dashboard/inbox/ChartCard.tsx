@@ -3,13 +3,6 @@ import image from "../../../public/user.png";
 import Chart from "../../../public/chart.png";
 import Link from "next/link";
 
-interface cardPros {
-  name: string;
-  message: string;
-  updatedAt: string;
-  unread: string;
-}
-
 export const ChatCard = ({ card }: { card: any }) => {
   const { name, message } = card?.participants[0];
   return (

@@ -32,9 +32,11 @@ const ChatMessages = ({
   useEffect(() => {
     if (!socket || !userId) return;
 
-    const eventName = `getMessage::${userId}`;
+    const eventName = `getMessage`;
 
     const handleIncomingMessage = (message: Message) => {
+      console.log("Socket Message Response : ", message);
+
       setMessages((prev) => [...prev, message]);
 
       setTimeout(() => {
@@ -58,13 +60,53 @@ const ChatMessages = ({
     };
 
     try {
-      await myFetch("/messages/create", {
+      const res = await myFetch("/messages/create", {
         method: "POST",
         body: {
           chat: userId,
           text: userTextMessage,
         },
       });
+
+      console.log("create message res", res);
+
+      //       {
+      //     "success": true,
+      //     "message": "Message created successfully",
+      //     "data": {
+      //         "chat": "6957529fa4b148f007635234",
+      //         "sender": "691d5f7c8067189e66c722ad",
+      //         "text": "how are you?",
+      //         "image": "",
+      //         "seenBy": [
+      //             "691d5f7c8067189e66c722ad"
+      //         ],
+      //         "_id": "69575da3a4b148f0076353a0",
+      //         "createdAt": "2026-01-02T05:54:43.566Z",
+      //         "updatedAt": "2026-01-02T05:54:43.566Z",
+      //         "__v": 0
+      //     }
+      // }
+
+      //   {
+      //     "_id": "69576000a4b148f0076353cd",
+      //     "chat": "6957529fa4b148f007635234",
+      //     "sender": {
+      //         "_id": "691d5f7c8067189e66c722ad",
+      //         "name": "Administrator",
+      //         "image": "/image/premium_photo-1666672388644-2d99f3feb9f1-1765863538160.png",
+      //         "isDeleted": false
+      //     },
+      //     "text": "koi tumi",
+      //     "image": "",
+      //     "seenBy": [
+      //         "691d5f7c8067189e66c722ad"
+      //     ],
+      //     "createdAt": "2026-01-02T06:04:48.458Z",
+      //     "updatedAt": "2026-01-02T06:04:48.458Z",
+      //     "__v": 0,
+      //     "isSeen": false
+      // },
 
       setMessages((prev) => [...prev, newMessage]);
       setUserTextMessage("");

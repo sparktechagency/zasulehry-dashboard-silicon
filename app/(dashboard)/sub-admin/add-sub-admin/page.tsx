@@ -57,15 +57,11 @@ export default function CreateAdmin() {
       adminPermissions: selectedMenus,
     };
 
-    console.log("payload", payload);
-
     try {
       const res = await myFetch("/users/create-admin", {
         method: "POST",
         body: payload,
       });
-
-      console.log("res", res);
 
       if (res.success) {
         toast.success(res?.message || "Sub Admin created successfully");

@@ -12,8 +12,6 @@ import { toast } from "sonner";
 import { revalidate } from "@/utils/revalidateTags";
 
 export default function JobDetails({ data }: any) {
-  console.log("data", data);
-
   const user = {
     name: data?.user?.name,
     email: data?.user?.email,
@@ -27,14 +25,11 @@ export default function JobDetails({ data }: any) {
   };
 
   const handleUpdateStatus = async (id: string) => {
-    console.log("click", id);
-
     try {
       const res = await myFetch(`/users/status/${id}`, {
         method: "PATCH",
       });
 
-      console.log("res", res);
       if (res.success) {
         toast.success(res.message);
 

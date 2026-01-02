@@ -99,7 +99,7 @@ export default function AllJobSeeker({ data }: any) {
       </div>
 
       {/* pagination */}
-      <TablePagination />
+      <TablePagination totalPages={240} />
     </>
   );
 }

@@ -45,9 +45,9 @@ export default function AllEmployeeList({ res }: { res?: any }) {
                   #{employer?._id.slice(0, 6)}
                 </TableCell>
 
-                <TableCell className="flex items-center gap-2">
+                <TableCell className="">
                   {/* <Image src={google} alt="avatar" width={32} height={32} /> */}
-                  <Link href={`/employee-details/${employer.id}`}>
+                  <Link href={`/employee-details/${employer._id}`}>
                     {employer.name}
                   </Link>
                 </TableCell>

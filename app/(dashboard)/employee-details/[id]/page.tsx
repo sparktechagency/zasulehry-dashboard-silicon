@@ -12,7 +12,6 @@ import EmployeeStatusChange from "../EmployeeStatusChange";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
   const res = await myFetch(`/employers/single/${id}`);
-  console.log("id-----", res?.data?.user?._id);
 
   const user = {
     name: res?.data?.user?.name,

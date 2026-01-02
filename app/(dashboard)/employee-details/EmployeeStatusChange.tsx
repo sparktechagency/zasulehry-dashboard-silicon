@@ -12,7 +12,6 @@ export default function EmployeeStatusChange({ id }: { id: string }) {
         method: "PATCH",
       });
 
-      console.log("res", res);
       if (res.success) {
         toast.success(res.message);
 

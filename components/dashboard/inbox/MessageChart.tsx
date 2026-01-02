@@ -26,8 +26,6 @@ const ChatMessages = ({
   const [userTextMessage, setUserTextMessage] = useState("");
   const { socket } = useSocket();
 
-  console.log("messages", messages);
-
   // socket listener-----------------
   useEffect(() => {
     if (!socket || !userId) return;
@@ -35,8 +33,6 @@ const ChatMessages = ({
     const eventName = `getMessage`;
 
     const handleIncomingMessage = (message: Message) => {
-      console.log("Socket Message Response : ", message);
-
       setMessages((prev) => [...prev, message]);
 
       setTimeout(() => {
@@ -67,8 +63,6 @@ const ChatMessages = ({
           text: userTextMessage,
         },
       });
-
-      console.log("create message res", res);
 
       //       {
       //     "success": true,

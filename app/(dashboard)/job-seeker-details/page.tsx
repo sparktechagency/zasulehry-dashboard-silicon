@@ -9,7 +9,6 @@ export default async function page({
 }) {
   const { id } = await searchParams;
   const res = await myFetch(`/job-seekers/single/${id}`);
-  console.log("res", res);
 
   return (
     <>

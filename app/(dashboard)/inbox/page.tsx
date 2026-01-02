@@ -7,7 +7,7 @@ export default async function inbox({
   searchParams: { id?: string };
 }) {
   const { id = "" } = await searchParams;
-  console.log("id", id);
+
   return (
     <>
       <Inbox userId={id} />

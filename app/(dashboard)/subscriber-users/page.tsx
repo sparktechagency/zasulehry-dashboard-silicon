@@ -18,8 +18,6 @@ export default async function SubscriberUsers({
       `/subscriptions/subscribers?${params.toString()}`
     );
 
-    console.log("res", res);
-
     if (res?.success) {
       data = res.data || [];
     } else {

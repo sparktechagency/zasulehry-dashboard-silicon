@@ -53,7 +53,7 @@ export default function Users({ users }: any) {
                   #{user?._id.slice(0, 5)}
                 </TableCell>
 
-                <TableCell className="flex items-center gap-2">
+                <TableCell className="flex items-center gap-2 h-16">
                   <Image
                     src={
                       `${process.env.NEXT_PUBLIC_IMAGE_URL}${user?.image}` ||
@@ -64,9 +64,8 @@ export default function Users({ users }: any) {
                     height={32}
                   />
                   <SunscriberDetails
-                    trigger={
-                      <span className="cursor-pointer"> {user.name}</span>
-                    }
+                    item={user}
+                    trigger={<div className=""> {user.name}</div>}
                   />
                 </TableCell>
 

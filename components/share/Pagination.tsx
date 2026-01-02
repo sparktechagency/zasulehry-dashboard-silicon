@@ -1,89 +1,67 @@
 "use client";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import React, { Suspense } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function TablePagination({ meta }: { meta?: any }) {
-  const router = useRouter();
+const MAX_PAGE_WINDOW = 5;
+
+const CustomPaginationSuspense = ({ totalPages = 1 }) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const activePage = searchParams.get("page") || "1";
+  const currentPage = parseInt(searchParams.get("page") || "1");
 
-  let pageCalculate = 1;
-  if (meta > 10) {
-    pageCalculate = meta / 10;
-  } else {
-    pageCalculate = 1;
-  }
-
-  const length = Math.ceil(pageCalculate);
-
-  const goToPage = (page: number) => {
-    if (page < 1 || page > length) {
-      return;
-    }
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page.toString());
-    router.push(`?${params.toString()}`);
-  };
+  const startPage = Math.max(1, currentPage - MAX_PAGE_WINDOW + 1);
+  const endPage = Math.min(totalPages, startPage + MAX_PAGE_WINDOW - 1);
 
   const pageNumbers = [];
-  for (let i = 1; i <= length; i++) {
+  for (let i = startPage; i <= endPage; i++) {
     pageNumbers.push(i);
   }
 
+  const handlePageChange = (newPage: any) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            className={`${
-              length === 1
-                ? "text-[#8A8A8A] hover:text-[#8A8A8A] cursor-default"
-                : ""
-            }`}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
+    <div className="flex justify-center items-center gap-2 mt-8">
+      <button
+        disabled={currentPage === 1}
+        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+      >
+        <ChevronLeft size={20} />
+      </button>
 
-              goToPage(Number(activePage) - 1);
-            }}
-          />
-        </PaginationItem>
+      {pageNumbers.map((page) => (
+        <button
+          key={page}
+          className={`px-4 py-2 rounded font-semibold ${
+            currentPage === page ? "bg-[#04667c] text-white" : "bg-gray-200"
+          }`}
+          onClick={() => handlePageChange(page)}
+        >
+          {page}
+        </button>
+      ))}
 
-        {pageNumbers?.map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              className="hover:text-[#FFFFFF]"
-              href="#"
-              isActive={page === Number(activePage)}
-              onClick={(e) => {
-                e.preventDefault();
-                goToPage(page);
-              }}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+      <button
+        disabled={currentPage === totalPages}
+        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+      >
+        <ChevronRight size={20} />
+      </button>
+    </div>
+  );
+};
 
-        <PaginationItem>
-          <PaginationNext
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              goToPage(Number(activePage) + 1);
-            }}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+export default function TablePagination({ totalPages = 5 }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CustomPaginationSuspense totalPages={totalPages} />
+    </Suspense>
   );
 }

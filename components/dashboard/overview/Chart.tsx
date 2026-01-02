@@ -178,8 +178,6 @@ export default function TotalSubscriberMonthly({ subscribers }: any) {
     uv: item?.count,
   }));
 
-  console.log("monmonthlyStats", monmonthlyStats);
-
   return (
     <section className="shadow-md rounded-lg bg-white p-4">
       <div className="flex items-center justify-between mb-4">

@@ -18,6 +18,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookies-next": "^6.1.1",
+    "dayjs": "^1.11.19",
     "input-otp": "^1.4.2",
     "jodit-react": "^5.2.25",
     "lucide-react": "^0.544.0",
@@ -30,6 +31,7 @@
     "react-pdf": "^10.2.0",
     "react-responsive": "^10.0.1",
     "recharts": "^3.2.1",
+    "socket.io-client": "^4.8.3",
     "sonner": "^2.0.7",
     "sweetalert2": "^11.23.0",
     "tailwind-merge": "^3.3.1"

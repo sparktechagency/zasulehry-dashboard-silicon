@@ -1,10 +1,16 @@
 import Inbox from "@/components/dashboard/inbox/Inbox";
 import React from "react";
 
-export default function inbox() {
+export default async function inbox({
+  searchParams,
+}: {
+  searchParams: { id?: string };
+}) {
+  const { id = "" } = await searchParams;
+  console.log("id", id);
   return (
-    <div>
-      <Inbox />
-    </div>
+    <>
+      <Inbox userId={id} />
+    </>
   );
 }

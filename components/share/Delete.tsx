@@ -6,7 +6,7 @@ import React from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Swal from "sweetalert2";
 
-export default function Delete({ id }: { id: string }) {
+export default function Delete({ id }: { id?: string }) {
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",

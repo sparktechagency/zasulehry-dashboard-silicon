@@ -1,91 +1,79 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import image from "../../../public/user.png";
 import Image from "next/image";
 import ChatInput from "./ChartInput";
-
-const initialMessages = [
-  {
-    id: 1,
-    sender: "me",
-    text: "Hi How Are You",
-    time: "07:00 Pm",
-  },
-  {
-    id: 2,
-    sender: "other",
-    text: "What About You Today?",
-    time: "07:02 Pm",
-    avatar: "https://via.placeholder.com/150", // Replace with real avatar URL
-  },
-  {
-    id: 3,
-    sender: "me",
-    text: "Hi How Are You",
-    time: "07:00 Pm",
-  },
-  {
-    id: 4,
-    sender: "other",
-    text: "What About You Today?",
-    time: "07:02 Pm",
-    avatar: "https://via.placeholder.com/150",
-  },
-  {
-    id: 5,
-    sender: "other",
-    text: "What About You Today?",
-    time: "07:02 Pm",
-    avatar: "https://via.placeholder.com/150",
-  },
-  {
-    id: 6,
-    sender: "other",
-    text: "What About You Today?",
-    time: "07:02 Pm",
-    avatar: "https://via.placeholder.com/150",
-  },
-  {
-    id: 7,
-    sender: "other",
-    text: "What About You Today?",
-    time: "07:02 Pm",
-    avatar: "https://via.placeholder.com/150",
-  },
-];
+import { useSocket } from "@/lib/SocketContext";
+import { myFetch } from "@/utils/myFetch";
 
 type Message = {
-  id: number;
   sender: string;
   text: string;
-  time: string;
+
   avatar?: string;
 };
 
-const timeNow = new Date().toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const ChatMessages = () => {
+const ChatMessages = ({
+  userId,
+  userMessage,
+}: {
+  userId: string;
+  userMessage: any;
+}) => {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [userTextMessage, setUserTextMessage] = useState("");
+  const { socket } = useSocket();
 
-  const handleMessageSend = () => {
-    if (userTextMessage.trim() !== "") {
-      const newMessage: Message = {
-        id: Date.now(),
-        sender: "me",
-        text: userTextMessage,
-        time: timeNow,
-      };
+  console.log("messages", messages);
 
-      setMessages((prev) => [...prev, newMessage]);
+  // socket listener-----------------
+  useEffect(() => {
+    if (!socket || !userId) return;
+
+    const eventName = `getMessage::${userId}`;
+
+    const handleIncomingMessage = (message: Message) => {
+      setMessages((prev) => [...prev, message]);
+
       setTimeout(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
       });
+    };
+
+    socket.on(eventName, handleIncomingMessage);
+
+    return () => {
+      socket.off(eventName, handleIncomingMessage);
+    };
+  }, [socket, userId]);
+
+  const handleMessageSend = async () => {
+    if (!userTextMessage.trim() || !userId) return;
+
+    const newMessage: Message = {
+      text: userTextMessage,
+      sender: "me",
+    };
+
+    try {
+      await myFetch("/messages/create", {
+        method: "POST",
+        body: {
+          chat: userId,
+          text: userTextMessage,
+        },
+      });
+
+      setMessages((prev) => [...prev, newMessage]);
       setUserTextMessage("");
+
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
+    } catch (err) {
+      console.error("Failed to send message", err);
     }
   };
 
@@ -94,21 +82,21 @@ const ChatMessages = () => {
       className="  bg-white  rounded-md flex flex-col"
       style={{ height: "calc(100vh - 88px)" }}
     >
-      <div className="flex gap-2 py-4 px-5 border-b-2 border-b-gray-200">
+      <div className="flex items-center  gap-2 py-4 px-5 border-b-2 border-b-gray-200">
         <Image src={image} width={50} height={50} alt="header" />
         <div className="font-medium">
           <h1 className="2xl:text-xl">Kamran Khan</h1>
-          <p className="text-xs">Typing...</p>
+          {/* <p className="text-xs">Typing...</p> */}
         </div>
       </div>
       {/* Messages container */}
       <div className="flex-1 flex flex-col p-4 overflow-y-auto hide-scrollbar">
         <div className="space-y-4">
-          {messages.map((item) => (
+          {userMessage?.map((item: any, index: number) => (
             <div
-              key={item.id}
+              key={index}
               className={`flex ${
-                item.sender === "me" ? "justify-end" : "justify-start"
+                item?.sender?.name ? "justify-end" : "justify-start"
               }`}
             >
               {item.sender === "other" && (
@@ -122,7 +110,7 @@ const ChatMessages = () => {
               <div>
                 <div
                   className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg ${
-                    item.sender === "me"
+                    item?.sender?.name
                       ? "bg-cyan-900 rounded-br-none text-white"
                       : "bg-[#B2D1D8] rounded-bl-none text-[#545454]"
                   }`}

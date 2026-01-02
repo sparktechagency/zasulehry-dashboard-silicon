@@ -4,94 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { ChatCard } from "./ChartCard";
 
-const chats = [
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-  {
-    name: "Md Kamran Khan",
-    message: "Hi Can I Help You Today?",
-    time: "09:02 Am",
-    unread: "2",
-  },
-];
-
-const AllUserChart = () => {
+const AllUserChart = ({ chatList }: any) => {
   return (
     <div
       className="max-w-md mx-auto  bg-gray-100 pr-2 flex flex-col"
@@ -113,7 +26,7 @@ const AllUserChart = () => {
 
       <div className="flex-1 overflow-y-auto space-y-2 hide-scrollbar">
         <div className="mr-4">
-          {chats.map((chat, index) => (
+          {chatList?.map((chat: any, index: number) => (
             <ChatCard key={index} card={chat} />
           ))}
         </div>

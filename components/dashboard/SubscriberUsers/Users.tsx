@@ -8,19 +8,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import SunscriberDetails from "./SubscriberDetails";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import dayjs from "dayjs";
+import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
+
+const statusOption = [
+  { label: "All", value: "All" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "Inactive" },
+];
 
 export default function Users({ users }: any) {
   return (
@@ -31,18 +30,7 @@ export default function Users({ users }: any) {
             Subscribed Users
           </h2>
           <div>
-            <Select>
-              <SelectTrigger className="w-28 border-[#0288A6]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="block">Expried</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <SelectBar options={statusOption} />
           </div>
         </div>
 

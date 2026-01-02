@@ -5,14 +5,14 @@ import useResponsiveRadius from "@/components/hooks/useResponsiveRadius";
 
 const COLORS = ["#056176", "#B2D1D8"]; // Primary and secondary segment colors
 
-const data = [
-  { name: "Used", value: 20 },
-  { name: "Remaining", value: 60 },
-];
-
-export default function CircleChart() {
+export default function CircleChart({ revenue }: any) {
   const radius = useResponsiveRadius();
   const [selectedYear, setSelectedYear] = useState("2025");
+
+  const data = [
+    { name: "Used", value: revenue?.growthPercentage },
+    { name: "Remaining", value: revenue?.totalRevenue },
+  ];
 
   return (
     <div className="h-full p-4 bg-[#FFFFFF] shadow-md rounded-lg">
@@ -52,7 +52,7 @@ export default function CircleChart() {
         {/* Center Percentage Label */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-[70px] h-[70px] rounded-full bg-[#B2D1D8] flex items-center justify-center text-center text-sm font-semibold text-black">
-            20%
+            {revenue?.growthPercentage}%
           </div>
         </div>
       </div>

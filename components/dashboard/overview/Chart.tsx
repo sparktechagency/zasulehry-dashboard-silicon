@@ -113,6 +113,7 @@ import {
   YAxis,
 } from "recharts";
 import { useState } from "react";
+import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
 
 const data = [
   { name: "01", pv: 10 },
@@ -148,16 +149,23 @@ const data = [
   { name: "31", pv: 80 },
 ];
 
-const months = ["2025", "2026", "2027", "2028"];
+// const months = ["2025", "2026", "2027", "2028"];
 
-const maxValue = Math.max(...data.map((item) => item.pv));
+// const maxValue = Math.max(...data.map((item) => item.pv));
 
-const normalizedData = data.map((item) => ({
-  name: item.name,
-  pv: (item.pv / maxValue) * 100,
-}));
+// const normalizedData = data.map((item) => ({
+//   name: item.name,
+//   pv: (item.pv / maxValue) * 100,
+// }));
 
-export default function TotalSubscriberMonthly() {
+const years = [
+  // { label: "All", value: "All" },
+  { label: "2026", value: "2026" },
+  { label: "2027", value: "2027" },
+  { label: "2028", value: "2028" },
+];
+
+export default function TotalSubscriberMonthly({ subscribers }: any) {
   const [selectedMonth, setSelectedMonth] = useState("2025");
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -165,28 +173,25 @@ export default function TotalSubscriberMonthly() {
     // Here you can add logic to filter data based on month
   };
 
+  const monmonthlyStats = subscribers?.monthlyStats?.map((item: any) => ({
+    name: item?.month,
+    uv: item?.count,
+  }));
+
+  console.log("monmonthlyStats", monmonthlyStats);
+
   return (
     <section className="shadow-md rounded-lg bg-white p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-[18px] text-gray-700 font-semibold ps-7">
           Total Subscriber Monthly
         </h1>
-        <select
-          value={selectedMonth}
-          onChange={handleMonthChange}
-          className="w-32 h-7 border border-[#0A6F77] rounded-md px-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0A6F77] focus:border-transparent"
-        >
-          {months.map((month) => (
-            <option key={month} value={month}>
-              {month}
-            </option>
-          ))}
-        </select>
+        <SelectBar options={years} />
       </div>
       <div className="w-full h-[200px] lg:h-[200px] xl:h-[230px]">
         <ResponsiveContainer width="100%">
           <BarChart
-            data={normalizedData}
+            data={monmonthlyStats}
             margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
           >
             <CartesianGrid

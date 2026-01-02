@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import YearDropdown from "./YearDropDown";
+import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
 
 const data = [
   { name: "Jan", uv: 4500 },
@@ -27,14 +28,14 @@ const data = [
   { name: "Dec", uv: 6000 },
 ];
 
-const dataRow = Math.max(...data.map((data) => data.uv));
+// const dataRow = Math.max(...data.map((data) => data.uv));
 
-const result = data.map((item) => {
-  return {
-    name: item.name,
-    uv: (item.uv / dataRow) * 100,
-  };
-});
+// const result = data.map((item) => {
+//   return {
+//     name: item.name,
+//     uv: (item.uv / dataRow) * 100,
+//   };
+// });
 
 // Custom Tooltip Function
 const renderCustomTooltip = ({ active, payload }: any) => {
@@ -60,8 +61,21 @@ const renderCustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export default function GreenAreaChart() {
+const years = [
+  // { label: "All", value: "All" },
+  { label: "2026", value: "2026" },
+  { label: "2027", value: "2027" },
+  { label: "2028", value: "2028" },
+];
+
+export default function GreenAreaChart({ chart }: any) {
   const [year, setYear] = useState("");
+
+  const monmonthlyStats = chart?.monthlyStats?.map((item: any) => ({
+    name: item?.month,
+    uv: item?.count,
+  }));
+
   return (
     <section className="my-2 bg-white rounded-md text-gray-700">
       <div className="flex justify-between pt-4 px-8">
@@ -69,13 +83,14 @@ export default function GreenAreaChart() {
           Total Revenue Monthly
         </h3>{" "}
         <div>
-          <YearDropdown selectedYear={year} onChange={setYear} />{" "}
+          <SelectBar options={years} />
+          {/* <YearDropdown selectedYear={year} onChange={setYear} /> */}
         </div>
       </div>
       <div className="w-full h-[200px] lg:h-[220px] xl:h-[260px]">
         <ResponsiveContainer>
           <AreaChart
-            data={result}
+            data={monmonthlyStats}
             margin={{ top: 10, right: 30, left: 20, bottom: 20 }}
           >
             <defs>

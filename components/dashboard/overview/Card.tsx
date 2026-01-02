@@ -1,30 +1,30 @@
 import User from "../../../public/card.png";
 import Image from "next/image";
 
-export const statCards = [
-  {
-    title: "Total Job Seeker",
-    value: "2000",
-    icon: User,
-  },
-  {
-    title: "Total Employer",
-    value: "3000",
-    icon: User,
-  },
-  {
-    title: "Total Subscriber",
-    value: "5000+",
-    icon: User,
-  },
-  {
-    title: "Total Revenue",
-    value: "$2000k",
-    icon: User,
-  },
-];
+export default function Card({ card }: any) {
+  const statCards = [
+    {
+      title: "Total Job Seeker",
+      value: card?.totalJobSeekers,
+      icon: User,
+    },
+    {
+      title: "Total Employer",
+      value: card?.totalEmployers,
+      icon: User,
+    },
+    {
+      title: "Total Subscriber",
+      value: card?.totalSubscribers,
+      icon: User,
+    },
+    {
+      title: "Total Revenue",
+      value: `$${card?.totalRevenue}`,
+      icon: User,
+    },
+  ];
 
-export default function Card() {
   return (
     <div className="grid grid-cols-4 gap-4 mb-4">
       {statCards.map((item, index) => {

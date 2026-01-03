@@ -24,12 +24,13 @@ export default async function SubscriptionCard() {
               <div>
                 <div className="relative text-3xl text-[#083E4B] font-bold flex items-center justify-center">
                   <div>
-                    {item?.dailyPrice} $
+                    ${item?.dailyPrice}
                     <span className="text-[16px] mt-3 text-[#083E4B]/80">
                       {" "}
                       / Perday
                     </span>
                   </div>
+
                   <div className="absolute -bottom-4 right-0 flex mt-2 ">
                     <SubscriptionInfoModal
                       description={item.description}
@@ -44,6 +45,14 @@ export default async function SubscriptionCard() {
                 <p className="text-md font-bold text-center mt-2  text-[#083E4B]/70">
                   {item.day} {item?.time}
                 </p>
+              </div>
+              <div className="text-center flex justify-center items-center text-[#0288A6] font-medium gap-1 text-lg">
+                <p>
+                  {item?.intervalCount === 1
+                    ? "30"
+                    : item?.intervalCount === 3 && "60"}
+                </p>
+                <p>Days</p>
               </div>
               <div className="mt-6 space-y-3 ">
                 {item?.benefits?.map((content: any, index: number) => (

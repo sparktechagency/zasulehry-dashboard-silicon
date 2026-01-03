@@ -1,5 +1,4 @@
 import { PlusCircle } from "lucide-react";
-import { AddCategory } from "./category/AddCategory";
 import { SubCategoryEdit } from "./sucCategory/SubCategoryEdit";
 
 export default function CategoryHeader() {

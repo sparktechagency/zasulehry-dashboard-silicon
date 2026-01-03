@@ -20,7 +20,7 @@ export default function NewPassword() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm<Inputs>({
     defaultValues: {
       newPassword: "",

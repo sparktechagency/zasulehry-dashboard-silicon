@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Input } from "@/components/ui/input";
@@ -71,7 +72,7 @@ export default function CreateAdmin() {
       } else {
         toast.error(res.message || "Failed to create Sub Admin");
       }
-    } catch (err) {
+    } catch (err: any) {
       toast.error("Something went wrong");
     }
   };

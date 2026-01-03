@@ -1,4 +1,5 @@
 import NewPassword from "@/components/authPages/NewPassword";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -9,7 +10,13 @@ export default function Page() {
       <div className="bg-[#1D7A8F] p-8 rounded-lg shadow-md w-full max-w-lg  border border-[#E6E6E6] text-white">
         <h3 className="text-center font-medium text-3xl mb-6">New Password</h3>
 
-        <NewPassword />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center">Loading.....</div>
+          }
+        >
+          <NewPassword />
+        </Suspense>
       </div>
     </div>
   );

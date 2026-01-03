@@ -22,11 +22,6 @@ const statusOption = [
 ];
 
 export default function VerifyRequest({ res }: any) {
-  console.log(
-    "res?.data?.pagination?.totalPage",
-    res?.data?.pagination?.totalPage
-  );
-
   return (
     <>
       <div className="flex justify-end">

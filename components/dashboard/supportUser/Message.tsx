@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 import {
   Dialog,
@@ -11,11 +12,13 @@ import { myFetch } from "@/utils/myFetch";
 import dayjs from "dayjs";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export function Message({ title, item }: { title?: string; item?: any }) {
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   // const imageRef = useRef<HTMLInputElement>(null);
   // const [image, setImage] = useState("");
 
@@ -31,21 +34,41 @@ export function Message({ title, item }: { title?: string; item?: any }) {
   // };
 
   const handleReplyMessage = async (id: string) => {
+    if (!value) {
+      toast.error("Please type your reply");
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await myFetch(`/supports/update/${id}`, {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: {
           status: item?.status,
           reply: value,
         },
       });
+
+      if (res.success) {
+        toast.success(res.message || "Reply sent successfully");
+        setValue(""); // clear textarea
+        setOpen(false); // optionally close dialog
+      } else {
+        const errorMessage = Array.isArray(res.error)
+          ? res.error[0]?.message
+          : res.error || res.message || "Something went wrong";
+        toast.error(errorMessage);
+      }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "something went wrong");
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {title ? (
           <span className="cursor-pointer">{title}</span>
@@ -65,7 +88,6 @@ export function Message({ title, item }: { title?: string; item?: any }) {
               <p className="text-sm font-medium text-gray-700">
                 From : {item?.name}
               </p>
-              <p className=" text-gray-900">{}</p>
             </div>
             <div className="flex items-center gap-5">
               <p className="text-sm font-medium text-gray-700">Date :</p>
@@ -131,10 +153,14 @@ export function Message({ title, item }: { title?: string; item?: any }) {
               </button>
             </DialogClose>
             <button
-              className="btn-design px-4 py-2  font-semibold rounded  cursor-pointer"
+              type="submit"
+              disabled={loading}
+              className={`btn-design px-4 py-2  font-semibold rounded   ${
+                loading ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
               onClick={() => handleReplyMessage(item?._id)}
             >
-              Send Reply
+              {loading ? "Submiting..." : " Send Reply"}
             </button>
           </div>
         </DialogDescription>

@@ -9,8 +9,8 @@ export default function WorkInformation({
   url,
 }: {
   user: any;
-  resume: string;
-  url: string;
+  resume?: string;
+  url?: string;
 }) {
   return (
     <div className="flex-1 space-y-2 text-gray-800 ">

@@ -1,6 +1,7 @@
 "use client";
 
 import VerifyOtp from "@/components/authPages/VerifyOtp";
+import { Suspense } from "react";
 
 export default function OtpVerification() {
   // useEffect(() => {
@@ -18,7 +19,13 @@ export default function OtpVerification() {
           the code below to continue.
         </p>
 
-        <VerifyOtp />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center">Loading.....</div>
+          }
+        >
+          <VerifyOtp />
+        </Suspense>
       </div>
     </div>
   );

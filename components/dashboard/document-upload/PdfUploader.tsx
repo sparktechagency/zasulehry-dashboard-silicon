@@ -49,8 +49,6 @@ export default function PdfUploadEdit({ item, trigger }: Props) {
     }
   };
   const onSubmit = async (data: FormData) => {
-    console.log("data", data);
-
     if (!selectedFile && !item?._id) {
       toast.error("Please select a PDF file");
       return;
@@ -101,7 +99,7 @@ export default function PdfUploadEdit({ item, trigger }: Props) {
           {/* PDF Name Input */}
           <Input
             placeholder="PDF Name"
-            className="bg-white border"
+            className="bg-whit border placeholder:text-gray-400"
             {...register("name", {
               required: "PDF name is required",
             })}

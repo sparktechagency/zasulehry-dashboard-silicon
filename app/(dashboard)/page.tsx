@@ -26,8 +26,6 @@ export default async function Home({
     `/analytics/revenue-growth?year=${revenue}`
   );
 
-  console.log("subscribers", subscribers);
-
   return (
     <section className="px-5 text-[#333333]">
       <Card card={card?.data} />

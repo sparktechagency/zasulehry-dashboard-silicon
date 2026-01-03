@@ -60,7 +60,7 @@ export default async function Notifications() {
       {/* <TablePagination meta={res?.data?.unreadCount} /> */}
 
       {/* pagination */}
-      <TablePagination />
+      {/* <TablePagination /> */}
     </>
   );
 }

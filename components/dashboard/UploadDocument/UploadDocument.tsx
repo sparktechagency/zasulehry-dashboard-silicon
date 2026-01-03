@@ -8,17 +8,11 @@ import PdfUploadEdit from "../document-upload/PdfUploader";
 
 export default function UploadDocumentPage({ data }: any) {
   const pdfRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedFile(file);
-  };
-
-  const handleRepeat = () => {
-    if (pdfRef.current) {
-      pdfRef.current.click();
-    }
   };
 
   return (

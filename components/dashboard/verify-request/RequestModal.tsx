@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import PdfViewer from "@/share/ViewerPdf";
-import { formatUrl } from "@/utils/formatUrl";
 import { Button } from "@/components/ui/button";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";

@@ -1,27 +1,12 @@
 "use client";
 
 import { Download, FileText } from "lucide-react";
-import { useState, useEffect } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type PdfViewerProps = {
   fileUrl: string[]; // Array of file URLs
 };
 
 export default function PdfViewer({ fileUrl }: PdfViewerProps) {
-  const [width, setWidth] = useState(800);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      setWidth(Math.min(800, window.innerWidth - 32)); // padding margin
-    };
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
   if (!fileUrl || fileUrl.length === 0) {
     return <p className="text-gray-500">No PDF files available.</p>;
   }
@@ -39,18 +24,13 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
             >
               <div className="flex items-center gap-5">
                 <FileText className="text-gray-500 w-5 h-5" />
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
+                <span className="text-blue-600 hover:underline">
                   {fileName && `PDF File${index + 1}.pdf`}
-                </a>
+                </span>
               </div>
               <div>
                 <a
-                  href={url}
+                  href={`${process.env.NEXT_PUBLIC_IMAGE_URL}${url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-[#FF5900] hover:bg-[#FF5900]/90 text-white font-semibold py-1 px-3 rounded flex items-center gap-1 text-sm"

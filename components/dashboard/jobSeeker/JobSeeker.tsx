@@ -21,8 +21,6 @@ const statusOption = [
 ];
 
 export default function AllJobSeeker({ data }: any) {
-  console.log("data?.pagination?.totalPage", data?.pagination?.totalPage);
-
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">

@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, ChangeEvent, useRef, useEffect } from "react";
-
 import { Edit2Icon } from "lucide-react";
 import Image from "next/image";
-import kamran from "../../public/profile.png";
 import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -85,7 +83,6 @@ export default function EditProfile({
       if (res.success) {
         toast.success("Profile updated successfully!");
         await revalidate("profile");
-        // setProfile("profile");
       } else {
         toast.success(res?.message || "Failed to update profile.");
       }

@@ -28,21 +28,6 @@ export default function SupportUser({ data }: { data: any }) {
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <SearchBar title="Support Request" options={statusOption} />
 
-        {/* <div>
-            <Select>
-              <SelectTrigger className=" border-[#0288A6]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="block">Solved</SelectItem>
-                  <SelectItem value="Solved">Pending</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div> */}
-
         <Table>
           <TableHeader>
             <TableRow className="bg-blue-100 text-gray-600 ">
@@ -68,7 +53,7 @@ export default function SupportUser({ data }: { data: any }) {
                     height={40}
                     className="rounded-full"
                   />
-                  <Message title={employer.name} />
+                  <Message item={employer} title={employer.name} />
                 </TableCell>
 
                 <TableCell>{employer.email}</TableCell>
@@ -87,7 +72,7 @@ export default function SupportUser({ data }: { data: any }) {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
-                    <Message />
+                    <Message item={employer} />
                     {/* <Delete id={employer?._id} /> */}
                     <SupportStatusChange
                       item={employer}

@@ -7,22 +7,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Eye, Image as ImageIcon } from "lucide-react";
+import { myFetch } from "@/utils/myFetch";
+import dayjs from "dayjs";
+import { Eye } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
-export function Message({ title }: { title?: string }) {
-  const imageRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState("");
+export function Message({ title, item }: { title?: string; item?: any }) {
+  const [value, setValue] = useState("");
+  // const imageRef = useRef<HTMLInputElement>(null);
+  // const [image, setImage] = useState("");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setImage(URL.createObjectURL(file!));
-  };
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   setImage(URL.createObjectURL(file!));
+  // };
 
-  const handleImageUpload = () => {
-    if (imageRef.current) {
-      imageRef.current.click();
+  // const handleImageUpload = () => {
+  //   if (imageRef.current) {
+  //     imageRef.current.click();
+  //   }
+  // };
+
+  const handleReplyMessage = async (id: string) => {
+    try {
+      const res = await myFetch(`/supports/update/${id}`, {
+        method: "PATCH",
+        body: {
+          status: item?.status,
+          reply: value,
+        },
+      });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "something went wrong");
     }
   };
 
@@ -44,25 +62,29 @@ export function Message({ title }: { title?: string }) {
         <DialogDescription>
           <div className="grid grid-cols-2 gap-x-6 mb-4">
             <div className="flex items-center gap-5">
-              <p className="text-sm font-medium text-gray-700">From :</p>
-              <p className=" text-gray-900">Ebrahim</p>
+              <p className="text-sm font-medium text-gray-700">
+                From : {item?.name}
+              </p>
+              <p className=" text-gray-900">{}</p>
             </div>
             <div className="flex items-center gap-5">
               <p className="text-sm font-medium text-gray-700">Date :</p>
-              <p className=" text-gray-900">2024-01-15</p>
+              <p className=" text-gray-900">
+                {dayjs(item?.createdAt).format("YYYY-MM-DD  ")}
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
             <p className="text-sm font-medium text-gray-700">Status :</p>
-            <p className="font-semibold text-red-600">Pending</p>
+            <p className="font-semibold text-red-600">{item?.status}</p>
           </div>
 
           <div className="mb-4">
             <p className="text-sm font-medium text-gray-700">Message :</p>
             <textarea
               readOnly
-              value="Im Having Issue With The Log In System.It Keeps Showing An Error."
+              value={item?.message}
               className="w-full h-20 p-2 mt-1 text-gray-900 bg-white border border-gray-300 rounded resize-none"
             />
           </div>
@@ -70,30 +92,36 @@ export function Message({ title }: { title?: string }) {
           <div className="mb-4">
             <p className="text-sm font-medium text-gray-700">Your Reply :</p>
             <textarea
+              onChange={(e) => setValue(e.target.value)}
               placeholder="Type Your Response Here."
               className="w-full h-20 p-2 mt-1 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
 
-          <div className="flex justify-end items-center mb-3">
-            {image ? (
-              <Image src={image} width={100} height={100} alt="image" />
+          <div className="flex justify items-center mb-3">
+            {item?.attachment ? (
+              <Image
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${item?.attachment}`}
+                width={100}
+                height={100}
+                alt="image"
+              />
             ) : (
               <span
-                onClick={handleImageUpload}
-                className="flex justify-center items-center bg-white rounded-full h-12 w-12 text-[#074E5E] cursor-pointer"
+                // onClick={handleImageUpload}
+                className="flex justify-center items-center   text-[#074E5E] cursor-pointer"
               >
-                <ImageIcon />
+                No Image
               </span>
             )}
 
-            <input
+            {/* <input
               ref={imageRef}
               type="file"
               onChange={handleImageChange}
               accept="image/*"
               className="hidden"
-            />
+            /> */}
           </div>
 
           <div className="flex justify-end gap-3">
@@ -102,7 +130,10 @@ export function Message({ title }: { title?: string }) {
                 Cancel
               </button>
             </DialogClose>
-            <button className="btn-design px-4 py-2  font-semibold rounded  cursor-pointer">
+            <button
+              className="btn-design px-4 py-2  font-semibold rounded  cursor-pointer"
+              onClick={() => handleReplyMessage(item?._id)}
+            >
               Send Reply
             </button>
           </div>

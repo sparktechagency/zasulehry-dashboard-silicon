@@ -47,11 +47,11 @@ export default async function SubscriptionCard() {
               </div>
               <div className="mt-6 space-y-3 ">
                 {item?.benefits?.map((content: any, index: number) => (
-                  <div key={index} className="flex items-center">
-                    <p className="text-[14px] 2xl:text-lg text-gray-700">
+                  <ul key={index} className="flex items-center list-disc px-4">
+                    <li className="text-[14px] 2xl:text-lg text-gray-700">
                       {content}
-                    </p>
-                  </div>
+                    </li>
+                  </ul>
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-5 flex-1 items-end">

@@ -1,10 +1,14 @@
 import UploadDocumentPage from "@/components/dashboard/UploadDocument/UploadDocument";
+import { myFetch } from "@/utils/myFetch";
 import React from "react";
 
-export default function DocumentPage() {
+export default async function DocumentPage() {
+  const res = await myFetch("/drives/my-drives", {
+    tags: ["drive"],
+  });
   return (
-    <div>
-      <UploadDocumentPage />
-    </div>
+    <>
+      <UploadDocumentPage data={res?.data} />
+    </>
   );
 }

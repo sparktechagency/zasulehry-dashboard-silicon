@@ -18,25 +18,29 @@ export default async function AllEmployee({ searchParams }: Props) {
   if (name) params.append("searchTerm", name);
   if (status) params.append("status", status);
 
-  let data: any[] = [];
+  // let data: any[] = [];
 
-  try {
-    const res = await myFetch(`/users?${params.toString()}`, {
-      tags: ["employee-list"],
-    });
+  // try {
+  //   const res = await myFetch(`/users?${params.toString()}`, {
+  //     tags: ["employee-list"],
+  //   });
 
-    if (res?.success) {
-      data = res.data ?? [];
-    } else {
-      console.error("Employee fetch failed:", res?.message);
-    }
-  } catch (error) {
-    console.error("Error fetching employees:", error);
-  }
+  //   if (res?.success) {
+  //     data = res.data ?? [];
+  //   } else {
+  //     console.error("Employee fetch failed:", res?.message);
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching employees:", error);
+  // }
+
+  const res = await myFetch(`/users?${params.toString()}`, {
+    tags: ["employee-list"],
+  });
 
   return (
     <div className="w-full">
-      <AllEmployeeList res={data} />
+      <AllEmployeeList res={res} />
     </div>
   );
 }

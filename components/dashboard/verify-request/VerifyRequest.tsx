@@ -22,12 +22,17 @@ const statusOption = [
 ];
 
 export default function VerifyRequest({ res }: any) {
+  console.log(
+    "res?.data?.pagination?.totalPage",
+    res?.data?.pagination?.totalPage
+  );
+
   return (
     <>
       <div className="flex justify-end">
         <SelectBar options={statusOption} />
       </div>
-      {res.length > 0 ? (
+      {res?.data?.length > 0 ? (
         <div className="bg-[#f9f9f9] p- rounded-lg">
           <div className="flex items-center justify-between mb-4"></div>
 
@@ -44,7 +49,7 @@ export default function VerifyRequest({ res }: any) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {res?.map((employer: any, index: number) => (
+              {res?.data?.map((employer: any, index: number) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium">
                     #{employer._id.slice(0, 5)}
@@ -94,7 +99,7 @@ export default function VerifyRequest({ res }: any) {
       )}
 
       {/* <TablePagination /> */}
-      {res.length > 0 && <TablePagination />}
+      <TablePagination totalPages={res?.pagination?.totalPage} />
     </>
   );
 }

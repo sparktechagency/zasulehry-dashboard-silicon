@@ -39,7 +39,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {res?.map((employer: any) => (
+            {res?.data?.map((employer: any) => (
               <TableRow key={employer?._id}>
                 <TableCell className="font-medium">
                   #{employer?._id.slice(0, 6)}
@@ -84,7 +84,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
       </div>
 
       {/* pagination */}
-      <TablePagination />
+      <TablePagination totalPages={res?.pagination?.totalPage} />
     </>
   );
 }

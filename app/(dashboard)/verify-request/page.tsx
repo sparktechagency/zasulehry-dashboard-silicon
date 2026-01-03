@@ -13,25 +13,29 @@ export default async function VRequest({ searchParams }: Props) {
   const params = new URLSearchParams();
   if (status) params.append("status", status);
 
-  let data: any[] = [];
+  // let data: any[] = [];
 
-  try {
-    const res = await myFetch(`/verifications?${params.toString()}`, {
-      tags: ["verification"],
-    });
+  // try {
+  //   const res = await myFetch(`/verifications?${params.toString()}`, {
+  //     tags: ["verification"],
+  //   });
 
-    if (res?.success) {
-      data = res.data || [];
-    } else {
-      console.error("Verification fetch failed:", res?.message);
-    }
-  } catch (error) {
-    console.error("Error fetching verifications:", error);
-  }
+  //   if (res?.success) {
+  //     data = res.data || [];
+  //   } else {
+  //     console.error("Verification fetch failed:", res?.message);
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching verifications:", error);
+  // }
+
+  const res = await myFetch(`/verifications?${params.toString()}`, {
+    tags: ["verification"],
+  });
 
   return (
     <div className="w-full">
-      <VerifyRequest res={data} />
+      <VerifyRequest res={res} />
     </div>
   );
 }

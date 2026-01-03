@@ -21,6 +21,8 @@ const statusOption = [
 ];
 
 export default function AllJobSeeker({ data }: any) {
+  console.log("data?.pagination?.totalPage", data?.pagination?.totalPage);
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -44,7 +46,7 @@ export default function AllJobSeeker({ data }: any) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((employer: any) => (
+            {data?.data?.map((employer: any) => (
               <TableRow key={employer._id} className="bg-white">
                 <TableCell className="font-medium">
                   #{employer._id.slice(0, 6)}
@@ -99,7 +101,7 @@ export default function AllJobSeeker({ data }: any) {
       </div>
 
       {/* pagination */}
-      <TablePagination totalPages={240} />
+      <TablePagination totalPages={data?.pagination?.totalPage} />
     </>
   );
 }

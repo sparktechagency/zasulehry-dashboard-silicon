@@ -59,7 +59,7 @@ export default async function AllEmployeeList() {
       </div>
 
       {/* pagination */}
-      <TablePagination />
+      <TablePagination totalPages={res?.pagination?.totalPage} />
     </>
   );
 }

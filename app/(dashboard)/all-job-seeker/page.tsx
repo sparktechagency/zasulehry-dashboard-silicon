@@ -5,34 +5,21 @@ import React from "react";
 export default async function JobSeeker({ searchParams }: any) {
   const name = (await searchParams)?.name || "";
   const status = (await searchParams)?.status || "";
+  const page = (await searchParams)?.page || "";
 
   const params = new URLSearchParams();
   params.append("role", "Job Seeker");
   if (name) params.append("searchTerm", name);
   if (status) params.append("status", status);
+  if (page) params.append("page", page);
 
-  let data: any[] = [];
-
-  try {
-    const res = await myFetch(`/users?${params.toString()}`, {
-      tags: ["job-seeker"],
-    });
-
-    if (res?.success) {
-      data = res.data ?? [];
-    } else {
-      console.error("Failed to fetch job seekers:", res?.message);
-    }
-  } catch (err) {
-    console.error(
-      "Error fetching job seekers:",
-      err instanceof Error ? err.message : err
-    );
-  }
+  const res = await myFetch(`/users?${params.toString()}`, {
+    tags: ["job-seeker"],
+  });
 
   return (
     <>
-      <AllJobSeeker data={data} />
+      <AllJobSeeker data={res} />
     </>
   );
 }

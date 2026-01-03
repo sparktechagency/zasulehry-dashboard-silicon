@@ -56,7 +56,7 @@ export default function SupportUser({ data }: { data: any }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((employer: any) => (
+            {data?.data?.map((employer: any) => (
               <TableRow key={employer._id}>
                 <TableCell className="font-medium">#22025</TableCell>
 
@@ -108,7 +108,7 @@ export default function SupportUser({ data }: { data: any }) {
       </div>
 
       {/* <Table data={employers} /> */}
-      <TablePagination />
+      <TablePagination totalPages={data?.pagination?.totalPage} />
     </>
   );
 }

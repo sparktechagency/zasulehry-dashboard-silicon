@@ -1,58 +1,66 @@
 "use client";
+
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { useState } from "react";
 import useResponsiveRadius from "@/components/hooks/useResponsiveRadius";
+import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
 
-const COLORS = ["#056176", "#B2D1D8"]; // Primary and secondary segment colors
+const COLORS = ["#056176", "#B2D1D8"];
+const YEARS = [
+  { label: "All", value: "All" },
+  { label: "2025", value: "2025" },
+  { label: "2026", value: "2026" },
+  { label: "2027", value: "2027" },
+  { label: "2028", value: "2028" },
+];
 
-export default function CircleChart({ revenue }: any) {
+interface Props {
+  revenue?: {
+    growthPercentage?: number; // 0–100
+  };
+}
+
+export default function CircleChart({ revenue }: Props) {
   const radius = useResponsiveRadius();
-  const [selectedYear, setSelectedYear] = useState("2025");
+
+  const used = Math.min(Math.max(revenue?.growthPercentage ?? 0, 0), 100);
+  const remaining = 100 - used;
 
   const data = [
-    { name: "Used", value: revenue?.growthPercentage },
-    { name: "Remaining", value: revenue?.totalRevenue },
+    { name: "Used", value: used },
+    { name: "Remaining", value: remaining },
   ];
 
   return (
-    <div className="h-full p-4 bg-[#FFFFFF] shadow-md rounded-lg">
+    <div className="h-full p-4 bg-white shadow-md rounded-lg">
       <div className="flex items-center justify-between">
         <h2 className="text-[18px] text-gray-700 font-semibold">
-          Total Employer
+          Total User Growth
         </h2>
-        <select
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-          className="border border-gray-400 rounded px-2 h-7"
-        >
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
+        <SelectBar options={YEARS} />
       </div>
 
-      <div className="relative w-full h-[200px] lg:h-[200px] xl:h-[230px]">
+      <div className="relative w-full h-[200px] xl:h-[230px]">
         <ResponsiveContainer>
           <PieChart>
             <Pie
               data={data}
+              dataKey="value"
               innerRadius={70}
               outerRadius={radius}
-              dataKey="value"
-              startAngle={100}
+              startAngle={90}
               endAngle={-270}
             >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+              {data.map((_, index) => (
+                <Cell key={index} fill={COLORS[index]} />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center Percentage Label */}
+        {/* Center Percentage */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-[70px] h-[70px] rounded-full bg-[#B2D1D8] flex items-center justify-center text-center text-sm font-semibold text-black">
-            {revenue?.growthPercentage}%
+          <div className="w-[70px] h-[70px] rounded-full bg-[#B2D1D8] flex items-center justify-center text-sm font-semibold">
+            {used}%
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   AreaChart,
   Area,
@@ -10,23 +9,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import YearDropdown from "./YearDropDown";
-import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
 
-const data = [
-  { name: "Jan", uv: 4500 },
-  { name: "Feb", uv: 4000 },
-  { name: "Mar", uv: 5000 },
-  { name: "Apr", uv: 5500 },
-  { name: "May", uv: 5500 },
-  { name: "Jun", uv: 4000 },
-  { name: "Jul", uv: 6000 },
-  { name: "Aug", uv: 5200 },
-  { name: "Sep", uv: 5000 },
-  { name: "Oct", uv: 6000 },
-  { name: "Nov", uv: 4000 },
-  { name: "Dec", uv: 6000 },
-];
+import RevenueSelect from "@/components/overviewSelectStatus/RevenueStatus";
 
 // const dataRow = Math.max(...data.map((data) => data.uv));
 
@@ -62,15 +46,14 @@ const renderCustomTooltip = ({ active, payload }: any) => {
 };
 
 const years = [
-  // { label: "All", value: "All" },
+  { label: "All", value: "All" },
+  { label: "2025", value: "2025" },
   { label: "2026", value: "2026" },
   { label: "2027", value: "2027" },
   { label: "2028", value: "2028" },
 ];
 
 export default function GreenAreaChart({ chart }: any) {
-  const [year, setYear] = useState("");
-
   const monmonthlyStats = chart?.monthlyStats?.map((item: any) => ({
     name: item?.month,
     uv: item?.count,
@@ -83,7 +66,7 @@ export default function GreenAreaChart({ chart }: any) {
           Total Revenue Monthly
         </h3>{" "}
         <div>
-          <SelectBar options={years} />
+          <RevenueSelect options={years} />
           {/* <YearDropdown selectedYear={year} onChange={setYear} /> */}
         </div>
       </div>

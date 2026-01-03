@@ -5,22 +5,22 @@ export default function Card({ card }: any) {
   const statCards = [
     {
       title: "Total Job Seeker",
-      value: card?.totalJobSeekers,
+      value: card?.totalJobSeekers || 0,
       icon: User,
     },
     {
       title: "Total Employer",
-      value: card?.totalEmployers,
+      value: card?.totalEmployers || 0,
       icon: User,
     },
     {
       title: "Total Subscriber",
-      value: card?.totalSubscribers,
+      value: card?.totalSubscribers || 0,
       icon: User,
     },
     {
       title: "Total Revenue",
-      value: `$${card?.totalRevenue}`,
+      value: `$${card?.totalRevenue || 0}`,
       icon: User,
     },
   ];

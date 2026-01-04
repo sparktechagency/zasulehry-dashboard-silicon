@@ -10,16 +10,22 @@ const SocketContext = createContext<SocketContextType>({
   socket: null,
 });
 
-export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
+export const SocketProvider = ({
+  children,
+  token,
+}: {
+  children: React.ReactNode;
+  token: string;
+}) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  console.log("token----------------", token);
 
   useEffect(() => {
     const newSocket = io(process.env.NEXT_PUBLIC_IMAGE_URL as string, {
       transports: ["websocket"],
       withCredentials: true,
-      extraHeaders: {
-        auth: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjMwYTgzMTY3NGVmOGFlMWM0MDNjOCIsInJvbGUiOiJFbXBsb3llciIsImVtYWlsIjoicmFoYWR1bGxhaDEwQGdtYWlsLmNvbSIsImlhdCI6MTc2NzIzOTMzMywiZXhwIjoxNzY3ODQ0MTMzfQ.5eomHhmdrrMdLwPkZshnCOenzd5yI_WWvekQa-nxbiM",
-      },
+      auth: { token },
     });
 
     console.log("new socket", newSocket);
@@ -44,7 +50,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [token]);
 
   return (
     <SocketContext.Provider value={{ socket }}>
@@ -53,4 +59,5 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = ({ token }: { token: string }) =>
+  useContext(SocketContext);

@@ -9,6 +9,7 @@ import { myFetch } from "@/utils/myFetch";
 import avatarImg from "../../../public/user.png";
 import ChatInput from "./ChartInput";
 import { getImageSrc } from "@/components/share/getImage";
+import { getToken } from "@/utils/getToken";
 
 type Message = {
   sender: any;
@@ -30,9 +31,10 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
   const [userTextMessage, setUserTextMessage] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MWQ1ZjdjODA2NzE4OWU2NmM3MjJhZCIsInJvbGUiOiJTdXBlciBBZG1pbiIsImVtYWlsIjoic3VwZXIuYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzY3NDk3Mjc1LCJleHAiOjE3NjgxMDIwNzV9._lY7W-Uly96E0kj9jesocZNEXSynR6kJmot3Mp4e6Go";
 
-  const { socket } = useSocket();
-  console.log("socket", socket);
+  const { socket } = useSocket({ token });
 
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {

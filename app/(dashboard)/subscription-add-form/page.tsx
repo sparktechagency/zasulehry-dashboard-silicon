@@ -1,8 +1,7 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { ArrowLeft, CheckCircle2, MinusCircle, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import Button from "@/components/share/Button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
@@ -10,6 +9,7 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { revalidate } from "@/utils/revalidateTags";
+import { Button } from "@/components/ui/button";
 
 type FormData = {
   name: string;
@@ -23,6 +23,7 @@ type FormData = {
 function SubscriptionIdSuscription() {
   const { id } = useParams<{ id?: string }>();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, watch, setValue } = useForm<FormData>({
     defaultValues: {
@@ -50,6 +51,7 @@ function SubscriptionIdSuscription() {
   };
 
   const onSubmit = async (data: FormData) => {
+    setLoading(true);
     const add = {
       name: data.name,
       interval: "month",
@@ -74,6 +76,8 @@ function SubscriptionIdSuscription() {
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -166,7 +170,7 @@ function SubscriptionIdSuscription() {
             {benefits.length === 0 && (
               <p className="text-sm text-gray-500">No offers added yet.</p>
             )}
-            {benefits.map((offer, i) => (
+            {benefits?.map((offer, i) => (
               <div
                 key={i}
                 className="flex justify-between items-center space-x-2"
@@ -191,9 +195,12 @@ function SubscriptionIdSuscription() {
         {/* Submit */}
         <Button
           type="submit"
-          className="w-full btn-design text-lg font-semibold rounded-md duration-200 mb-5"
+          disabled={loading}
+          className={`w-full  text-lg font-semibold rounded-md duration-200 mb-5 bg-gradient-to-r from-[#083E4B] to-[#0288A6] ${
+            loading ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
-          Submit
+          {loading ? "Submiting..." : "Submit"}
         </Button>
       </form>
     </div>

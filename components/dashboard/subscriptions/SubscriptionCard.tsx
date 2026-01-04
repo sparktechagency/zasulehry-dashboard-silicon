@@ -12,7 +12,7 @@ export default async function SubscriptionCard() {
   });
   return (
     <>
-      <div className="grid grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-3 gap-16 ">
         {res?.data?.map((item: any) => (
           <div key={item._id} className="my-5">
             <div>
@@ -47,16 +47,12 @@ export default async function SubscriptionCard() {
                 </p>
               </div>
               <div className="text-center flex justify-center items-center text-[#0288A6] font-medium gap-1 text-lg">
-                <p>
-                  {item?.intervalCount === 1
-                    ? "30"
-                    : item?.intervalCount === 3 && "60"}
-                </p>
+                <p>{item?.intervalCount ? item?.intervalCount * 30 : 0}</p>
                 <p>Days</p>
               </div>
               <div className="mt-6 space-y-3 ">
                 {item?.benefits?.map((content: any, index: number) => (
-                  <ul key={index} className="flex items-center list-disc px-4">
+                  <ul key={index} className="flex items-center list-disc px-9">
                     <li className="text-[14px] 2xl:text-lg text-gray-700">
                       {content}
                     </li>

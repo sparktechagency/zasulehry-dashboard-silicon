@@ -32,6 +32,7 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
   const [file, setFile] = useState<File | null>(null);
 
   const { socket } = useSocket();
+  console.log("socket", socket);
 
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {

@@ -51,7 +51,7 @@ export default function SupportUser({ data }: { data: any }) {
                     title={employer.name}
                     width={40}
                     height={40}
-                    className="rounded-full"
+                    className="rounded-full w-12 h-12"
                   />
                   <Message item={employer} title={employer.name} />
                 </TableCell>

@@ -68,7 +68,7 @@ export default function CreateAdmin() {
         toast.success(res?.message || "Sub Admin created successfully");
         reset();
         setSelectedMenus([]);
-        router.push("/sub-admin");
+        router.push("/dashboard/sub-admin");
       } else {
         toast.error(res.message || "Failed to create Sub Admin");
       }

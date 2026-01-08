@@ -29,7 +29,7 @@ export default function Header() {
       </div>
 
       <div>
-        <Link href="/settings-refund">
+        <Link href="/dashboard/settings-refund">
           {" "}
           <button className="capitalize border border-[#0288A6] rounded-2xl px-3 py-1.5 text-[#0288A6] font-medium cursor-pointer">
             create invoice/refund
@@ -38,7 +38,7 @@ export default function Header() {
       </div>
 
       <div>
-        <Link href="/settings-page">
+        <Link href="/dashboard/settings-page">
           <button className="btn-design py-1.5 px-6 cursor-pointer text-lg">
             Settings
           </button>

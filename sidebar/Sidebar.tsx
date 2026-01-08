@@ -137,7 +137,7 @@ export default function Sidebar() {
   return (
     <div className="bg-white">
       <div className="ml-16 py-2">
-        <Link href="/" className="flex items-center">
+        <Link href="/dashboard" className="flex items-center">
           <Image
             src="/logo.png"
             alt="Zasulehry"

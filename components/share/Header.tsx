@@ -54,13 +54,13 @@ export default function Header() {
         <div className="h-full flex items-center justify-end text-gray-700">
           <div className="flex items-center gap-4">
             <div className="relative bg-gray-100 p-1.5 rounded-full">
-              <Link href="/notification">
+              <Link href="/dashboard/notification">
                 <Bell className="w-4 h-4 text-gray-700" />
                 {/* <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold"></span> */}
               </Link>
             </div>
 
-            <Link href="/my-profile">
+            <Link href="/dashboard/my-profile">
               <div className="flex items-center gap-2">
                 <CustomImage
                   src={data?.image}

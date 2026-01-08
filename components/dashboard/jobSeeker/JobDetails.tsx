@@ -93,7 +93,7 @@ export default function JobDetails({ data }: any) {
           user from here.
         </p>
         <div className="flex gap-3">
-          <Link href="/inbox">
+          <Link href="/dashboard/inbox">
             <Button className="bg-[#0288A6] text-white  px-6 rounded-full">
               Message
             </Button>

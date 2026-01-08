@@ -15,16 +15,22 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="grid place-items-center ">
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-100 via-red-200 to-red-300 p-6 text-center">
+      <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full">
+        <h2 className="text-2xl font-bold text-red-700 mb-4">
+          Oops! Something went wrong
+        </h2>
+        <p className="text-gray-700 mb-6">
+          An unexpected error occurred. Please try again or contact support if
+          the problem persists.
+        </p>
+        <button
+          onClick={() => reset()}
+          className="px-6 py-2 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
+        >
+          Try Again
+        </button>
+      </div>
     </div>
   );
 }

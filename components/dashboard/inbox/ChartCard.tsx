@@ -6,7 +6,7 @@ import Link from "next/link";
 export const ChatCard = ({ card }: { card: any }) => {
   const { name, message } = card?.participants[0];
   return (
-    <Link href={`/inbox?id=${card?._id}`}>
+    <Link href={`/dashboard/inbox?id=${card?._id}`}>
       <div className="flex flex-row justify-between p-4 bg-white rounded-lg shadow mb-3">
         <div className="flex items-center gap-2 ">
           <div>

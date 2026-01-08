@@ -13,7 +13,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import dayjs from "dayjs";
-import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
+import SelectBar from "@/app/dashboard/verify-request/SelectBar";
 
 const statusOption = [
   { label: "All", value: "All" },

@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import RequestModal from "./RequestModal";
 import TablePagination from "@/components/share/Pagination";
 import CustomImage from "@/share/CustomImage";
-import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
+import SelectBar from "@/app/dashboard/verify-request/SelectBar";
 
 const statusOption = [
   { label: "All", value: "All" },
@@ -67,7 +67,7 @@ export default function VerifyRequest({ res }: any) {
                     <Badge
                       className={`w-20 ${
                         employer.status === "Pending"
-                          ? "bg-yellow-200"
+                          ? "bg-yellow-500"
                           : employer.status === "Approved"
                           ? "bg-green-500"
                           : "bg-red-500"

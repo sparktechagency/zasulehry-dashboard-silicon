@@ -8,7 +8,7 @@ export default function Subscriptions() {
     <div className="px-8">
       <div className=" flex justify-between items-center text-gray-700 cursor-pointer my-1">
         <h1 className="text-2xl font-semibold">Subscription Plan</h1>
-        <Link href={`/subscription-add-form`}>
+        <Link href={`/dashboard/subscription-add-form`}>
           <Button className="px-3 py-2 btn-design flex items-center gap-2 h-10 rounded-3xl cursor-pointer text-white 2xl:text-lg xl:p-4">
             <PlusCircle size={20} />
             <span>Add New</span>

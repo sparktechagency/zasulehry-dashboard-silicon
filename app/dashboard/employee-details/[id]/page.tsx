@@ -24,8 +24,6 @@ export default async function page({ params }: { params: { id: string } }) {
     role: res?.data?.user?.role || "No",
   };
 
-  console.log("res?.data?._id", res?.data?._id);
-
   return (
     <div>
       <div className="p-6">
@@ -101,7 +99,7 @@ export default async function page({ params }: { params: { id: string } }) {
             user from here.
           </p>
           <div className="flex gap-3">
-            <Link href="/inbox">
+            <Link href="/dashboard/inbox">
               <Button className="btn-design text-white  px-6 rounded-full">
                 Message
               </Button>

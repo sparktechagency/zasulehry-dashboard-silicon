@@ -38,7 +38,7 @@ export default function LoginForm() {
         toast.success(res?.message);
         setCookie("accessToken", res?.data?.accessToken);
         setCookie("role", res?.data?.role);
-        router.push("/");
+        router.push("/dashboard");
       } else {
         toast.error(res?.message || "Login failed");
       }
@@ -58,20 +58,12 @@ export default function LoginForm() {
           type="email"
           placeholder="Enter Your Email"
           className="w-full rounded-md px-3 h-11 "
-          {...register("email", { required: true })}
+          {...register("email", { required: "Required your email" })}
         />
+        {errors.email && (
+          <span className="text-red-400">{errors.email.message}</span>
+        )}
       </div>
-
-      {/* <div>
-        <Label htmlFor="number" className="block text-md mb-1 text-white">
-          Contact Number
-        </Label>
-        <Input
-          type="number"
-          placeholder="Enter Your Contact Number"
-          className="w-full rounded-md px-3 h-11  "
-        />
-      </div> */}
 
       <Label htmlFor="password" className="block text-md mb-1 text-white">
         Password
@@ -81,8 +73,11 @@ export default function LoginForm() {
           type={showPassword ? "password" : "text"}
           placeholder="Enter Your Password"
           className="w-full rounded-md px-3 h-11"
-          {...register("password", { required: true })}
+          {...register("password", { required: "Required your password" })}
         />
+        {errors.password && (
+          <span className="text-red-400">{errors.password.message}</span>
+        )}
         <span
           className="absolute top-3 right-4 cursor-pointer"
           onClick={() => setShowPassword(!setShowPassword)}

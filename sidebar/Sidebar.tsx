@@ -23,54 +23,84 @@ import { usePathname, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 export const sidebarMenu = [
-  { id: 1, label: "Overview", icon: LayoutGrid, path: "/" },
-  { id: 2, label: "All Job Seeker", icon: User, path: "/all-job-seeker" },
+  { id: 1, label: "Overview", icon: LayoutGrid, path: "/dashboard" },
+  {
+    id: 2,
+    label: "All Job Seeker",
+    icon: User,
+    path: "/dashboard/all-job-seeker",
+  },
   {
     id: 3,
     label: "All Employer List",
     icon: Users,
-    path: "/all-employee-list",
+    path: "/dashboard/all-employee-list",
   },
-  { id: 4, label: "Category System", icon: List, path: "/all-category" },
+  {
+    id: 4,
+    label: "Category System",
+    icon: List,
+    path: "/dashboard/all-category",
+  },
   {
     id: 5,
     label: "Subscription Plan",
     icon: SquarePlus,
-    path: "/subscription",
+    path: "/dashboard/subscription",
   },
   {
     id: 6,
     label: "Subscribed  Users",
     icon: UserPlus,
-    path: "/subscriber-users",
+    path: "/dashboard/subscriber-users",
   },
   {
     id: 20,
     label: "Payment/Invoices",
     icon: CreditCard,
-    path: "/payment-invoices",
+    path: "/dashboard/payment-invoices",
   },
-  { id: 7, label: "Upload Documents", icon: Plus, path: "/upload-document" },
+  {
+    id: 7,
+    label: "Upload Documents",
+    icon: Plus,
+    path: "/dashboard/upload-document",
+  },
 
-  { id: 9, label: "Support Request", icon: Phone, path: "/support" },
+  { id: 9, label: "Support Request", icon: Phone, path: "/dashboard/support" },
   {
     id: 10,
     label: "Verify Request",
     icon: CheckCheck,
-    path: "/verify-request",
+    path: "/dashboard/verify-request",
   },
-  { id: 11, label: "Privacy Policy", icon: Shield, path: "/privacy-policy" },
+  {
+    id: 11,
+    label: "Privacy Policy",
+    icon: Shield,
+    path: "/dashboard/privacy-policy",
+  },
   {
     id: 12,
     label: "Terms & Condition",
     icon: FileTerminal,
-    path: "/terms-condition",
+    path: "/dashboard/terms-condition",
   },
-  { id: 14, label: "Impressum", icon: PanelBottom, path: "/impressum" },
-  { id: 13, label: "Create Sub Admin", icon: UserStar, path: "/sub-admin" },
-  // { id: 15, label: "Inbox", icon: MessageCircleMore, path: "/inbox" },
-  { id: 8, label: "My Profile", icon: UserPen, path: "/my-profile" },
-  // { id: 16, label: "Log Out", icon: LogOut, path: "/login" },
+  {
+    id: 14,
+    label: "Impressum",
+    icon: PanelBottom,
+    path: "/dashboard/impressum",
+  },
+  {
+    id: 13,
+    label: "Create Sub Admin",
+    icon: UserStar,
+    path: "/dashboard/sub-admin",
+  },
+  // { id: 15, label: "Inbox", icon: MessageCircleMore, path: "/dashboard/inbox" },
+  { id: 8, label: "My Profile", icon: UserPen, path: "/dashboard/my-profile" },
+  // { id: 16, label: "Log Out", icon: LogOut, path: "/dashboard/login" },
 ];
 
 import Image from "next/image";

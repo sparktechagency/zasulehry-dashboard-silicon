@@ -2,7 +2,7 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import useResponsiveRadius from "@/components/hooks/useResponsiveRadius";
-import SelectBar from "@/app/(dashboard)/verify-request/SelectBar";
+import SelectBar from "@/app/dashboard/verify-request/SelectBar";
 
 const COLORS = ["#056176", "#B2D1D8"];
 const YEARS = [

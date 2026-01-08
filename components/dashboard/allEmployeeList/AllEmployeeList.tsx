@@ -47,7 +47,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
 
                 <TableCell className="">
                   {/* <Image src={google} alt="avatar" width={32} height={32} /> */}
-                  <Link href={`/employee-details/${employer._id}`}>
+                  <Link href={`/dashboard/employee-details/${employer._id}`}>
                     {employer.name}
                   </Link>
                 </TableCell>
@@ -68,7 +68,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-4 pl-3">
-                    <Link href={`/employee-details/${employer?._id}`}>
+                    <Link href={`/dashboard/employee-details/${employer?._id}`}>
                       <div className="bg-[#0288A6] p-1 rounded cursor-pointer">
                         <Eye className="text-white size-5 2xl:size-7" />
                       </div>

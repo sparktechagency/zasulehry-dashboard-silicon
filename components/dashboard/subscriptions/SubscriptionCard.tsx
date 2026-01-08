@@ -60,7 +60,7 @@ export default async function SubscriptionCard() {
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-5 flex-1 items-end">
-                <Link href={`/subscription-form-update/${item?._id}`}>
+                <Link href={`/dashboard/subscription-form-update/${item?._id}`}>
                   <Button
                     variant={"outline"}
                     className="text-lg mt-10 xl:h-10 w-full"

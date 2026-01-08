@@ -84,7 +84,9 @@ export default function AllJobSeeker({ data }: any) {
                       }
                     /> */}
 
-                    <Link href={`/job-seeker-details?id=${employer?._id}`}>
+                    <Link
+                      href={`/dashboard/job-seeker-details?id=${employer?._id}`}
+                    >
                       <div className="bg-[#0288A6] p-1 rounded cursor-pointer">
                         <Eye className=" text-white size-5 2xl:size-7" />
                       </div>

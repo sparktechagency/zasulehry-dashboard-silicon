@@ -1,21 +1,21 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { ArrowLeft, CheckCircle2, MinusCircle, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Button from "@/components/share/Button";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { revalidate } from "@/utils/revalidateTags";
-import { Button } from "@/components/ui/button";
 
 type FormData = {
   name: string;
   dailyPrice: number;
   intervalCount: number;
-  benefits: string[];
+  benefits: { value: string }[];
   description: string;
   newOffer: string;
 };
@@ -23,61 +23,79 @@ type FormData = {
 function SubscriptionIdSuscription() {
   const { id } = useParams<{ id?: string }>();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      description: "",
-      dailyPrice: 0,
-      intervalCount: 0,
-      benefits: [],
-      newOffer: "",
-    },
+  const { register, control, handleSubmit, watch, setValue, reset } =
+    useForm<FormData>({
+      defaultValues: {
+        name: "",
+        description: "",
+        dailyPrice: 0,
+        intervalCount: 0,
+        benefits: [],
+        newOffer: "",
+      },
+    });
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await myFetch(`/packages/${id}`);
+        const data = res?.data;
+        if (!data) return;
+
+        reset({
+          name: data.name ?? "",
+          description: data?.description ?? "",
+          dailyPrice: Number(data.dailyPrice) || 0,
+          intervalCount: data.intervalCount ?? 0,
+          benefits: data.benefits?.map((b: string) => ({ value: b })) ?? [],
+          newOffer: "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch package", error);
+      }
+    };
+
+    fetchData();
+  }, [id, reset]);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "benefits",
   });
 
-  const benefits = watch("benefits");
-  const newOffer = watch("newOffer"); // Add this line
+  const newOfferValue = watch("newOffer");
 
   const addOffer = () => {
-    if (!newOffer.trim()) return;
-    setValue("benefits", [...benefits, newOffer.trim()]);
+    if (!newOfferValue.trim()) return;
+    append({ value: newOfferValue.trim() });
     setValue("newOffer", "");
   };
 
-  const removeOffer = (index: number) => {
-    const newBenefits = benefits.filter((_, i) => i !== index);
-    setValue("benefits", newBenefits);
-  };
-
   const onSubmit = async (data: FormData) => {
-    setLoading(true);
-    const add = {
+    const update = {
       name: data.name,
-      interval: "month",
-      dailyPrice: Number(data.dailyPrice),
-      intervalCount: data.intervalCount,
       description: data.description,
-      benefits: data.benefits,
+      benefits: data.benefits.map((b) => b.value),
     };
 
     try {
-      const res = await myFetch(`/packages/create`, {
-        method: "POST",
-        body: add,
+      const res = await myFetch(`/packages/update/${id}`, {
+        method: "PATCH",
+        body: update,
       });
 
       if (res?.success) {
         toast.success(res?.message);
         revalidate("package");
-        router.push("/subscription");
+        router.push("/dashboard/subscription");
       } else {
         toast.error(res?.message);
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -117,6 +135,7 @@ function SubscriptionIdSuscription() {
               placeholder="Price"
               type="number"
               step="0.01"
+              disabled
             />
           </div>
         </div>
@@ -132,6 +151,7 @@ function SubscriptionIdSuscription() {
             className="w-full bg-white"
             min={0}
             max={31}
+            disabled
           />
         </div>
         {/* description */}
@@ -167,23 +187,23 @@ function SubscriptionIdSuscription() {
           </div>
 
           <div className="border border-gray-300 rounded-md p-3 space-y-3 bg-gray-50">
-            {benefits.length === 0 && (
+            {fields.length === 0 && (
               <p className="text-sm text-gray-500">No offers added yet.</p>
             )}
-            {benefits?.map((offer, i) => (
+            {fields.map((field, i) => (
               <div
-                key={i}
+                key={field.id}
                 className="flex justify-between items-center space-x-2"
               >
                 <div className="flex items-center space-x-2 text-gray-800">
                   <CheckCircle2 className="text-green-500" size={20} />
-                  <span>{offer}</span>
+                  <span>{field.value}</span>
                 </div>
                 <button
                   type="button"
-                  onClick={() => removeOffer(i)}
+                  onClick={() => remove(i)}
                   className="text-red-500 hover:text-red-700"
-                  aria-label={`Remove offer ${offer}`}
+                  aria-label={`Remove offer ${field.value}`}
                 >
                   <MinusCircle size={18} />
                 </button>
@@ -195,12 +215,9 @@ function SubscriptionIdSuscription() {
         {/* Submit */}
         <Button
           type="submit"
-          disabled={loading}
-          className={`w-full  text-lg font-semibold rounded-md duration-200 mb-5 bg-gradient-to-r from-[#083E4B] to-[#0288A6] ${
-            loading ? "cursor-not-allowed" : "cursor-pointer"
-          }`}
+          className="w-full btn-design text-lg font-semibold rounded-md duration-200 mb-5"
         >
-          {loading ? "Submiting..." : "Submit"}
+          Submit
         </Button>
       </form>
     </div>

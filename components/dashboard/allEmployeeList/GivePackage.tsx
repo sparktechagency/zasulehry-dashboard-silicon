@@ -22,8 +22,12 @@ export default function GivePackage({
   trigger,
 }: GivePackageProps) {
   const [open, setOpen] = useState(false);
+  console.log("package", pack);
+  console.log("user id", userId);
 
   const handleActivate = async (plan: Plan) => {
+    console.log("");
+
     setOpen(false);
 
     const result = await Swal.fire({
@@ -55,7 +59,6 @@ export default function GivePackage({
           package: plan._id,
         },
       });
-
       console.log("res", res);
 
       Swal.fire({

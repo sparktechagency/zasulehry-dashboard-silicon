@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Swal from "sweetalert2";
 import { myFetch } from "@/utils/myFetch";
+import { toast } from "sonner";
 
 type Plan = {
   _id: string;
@@ -53,11 +54,11 @@ export default function GivePackage({ packages, trigger }: GivePackageProps) {
         },
       });
 
-      Swal.fire({
-        title: "Activated!",
-        text: `${plan?.subscription?.package?.name} has been activated.`,
-        icon: "success",
-      });
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
     } catch (error) {
       Swal.fire({
         title: "Error",

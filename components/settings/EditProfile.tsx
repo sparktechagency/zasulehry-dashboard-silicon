@@ -83,6 +83,7 @@ export default function EditProfile({
       if (res.success) {
         toast.success("Profile updated successfully!");
         await revalidate("profile");
+        window.location.reload();
       } else {
         toast.success(res?.message || "Failed to update profile.");
       }

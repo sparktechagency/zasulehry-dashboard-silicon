@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -8,31 +9,23 @@ import { myFetch } from "@/utils/myFetch";
 type Plan = {
   _id: string;
   name: string;
+  subscription: any;
 };
 
 interface GivePackageProps {
-  userId: string;
-  pack: Plan[];
+  packages: any;
   trigger?: React.ReactNode;
 }
 
-export default function GivePackage({
-  userId,
-  pack,
-  trigger,
-}: GivePackageProps) {
+export default function GivePackage({ packages, trigger }: GivePackageProps) {
   const [open, setOpen] = useState(false);
-  console.log("package", pack);
-  console.log("user id", userId);
 
   const handleActivate = async (plan: Plan) => {
-    console.log("");
-
     setOpen(false);
 
     const result = await Swal.fire({
       html: `
-        <div class="title-box">${plan.name}</div>
+        <div class="title-box">${plan?.subscription?.package?.name}</div>
         <p class="swal-text">
           Are you sure you want to activate this subscription plan?
         </p>
@@ -55,15 +48,14 @@ export default function GivePackage({
       const res = await myFetch("/subscriptions/gift", {
         method: "POST",
         body: {
-          user: userId,
-          package: plan._id,
+          user: plan?._id,
+          package: plan?.subscription?.package?._id,
         },
       });
-      console.log("res", res);
 
       Swal.fire({
         title: "Activated!",
-        text: `"${plan.name}" has been activated.`,
+        text: `${plan?.subscription?.package?.name} has been activated.`,
         icon: "success",
       });
     } catch (error) {
@@ -84,14 +76,14 @@ export default function GivePackage({
         className="w-[360px] bg-transparent shadow-none border-none flex justify-center"
       >
         <div className="flex flex-col items-center bg-gray-300 p-6 w-[360px] rounded-md">
-          {pack.map((plan) => (
+          {packages?.map((plan: any) => (
             <button
               key={plan._id}
               type="button"
               onClick={() => handleActivate(plan)}
               className="w-full bg-white text-center py-3 my-2 rounded-md font-semibold text-[#0288A6] hover:bg-gray-100 transition"
             >
-              {plan.name}
+              {plan?.subscription?.package?.name}
             </button>
           ))}
         </div>

@@ -3,8 +3,6 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import Swal from "sweetalert2";
 export function SwitchDemo({ data }: any) {
-  console.log("data", data);
-
   const [airplaneMode, setAirplaneMode] = useState(false);
 
   const onChange = () => {

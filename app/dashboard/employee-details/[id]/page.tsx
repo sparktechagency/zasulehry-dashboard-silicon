@@ -12,7 +12,7 @@ import EmployeeStatusChange from "../EmployeeStatusChange";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
   const res = await myFetch(`/employers/single/${id}`);
-  const packages = await myFetch("/packages");
+  const packages = await myFetch("/subscriptions/subscribers");
   const giftSubscription = await myFetch("/subscriptions/subscribers");
 
   const user = {
@@ -36,8 +36,7 @@ export default async function page({ params }: { params: { id: string } }) {
           </Link>
           <div>
             <GivePackage
-              userId={res?.data?._id}
-              pack={packages?.data}
+              packages={packages?.data}
               trigger={
                 <button className="capitalize btn-design px-5 py-2 cursor-pointer">
                   give package

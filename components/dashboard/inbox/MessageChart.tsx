@@ -9,13 +9,14 @@ import { myFetch } from "@/utils/myFetch";
 import avatarImg from "../../../public/user.png";
 import ChatInput from "./ChartInput";
 import { getImageSrc } from "@/components/share/getImage";
-import { getToken } from "@/utils/getToken";
+import dayjs from "dayjs";
 
 type Message = {
   sender: any;
   text?: string;
   image?: string;
   time?: string;
+  createdAt: string;
 };
 
 interface Props {
@@ -127,6 +128,9 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
               )}
 
               <div>
+                <div className="flex justify-end">
+                  <p>{dayjs(item?.createdAt).format("ddd, MMM D")}</p>
+                </div>
                 {item.text && (
                   <div
                     className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg ${
@@ -138,7 +142,6 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
                     {item.text}
                   </div>
                 )}
-
                 {item.image && (
                   <div className="mt-1">
                     <Image
@@ -150,7 +153,6 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
                     />
                   </div>
                 )}
-
                 <div className="text-[#B0B0B0] text-right text-[9px] mt-1">
                   {item.time}
                 </div>

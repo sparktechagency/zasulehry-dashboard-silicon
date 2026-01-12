@@ -1,12 +1,9 @@
-import { ArrowDownToLine, Eye } from "lucide-react";
+import { ArrowDown, Eye, EyeIcon } from "lucide-react";
 import React from "react";
-import ViewDetails from "./ViewDetails";
+import dayjs from "dayjs";
 
-export default function Invoices() {
-  const data = [
-    { id: "436252536", date: "05.01.2022" },
-    { id: "436252536", date: "05.01.2022" },
-  ];
+export default function Invoices({ invoices }: any) {
+  console.log("invoices", invoices);
 
   return (
     <div className="max-w-sm mt-6">
@@ -17,34 +14,42 @@ export default function Invoices() {
       </div>
 
       {/* Cards */}
-      <div className="space-y-3 mt-3">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-md shadow p-4 flex justify-between items-center"
-          >
+      {invoices?.map((item: any, index: any) => (
+        <div key={index} className="mb-4 mt-6">
+          {/* Transaction Info */}
+          <div className="flex items-center justify-between bg-card p-4 rounded border border-gray-300/30 ">
             <div>
-              <div className="text-gray-900 font-medium">{item.id}</div>
-              <div className="text-gray-400 text-xs mt-1">{item.date}</div>
+              <p className="text-lg font-semibold">
+                {item?.stripeInvoiceId.slice(0, 10)}
+              </p>
+              <p className="text-sm ">
+                {dayjs(item?.createdAt).format("YYYY-MM-DD")}
+              </p>
             </div>
-            <div className="flex space-x-4 text-[#0288A6]">
-              <ViewDetails
-                trigger={
-                  <button aria-label="View" className=" cursor-pointer">
-                    {/* Eye icon */}
-                    <Eye />
-                  </button>
-                }
-              />
 
-              <button aria-label="Download" className=" cursor-pointer">
-                {/* Download icon */}
-                <ArrowDownToLine />
-              </button>
+            <div className="flex space-x-2">
+              <a
+                href={`${item?.hostedInvoiceUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="p-1 rounded hover:bg-gray-500 transition cursor-pointer">
+                  <EyeIcon className="w-5 h-5" />
+                </button>
+              </a>
+              <a
+                href={`${item?.hostedInvoiceUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="p-1 rounded hover:bg-gray-500 transition cursor-pointer">
+                  <ArrowDown className="w-5 h-5" />
+                </button>
+              </a>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }

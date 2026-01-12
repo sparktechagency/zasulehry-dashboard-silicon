@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
+import AdminOtp from "../dashboard/admin-otp/AdminOtp";
 
 type FormValues = {
   currentPassword: string;
@@ -182,12 +183,12 @@ export default function ChangePassword() {
             Confirm
           </button>
           {/* <AdminOtp
-          trigger={
-            <button className="w-full btn-design font-semibold py-2 rounded cursor-pointer 2xl:text-lg">
-              Confirm
-            </button>
-          }
-        /> */}
+            trigger={
+              <button className="w-full btn-design font-semibold py-2 rounded cursor-pointer 2xl:text-lg">
+                Confirm
+              </button>
+            }
+          /> */}
         </form>
       </div>
     </div>

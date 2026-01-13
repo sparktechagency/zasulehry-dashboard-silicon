@@ -1,5 +1,4 @@
 "use client";
-import AdminOtp2 from "@/components/dashboard/admin-otp/AdminOtp2";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { myFetch } from "@/utils/myFetch";
@@ -28,6 +27,8 @@ export default function LoginForm() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("data", data);
+
     try {
       const res = await myFetch("/auth/login", {
         method: "POST",
@@ -36,8 +37,10 @@ export default function LoginForm() {
 
       if (res?.success) {
         toast.success(res?.message);
+
         setCookie("accessToken", res?.data?.accessToken);
         setCookie("role", res?.data?.role);
+
         router.push("/dashboard");
       } else {
         toast.error(res?.message || "Login failed");
@@ -70,7 +73,7 @@ export default function LoginForm() {
       </Label>
       <div className="relative">
         <Input
-          type={showPassword ? "password" : "text"}
+          type={showPassword ? "text" : "password"}
           placeholder="Enter Your Password"
           className="w-full rounded-md px-3 h-11"
           {...register("password", { required: "Required your password" })}
@@ -80,7 +83,7 @@ export default function LoginForm() {
         )}
         <span
           className="absolute top-3 right-4 cursor-pointer"
-          onClick={() => setShowPassword(!setShowPassword)}
+          onClick={() => setShowPassword(!showPassword)}
         >
           {showPassword ? <EyeOff /> : <Eye />}
         </span>

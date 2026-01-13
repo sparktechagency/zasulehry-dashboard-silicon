@@ -15,7 +15,7 @@ export function Filter({ trigger }: { trigger: React.ReactNode }) {
       <form>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px] ">
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <Select>
               <SelectTrigger className="w-full xl:!h-10">
                 <SelectValue placeholder="Select" />
@@ -28,8 +28,8 @@ export function Filter({ trigger }: { trigger: React.ReactNode }) {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
-          <div>
+          </div> */}
+          <div className="mt-10">
             <Input
               placeholder="Name"
               className="bg-white placeholder:text-black"

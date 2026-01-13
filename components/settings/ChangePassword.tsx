@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
+import AdminOtp from "../dashboard/admin-otp/AdminOtp";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
-import AdminOtp from "../dashboard/admin-otp/AdminOtp";
 
 type FormValues = {
   currentPassword: string;
@@ -14,6 +14,9 @@ type FormValues = {
 };
 
 export default function ChangePassword() {
+  const [passwordData, setPasswordData] = useState<FormValues | null>(null);
+  console.log("passwordData", passwordData);
+
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,
     newPassword: false,
@@ -35,13 +38,18 @@ export default function ChangePassword() {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setPasswordData(data);
     try {
-      const res = await myFetch("/auth/change-password", {
+      const res = await myFetch("/auth/change-admin-password-request", {
         method: "POST",
-        body: data,
       });
-      if (res.success) {
-        toast.success(res.message);
+
+      console.log("res", res);
+
+      if (res?.success) {
+        const id = document.getElementById("otp-button");
+        id?.click();
+
         reset();
       } else {
         toast.error(res?.message);
@@ -189,6 +197,20 @@ export default function ChangePassword() {
               </button>
             }
           /> */}
+
+          {passwordData && (
+            <AdminOtp
+              passwordData={passwordData}
+              trigger={
+                <button
+                  id="otp-button"
+                  className="w-full hidden  btn-design font-semibold py-2 rounded cursor-pointer 2xl:text-lg"
+                >
+                  Confirm
+                </button>
+              }
+            />
+          )}
         </form>
       </div>
     </div>

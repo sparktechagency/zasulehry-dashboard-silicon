@@ -1,5 +1,3 @@
-"use client";
-
 import LoginForm from "@/components/authPages/Login";
 import Image from "next/image";
 

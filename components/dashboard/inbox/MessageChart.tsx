@@ -37,6 +37,8 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
 
   const { socket } = useSocket({ token });
 
+  console.log("userMessage", userMessage);
+
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {
     if (!socket || !userId) return;
@@ -112,53 +114,59 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
       {/* Messages */}
       <div className="flex-1 flex flex-col p-4 overflow-y-auto hide-scrollbar">
         <div className="space-y-4">
-          {userMessage?.map((item, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                item?.sender?.name ? "justify-end" : "justify-start"
-              }`}
-            >
-              {item.sender === "other" && (
-                <Image
-                  src={avatarImg}
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full mr-2"
-                />
-              )}
+          {userMessage
+            ?.sort(
+              (a, b) =>
+                new Date(a.createdAt).getTime() -
+                new Date(b.createdAt).getTime()
+            )
+            ?.map((item, index) => (
+              <div
+                key={index}
+                className={`flex ${
+                  item?.sender?.name ? "justify-end" : "justify-start"
+                }`}
+              >
+                {item.sender === "other" && (
+                  <Image
+                    src={avatarImg}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                )}
 
-              <div>
-                <div className="flex justify-end">
-                  <p>{dayjs(item?.createdAt).format("ddd, MMM D")}</p>
-                </div>
-                {item.text && (
-                  <div
-                    className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg ${
-                      item?.sender?.name
-                        ? "bg-cyan-900 rounded-br-none text-white"
-                        : "bg-[#B2D1D8] rounded-bl-none text-[#545454]"
-                    }`}
-                  >
-                    {item.text}
+                <div>
+                  <div className="flex justify-end">
+                    <p>{dayjs(item?.createdAt).format("ddd, MMM D")}</p>
                   </div>
-                )}
-                {item.image && (
-                  <div className="mt-1">
-                    <Image
-                      src={getImageSrc(item?.image)}
-                      alt={item.text || "Message image"}
-                      width={200}
-                      height={200}
-                      className="rounded object-contain max-h-60"
-                    />
+                  {item.text && (
+                    <div
+                      className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg ${
+                        item?.sender?.name
+                          ? "bg-cyan-900 rounded-br-none text-white"
+                          : "bg-[#B2D1D8] rounded-bl-none text-[#545454]"
+                      }`}
+                    >
+                      {item.text}
+                    </div>
+                  )}
+                  {item.image && (
+                    <div className="mt-1">
+                      <Image
+                        src={getImageSrc(item?.image)}
+                        alt={item.text || "Message image"}
+                        width={200}
+                        height={200}
+                        className="rounded object-contain max-h-60"
+                      />
+                    </div>
+                  )}
+                  <div className="text-[#B0B0B0] text-right text-[9px] mt-1">
+                    {item.time}
                   </div>
-                )}
-                <div className="text-[#B0B0B0] text-right text-[9px] mt-1">
-                  {item.time}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
 
           {/* Preview Image */}
           {previewImage && (

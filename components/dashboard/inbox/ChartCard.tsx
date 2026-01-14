@@ -2,11 +2,13 @@
 import { useSocket } from "@/lib/SocketContext";
 // import Link from "next/link";
 import CustomImage from "@/share/CustomImage";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const ChatCard = ({ card }: { card: any }) => {
   const { socket } = useSocket();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentChatId = searchParams.get("id");
 
   const selectChatId = () => {
     if (!socket) return;
@@ -15,9 +17,16 @@ export const ChatCard = ({ card }: { card: any }) => {
     router.push(`/dashboard/inbox?id=${card?._id}`);
   };
 
+  const active = card?._id === currentChatId;
+  console.log("active", active);
+
   return (
     <div onClick={selectChatId}>
-      <div className="flex flex-row justify-between p-4 bg-white rounded-lg shadow mb-3">
+      <div
+        className={`flex flex-row justify-between p-4  rounded-lg shadow mb-3 cursor-pointer ${
+          active ? "bg-gray-200" : "bg-white"
+        }`}
+      >
         <div className="flex items-center gap-2 ">
           <div>
             {card?.participants?.map((item: any, index: number) => (
@@ -38,18 +47,7 @@ export const ChatCard = ({ card }: { card: any }) => {
                 {item?.name}
               </h4>
             ))}
-            {/* <div className="flex items-center gap-1">
-              <Image
-                src={Chart}
-                width={10}
-                height={10}
-                className="size-2 xl:size-3"
-                alt="User avatar"
-              />
-              <h4 className="text-gray-600 text-[9px] 2xl:text-sm">
-                {dayjs(card?.lastMessage?.createdAt).format("YYYY-MM-DD")}
-              </h4>
-            </div> */}
+
             {/* last message */}
             <div>
               <h4>{card?.lastMessage?.text}</h4>

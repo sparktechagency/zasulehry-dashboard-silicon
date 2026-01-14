@@ -10,12 +10,14 @@ import avatarImg from "../../../public/user.png";
 import ChatInput from "./ChartInput";
 import { getImageSrc } from "@/components/share/getImage";
 import dayjs from "dayjs";
+import CustomImage from "@/share/CustomImage";
 
 type Message = {
   sender: any;
   text?: string;
   image?: string;
   time?: string;
+  chat?: string;
   createdAt: string;
 };
 
@@ -23,9 +25,10 @@ interface Props {
   userId: string;
   userMessage: Message[];
   token: string;
+  userChatDetails: any;
 }
 
-const ChatMessages = ({ userId, userMessage }: Props) => {
+const ChatMessages = ({ userId, userMessage, userChatDetails }: Props) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -105,21 +108,20 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
       style={{ height: "calc(100vh - 88px)" }}
     >
       {/* Header */}
-      {newMessages ? (
-        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
-          <Image
-            src={newMessages[0]?.sender?.image}
-            width={50}
-            height={50}
-            alt="avatar"
-          />
-          <div className="font-medium">
-            <h1 className="2xl:text-xl">{newMessages[0]?.sender?.name}</h1>
-          </div>
+
+      <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
+        <CustomImage
+          src={userChatDetails?.anotherParticipant?.image}
+          width={50}
+          height={50}
+          title="avatar"
+        />
+        <div className="font-medium">
+          <h1 className="2xl:text-xl">
+            {userChatDetails?.anotherParticipant?.name}
+          </h1>
         </div>
-      ) : (
-        <p className="text-center p-2 font-medium">Select User</p>
-      )}
+      </div>
 
       {/* Messages */}
       <div className="flex-1 flex flex-col p-4 overflow-y-auto hide-scrollbar">
@@ -134,7 +136,7 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
               <div
                 key={index}
                 className={`flex ${
-                  item?.sender?.name ? "justify-end" : "justify-start"
+                  item?.chat ? "justify-end" : "justify-start"
                 }`}
               >
                 {item.sender === "other" && (
@@ -151,10 +153,10 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
                   </div>
                   {item.text && (
                     <div
-                      className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg ${
-                        item?.sender?.name
-                          ? "bg-cyan-900 rounded-br-none text-white"
-                          : "bg-[#B2D1D8] rounded-bl-none text-[#545454]"
+                      className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg flex  ${
+                        item?.chat
+                          ? "bg-cyan-900 rounded-br-none text-white "
+                          : "bg-[#B2D1D8] rounded-bl-none text-[#545454] "
                       }`}
                     >
                       {item.text}

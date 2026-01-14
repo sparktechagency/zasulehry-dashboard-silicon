@@ -1,9 +1,22 @@
-import Link from "next/link";
+"use client";
+import { useSocket } from "@/lib/SocketContext";
+// import Link from "next/link";
 import CustomImage from "@/share/CustomImage";
+import { useRouter } from "next/navigation";
 
 export const ChatCard = ({ card }: { card: any }) => {
+  const { socket } = useSocket();
+  const router = useRouter();
+
+  const selectChatId = () => {
+    if (!socket) return;
+    console.log("Selected chat ID:", card?._id);
+    socket.emit("joinChat", card?._id);
+    router.push(`/dashboard/inbox?id=${card?._id}`);
+  };
+
   return (
-    <Link href={`/dashboard/inbox?id=${card?._id}`}>
+    <div onClick={selectChatId}>
       <div className="flex flex-row justify-between p-4 bg-white rounded-lg shadow mb-3">
         <div className="flex items-center gap-2 ">
           <div>
@@ -54,6 +67,6 @@ export const ChatCard = ({ card }: { card: any }) => {
           </div>
         </div> */}
       </div>
-    </Link>
+    </div>
   );
 };

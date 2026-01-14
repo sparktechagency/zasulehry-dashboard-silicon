@@ -22,29 +22,30 @@ type Message = {
 interface Props {
   userId: string;
   userMessage: Message[];
+  token: string;
 }
 
 const ChatMessages = ({ userId, userMessage }: Props) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [, setMessages] = useState<Message[]>([]);
+  const [newMessages, setNewMessages] = useState<Message[]>(userMessage || []);
   const [userTextMessage, setUserTextMessage] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MWQ1ZjdjODA2NzE4OWU2NmM3MjJhZCIsInJvbGUiOiJTdXBlciBBZG1pbiIsImVtYWlsIjoic3VwZXIuYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzY3NDk3Mjc1LCJleHAiOjE3NjgxMDIwNzV9._lY7W-Uly96E0kj9jesocZNEXSynR6kJmot3Mp4e6Go";
 
-  const { socket } = useSocket({ token });
+  const { socket } = useSocket();
 
-  console.log("userMessage", userMessage);
+  // console.log("userMessage", userMessage);
 
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {
     if (!socket || !userId) return;
-    const eventName = `getMessage::${userId}`;
+    const eventName = `getMessage`;
     const handleIncomingMessage = (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+      console.log("socketworking..", message);
+
+      setNewMessages((prev) => [message, ...prev]);
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
@@ -104,22 +105,26 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
       style={{ height: "calc(100vh - 88px)" }}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
-        <Image
-          src={userMessage[0]?.sender?.name}
-          width={50}
-          height={50}
-          alt="avatar"
-        />
-        <div className="font-medium">
-          <h1 className="2xl:text-xl">{userMessage[0]?.sender?.name}</h1>
+      {newMessages ? (
+        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
+          <Image
+            src={newMessages[0]?.sender?.image}
+            width={50}
+            height={50}
+            alt="avatar"
+          />
+          <div className="font-medium">
+            <h1 className="2xl:text-xl">{newMessages[0]?.sender?.name}</h1>
+          </div>
         </div>
-      </div>
+      ) : (
+        <p className="text-center p-2 font-medium">Select User</p>
+      )}
 
       {/* Messages */}
       <div className="flex-1 flex flex-col p-4 overflow-y-auto hide-scrollbar">
         <div className="space-y-4">
-          {userMessage
+          {newMessages
             ?.sort(
               (a, b) =>
                 new Date(a.createdAt).getTime() -

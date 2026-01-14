@@ -1,4 +1,5 @@
 "use client";
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -19,30 +20,27 @@ export const SocketProvider = ({
 }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  console.log("token----------------", token);
-
   useEffect(() => {
+    if (!token) return;
+    console.log("Token in SocketContext", token);
+
     const newSocket = io(process.env.NEXT_PUBLIC_IMAGE_URL as string, {
       transports: ["websocket"],
       withCredentials: true,
       auth: { token },
     });
+    // console.log("New Socket : ", newSocket);
 
-    console.log("new socket", newSocket);
-
-    // ✅ connection success
     newSocket.on("connect", () => {
       console.log("Socket connected:", newSocket.id);
     });
 
-    // ❌ disconnected
     newSocket.on("disconnect", (reason) => {
       console.log("Socket disconnected:", reason);
     });
 
-    // ❌ connection error
     newSocket.on("connect_error", (error) => {
-      console.error("Socket connection error:", error.message);
+      console.error("Socket error:", error.message);
     });
 
     setSocket(newSocket);
@@ -59,5 +57,4 @@ export const SocketProvider = ({
   );
 };
 
-export const useSocket = ({ token }: { token: string }) =>
-  useContext(SocketContext);
+export const useSocket = () => useContext(SocketContext);

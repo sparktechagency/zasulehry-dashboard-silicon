@@ -6,10 +6,7 @@ import { getToken } from "@/utils/getToken";
 
 export default async function Inbox({ userId }: { userId: string }) {
   const userList = await myFetch("/chats");
-  const userMessage = await myFetch(`/messages/chat/${userId}`);
   const userChatDetails = await myFetch(`/chats/${userId}`);
-
-  console.log("userChatDetails", userChatDetails);
   const token = await getToken();
 
   return (
@@ -20,7 +17,6 @@ export default async function Inbox({ userId }: { userId: string }) {
       <div>
         <MessageChart
           userId={userId}
-          userMessage={userMessage?.data}
           token={token}
           userChatDetails={userChatDetails?.data}
         />

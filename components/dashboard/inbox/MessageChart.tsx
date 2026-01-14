@@ -2,15 +2,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-
 import { useSocket } from "@/lib/SocketContext";
 import { myFetch } from "@/utils/myFetch";
-import avatarImg from "../../../public/user.png";
 import ChatInput from "./ChartInput";
-import { getImageSrc } from "@/components/share/getImage";
-import dayjs from "dayjs";
 import CustomImage from "@/share/CustomImage";
+import { Message } from "../supportUser/Message";
+import MessagesContainer from "./MessagesContainer";
 
 type Message = {
   sender: any;
@@ -23,24 +20,109 @@ type Message = {
 
 interface Props {
   userId: string;
-  userMessage: Message[];
   token: string;
   userChatDetails: any;
 }
 
-const ChatMessages = ({ userId, userMessage, userChatDetails }: Props) => {
+const MESSAGES_PER_PAGE = 5;
+
+const ChatMessages = ({ userId, userChatDetails }: Props) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const [newMessages, setNewMessages] = useState<Message[]>(userMessage || []);
+  const [newMessages, setNewMessages] = useState<Message[]>([]);
   const [userTextMessage, setUserTextMessage] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [myProfile, setMyProfile] = useState<any>(null);
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // ------------------- GET MY PROFILE -------------------
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const res = await myFetch("/users/profile");
+      setMyProfile(res?.data);
+    };
+    fetchProfile();
+  }, []);
+
+  // ------------------- FETCH MESSAGES -------------------
+  const fetchMessages = async (pageNumber: number, firstLoad = false) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    const res = await myFetch(
+      `/messages/chat/${userId}?page=${pageNumber}&limit=${MESSAGES_PER_PAGE}`
+    );
+
+    const messages = res?.data || [];
+
+    if (messages.length < MESSAGES_PER_PAGE) setHasMore(false);
+
+    setNewMessages((prev) => (firstLoad ? messages : [...messages, ...prev]));
+
+    setLoading(false);
+
+    // Scroll to bottom only on first load
+    if (firstLoad) {
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "auto" });
+      }, 100);
+    }
+  };
+
+  // Initial fetch
+  useEffect(() => {
+    setNewMessages([]);
+    setPage(1);
+    setHasMore(true);
+    fetchMessages(1, true);
+  }, [userId]);
+
+  // ------------------- SCROLL TO TOP LOADING -------------------
+  useEffect(() => {
+    const div = containerRef.current;
+    if (!div) return;
+
+    const handleScroll = () => {
+      if (div.scrollTop === 0 && hasMore && !loading) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        fetchMessages(nextPage);
+      }
+    };
+
+    div.addEventListener("scroll", handleScroll);
+    return () => div.removeEventListener("scroll", handleScroll);
+  }, [page, hasMore, loading]);
 
   const { socket } = useSocket();
 
-  // console.log("userMessage", userMessage);
+  // get profile
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await myFetch("/users/profile");
+      setMyProfile(res?.data);
+      console.log("myProfile", res?.data);
+    };
+    fetchData();
+  }, []);
+
+  // console.log("userMessage", userMessage);
+  useEffect(() => {
+    const getMessages = async () => {
+      const userMessage = await myFetch(`/messages/chat/${userId}`);
+      setNewMessages(userMessage?.data || []);
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    getMessages();
+  }, [userId]);
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {
     if (!socket || !userId) return;
@@ -124,78 +206,14 @@ const ChatMessages = ({ userId, userMessage, userChatDetails }: Props) => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 flex flex-col p-4 overflow-y-auto hide-scrollbar">
-        <div className="space-y-4">
-          {newMessages
-            ?.sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()
-            )
-            ?.map((item, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  item?.chat ? "justify-end" : "justify-start"
-                }`}
-              >
-                {item.sender === "other" && (
-                  <Image
-                    src={avatarImg}
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full mr-2"
-                  />
-                )}
-
-                <div>
-                  <div className="flex justify-end">
-                    <p>{dayjs(item?.createdAt).format("ddd, MMM D")}</p>
-                  </div>
-                  {item.text && (
-                    <div
-                      className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg flex  ${
-                        item?.chat
-                          ? "bg-cyan-900 rounded-br-none text-white "
-                          : "bg-[#B2D1D8] rounded-bl-none text-[#545454] "
-                      }`}
-                    >
-                      {item.text}
-                    </div>
-                  )}
-                  {item.image && (
-                    <div className="mt-1">
-                      <Image
-                        src={getImageSrc(item?.image)}
-                        alt={item.text || "Message image"}
-                        width={200}
-                        height={200}
-                        className="rounded object-contain max-h-60"
-                      />
-                    </div>
-                  )}
-                  <div className="text-[#B0B0B0] text-right text-[9px] mt-1">
-                    {item.time}
-                  </div>
-                </div>
-              </div>
-            ))}
-
-          {/* Preview Image */}
-          {previewImage && (
-            <div className="flex justify-end mt-2">
-              <Image
-                src={previewImage}
-                alt="preview"
-                width={120}
-                height={120}
-                className="rounded object-contain"
-              />
-            </div>
-          )}
-
-          <div ref={bottomRef} />
-        </div>
-      </div>
+      <MessagesContainer
+        containerRef={containerRef}
+        newMessages={newMessages}
+        myProfile={myProfile}
+        loading={loading}
+        previewImage={previewImage}
+        bottomRef={bottomRef}
+      />
 
       {/* Input */}
       <div className="border-t">

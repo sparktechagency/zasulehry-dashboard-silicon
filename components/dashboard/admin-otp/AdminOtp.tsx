@@ -12,14 +12,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
 
-interface AdminOtpProps {
-  trigger: React.ReactNode;
-  passwordData: {
-    email?: string;
-    password?: string;
-  };
-}
-
 export default function AdminOtp({ trigger, passwordData }: any) {
   const [open, setOpen] = useState(false);
   const [otp, setOtp] = useState("");

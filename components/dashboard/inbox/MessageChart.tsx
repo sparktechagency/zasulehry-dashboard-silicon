@@ -105,9 +105,14 @@ const ChatMessages = ({ userId, userMessage }: Props) => {
     >
       {/* Header */}
       <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
-        <Image src={avatarImg} width={50} height={50} alt="avatar" />
+        <Image
+          src={userMessage[0]?.sender?.name}
+          width={50}
+          height={50}
+          alt="avatar"
+        />
         <div className="font-medium">
-          <h1 className="2xl:text-xl">Kamran Khan</h1>
+          <h1 className="2xl:text-xl">{userMessage[0]?.sender?.name}</h1>
         </div>
       </div>
 

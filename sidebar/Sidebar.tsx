@@ -74,6 +74,7 @@ export const sidebarMenu = [
     icon: CheckCheck,
     path: "/dashboard/verify-request",
   },
+
   {
     id: 11,
     label: "Privacy Policy",
@@ -98,9 +99,13 @@ export const sidebarMenu = [
     icon: UserStar,
     path: "/dashboard/sub-admin",
   },
-  // { id: 15, label: "Inbox", icon: MessageCircleMore, path: "/dashboard/inbox" },
   { id: 8, label: "My Profile", icon: UserPen, path: "/dashboard/my-profile" },
-  // { id: 16, label: "Log Out", icon: LogOut, path: "/dashboard/login" },
+  {
+    id: 21,
+    label: "My Number",
+    icon: Phone,
+    path: "/dashboard/number-verification",
+  },
 ];
 
 import Image from "next/image";
@@ -179,11 +184,11 @@ export default function Sidebar() {
                     item?.label === "Log Out"
                       ? "text-red-600"
                       : isActive ||
-                        isEmployerListActive ||
-                        isActiveInvoice ||
-                        jobSeekerListActive
-                      ? "active-link"
-                      : "text-gray-800"
+                          isEmployerListActive ||
+                          isActiveInvoice ||
+                          jobSeekerListActive
+                        ? "active-link"
+                        : "text-gray-800"
                   }`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />

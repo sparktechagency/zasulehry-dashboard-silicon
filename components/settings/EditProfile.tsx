@@ -52,6 +52,8 @@ export default function EditProfile({
     },
   });
 
+  console.log("update data", data);
+
   // ✅ Reset form when data comes (API / parent state)
   useEffect(() => {
     if (data) {
@@ -173,9 +175,7 @@ export default function EditProfile({
           </label>
           <Input
             type="number"
-            {...register("phone", {
-              required: "Contact number is required",
-            })}
+            {...register("phone")}
             placeholder="Your contact number"
             className="w-full rounded-md border border-gray-300 bg-white"
           />

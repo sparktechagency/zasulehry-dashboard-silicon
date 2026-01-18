@@ -3,7 +3,6 @@
 import { Upload } from "lucide-react";
 import React, { useRef, useState } from "react";
 import UploadDocument from "../document-upload/page";
-import TablePagination from "@/components/share/Pagination";
 import PdfUploadEdit from "../document-upload/PdfUploader";
 
 export default function UploadDocumentPage({ data }: any) {
@@ -40,7 +39,6 @@ export default function UploadDocumentPage({ data }: any) {
 
       {/* upload details */}
       <UploadDocument data={data} />
-      <TablePagination />
     </div>
   );
 }

@@ -11,10 +11,13 @@ export default function MyProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await myFetch("/users/profile", {
+      const res = await myFetch("/users?role=Super Admin", {
         tags: ["profile"],
       });
-      setData(res?.data);
+
+      console.log("res", res.data);
+
+      setData(res?.data[0] || null);
     };
     fetchData();
   }, []);

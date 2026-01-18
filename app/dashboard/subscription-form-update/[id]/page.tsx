@@ -104,7 +104,7 @@ function SubscriptionIdSuscription() {
   return (
     <div className="w-[50%] mx-auto">
       <div>
-        <Link href="/subscription">
+        <Link href="/dashboard/subscription">
           <div className="flex items-center gap-2 mb-4 text-black">
             <ArrowLeft className="w-5 h-5" />
             <span className="text-xl font-semibold">

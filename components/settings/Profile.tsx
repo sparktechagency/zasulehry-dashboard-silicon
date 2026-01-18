@@ -10,6 +10,8 @@ export default function Profile({
   setProfile: (value: string) => void;
   data: any;
 }) {
+  console.log("data", data);
+
   return (
     <div className="bg-white p-5 rounded-xl shadow-md border w-[40%] mx-auto">
       {/* Profile Image */}

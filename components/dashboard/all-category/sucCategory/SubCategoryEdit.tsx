@@ -104,7 +104,7 @@ export function SubCategoryEdit({
         {
           method: isEdit ? "PATCH" : "POST",
           body: payload,
-        }
+        },
       );
 
       if (!res?.success) {
@@ -113,7 +113,7 @@ export function SubCategoryEdit({
         toast.success(
           isEdit
             ? "Category updated successfully"
-            : "Category created successfully"
+            : "Category created successfully",
         );
         revalidate("categories");
         setOpen(false);
@@ -175,7 +175,7 @@ export function SubCategoryEdit({
                     <button
                       type="button"
                       onClick={() => remove(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 cursor-pointer"
                     >
                       <Minus />
                     </button>

@@ -1,14 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "./utils/getToken";
-import { cookies } from "next/headers";
+import { myFetch } from "./utils/myFetch";
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken(); // read cookies/headers
-  const cookieStore = await cookies();
-  const role = cookieStore.get("role")?.value;
+  // redirect to dashboard by default root path
+  if (request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
-  // Only allow access if token exists AND role is Super Admin
-  if (!token || role !== "Super Admin") {
+  const token = await getToken();
+
+  // Only allow access if token exists
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // check if user role is admin
+  const user = await myFetch("/users/profile");
+
+  if (user?.data?.role !== "Admin" && user?.data?.role !== "Super Admin") {
+    request.cookies.delete("accessToken");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

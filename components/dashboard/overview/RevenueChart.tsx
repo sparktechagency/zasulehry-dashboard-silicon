@@ -130,15 +130,32 @@ interface Props {
   };
 }
 
+// const renderCustomTooltip = ({
+//   active,
+//   payload,
+// }: {
+//   active?: boolean;
+//   payload?: any[];
+// }) => {
+//   if (active && payload?.length) {
+//     const value = payload[0].value;
+//     return (
+//       <div className="bg-white p-2 rounded-md shadow text-sm">
+//         <p className="font-semibold">${value.toLocaleString()}</p>
+//       </div>
+//     );
+//   }
+//   return null;
+// };
+
+import { TooltipContentProps } from "recharts";
+
 const renderCustomTooltip = ({
   active,
   payload,
-}: {
-  active?: boolean;
-  payload?: any[];
-}) => {
+}: TooltipContentProps<number, string>) => {
   if (active && payload?.length) {
-    const value = payload[0].value;
+    const value = payload[0].value as number;
     return (
       <div className="bg-white p-2 rounded-md shadow text-sm">
         <p className="font-semibold">${value.toLocaleString()}</p>

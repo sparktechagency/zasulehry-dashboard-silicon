@@ -27,8 +27,6 @@ export default function LoginForm() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("data", data);
-
     try {
       const res = await myFetch("/auth/login", {
         method: "POST",
@@ -36,11 +34,15 @@ export default function LoginForm() {
       });
 
       if (res?.success) {
+        // deny access if not admin
+        if (res?.data?.role !== "Admin" && res?.data?.role !== "Super Admin") {
+          toast.error("Access denied. Admins only.");
+          return;
+        }
+        // otherwise proceed
         toast.success(res?.message);
-
         setCookie("accessToken", res?.data?.accessToken);
         setCookie("role", res?.data?.role);
-
         router.push("/dashboard");
       } else {
         toast.error(res?.message || "Login failed");

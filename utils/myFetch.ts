@@ -35,7 +35,7 @@ export const myFetch = async (
     token,
     headers = {},
     cache = "no-store",
-  }: FetchOptions = {}
+  }: FetchOptions = {},
 ): Promise<FetchResponse> => {
   const accessToken = await getToken();
 
@@ -49,6 +49,8 @@ export const myFetch = async (
     ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     ...(token ? { Authorization: `${token}` } : {}),
   };
+
+  console.log("process.env.BASE_URL", process.env.BASE_URL);
 
   try {
     const response = await fetch(`${process.env.BASE_URL}${url}`, {

@@ -32,7 +32,6 @@ export default function LoginForm() {
         method: "POST",
         body: data,
       });
-      console.log("res from login", res);
 
       if (res?.success) {
         // deny access if not admin

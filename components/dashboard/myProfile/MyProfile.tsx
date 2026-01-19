@@ -15,8 +15,6 @@ export default function MyProfile() {
         tags: ["profile"],
       });
 
-      console.log("res", res.data);
-
       setData(res?.data[0] || null);
     };
     fetchData();

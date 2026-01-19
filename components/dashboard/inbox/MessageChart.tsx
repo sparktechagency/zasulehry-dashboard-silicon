@@ -109,7 +109,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     const fetchData = async () => {
       const res = await myFetch("/users/profile");
       setMyProfile(res?.data);
-      console.log("myProfile", res?.data);
     };
     fetchData();
   }, []);
@@ -235,7 +234,10 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
           </div>
         </>
       ) : (
-        <div className="text-center py-20 text-gray-400">  No User Found Please select a user</div>
+        <div className="text-center py-20 text-gray-400">
+          {" "}
+          No User Found Please select a user
+        </div>
       )}
     </div>
   );

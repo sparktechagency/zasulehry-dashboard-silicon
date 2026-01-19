@@ -50,8 +50,6 @@ export const myFetch = async (
     ...(token ? { Authorization: `${token}` } : {}),
   };
 
-  console.log("process.env.BASE_URL", process.env.BASE_URL);
-
   try {
     const response = await fetch(`https://kemir.naimulhassan.me/api/v1${url}`, {
       method,

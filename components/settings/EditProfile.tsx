@@ -52,8 +52,6 @@ export default function EditProfile({
     },
   });
 
-  console.log("update data", data);
-
   // ✅ Reset form when data comes (API / parent state)
   useEffect(() => {
     if (data) {

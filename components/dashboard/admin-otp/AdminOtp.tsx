@@ -29,8 +29,6 @@ export default function AdminOtp({ trigger, passwordData }: any) {
       oneTimeCode: Number(otp),
     };
 
-    console.log("payload", payload);
-
     try {
       const res = await myFetch("/auth/change-admin-password", {
         method: "POST",

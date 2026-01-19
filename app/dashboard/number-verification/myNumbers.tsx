@@ -24,8 +24,6 @@ export default function MyNumber({ res }: any) {
     reset({ whatsApp: res?.whatsApp });
   }, [res?.whatsApp, reset]);
 
-  console.log("res", res);
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await myFetch(`/contact`, {

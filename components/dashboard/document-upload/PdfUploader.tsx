@@ -31,6 +31,7 @@ export default function PdfUploadEdit({ item, trigger }: Props) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     defaultValues: {
@@ -72,9 +73,11 @@ export default function PdfUploadEdit({ item, trigger }: Props) {
 
       if (res.success) {
         toast.success(
-          item?._id ? "PDF updated successfully" : "PDF uploaded successfully"
+          item?._id ? "PDF updated successfully" : "PDF uploaded successfully",
         );
         revalidate("drive");
+        reset();
+        setSelectedFile(null);
       } else {
         toast.error(res.error);
       }

@@ -14,7 +14,6 @@ export default function SocketAuthProvider({
   useEffect(() => {
     const fetchSocket = async () => {
       const storedToken = await getToken(); // or cookies
-      console.log("get token", storedToken);
 
       if (storedToken) {
         setToken(storedToken);

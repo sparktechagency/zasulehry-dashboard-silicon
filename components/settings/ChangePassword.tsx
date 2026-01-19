@@ -44,8 +44,6 @@ export default function ChangePassword() {
         method: "POST",
       });
 
-      console.log("res", res);
-
       if (res?.success) {
         const id = document.getElementById("otp-button");
         id?.click();

@@ -20,7 +20,6 @@ interface GivePackageProps {
 
 export default function GivePackage({ packages, trigger }: GivePackageProps) {
   const [open, setOpen] = useState(false);
-  console.log("packages", packages);
 
   const handleActivate = async (plan: Plan) => {
     setOpen(false);

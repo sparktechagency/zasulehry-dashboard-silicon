@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
         hostname: "i.ibb.co.com",
       },
       {
+        protocol: "https",
+        hostname: "kemir.naimulhassan.me",
+      },
+      {
         // protocol: "https",
         hostname: "10.10.7.7",
       },

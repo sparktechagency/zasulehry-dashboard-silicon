@@ -39,13 +39,7 @@ export default async function Support({ searchParams }: Props) {
 
   return (
     <div className="w-full">
-      {res?.data.length > 0 ? (
-        <SupportUser data={res} />
-      ) : (
-        <p className="text-center text-gray-500 mt-10">
-          No support requests found.
-        </p>
-      )}
+      <SupportUser data={res} />
     </div>
   );
 }

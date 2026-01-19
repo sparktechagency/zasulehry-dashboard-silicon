@@ -1,4 +1,3 @@
-import React from "react";
 import AllUserChart from "./AllUserChart";
 import MessageChart from "./MessageChart";
 import { myFetch } from "@/utils/myFetch";
@@ -15,11 +14,13 @@ export default async function Inbox({ userId }: { userId: string }) {
         <AllUserChart chatList={userList?.data} />
       </div>
       <div>
-        <MessageChart
-          userId={userId}
-          token={token}
-          userChatDetails={userChatDetails?.data}
-        />
+        {
+          <MessageChart
+            userId={userId}
+            token={token}
+            userChatDetails={userChatDetails?.data}
+          />
+        }
       </div>
     </section>
   );

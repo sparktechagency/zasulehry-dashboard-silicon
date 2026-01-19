@@ -57,7 +57,7 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
 
     setLoading(true);
     const res = await myFetch(
-      `/messages/chat/${userId}?page=${pageNumber}&limit=${MESSAGES_PER_PAGE}`
+      `/messages/chat/${userId}?page=${pageNumber}&limit=${MESSAGES_PER_PAGE}`,
     );
 
     const messages = res?.data || [];
@@ -191,40 +191,52 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     >
       {/* Header */}
 
-      <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
-        <CustomImage
-          src={userChatDetails?.anotherParticipant?.image}
-          width={50}
-          height={50}
-          title="avatar"
-        />
-        <div className="font-medium">
-          <h1 className="2xl:text-xl">
-            {userChatDetails?.anotherParticipant?.name}
-          </h1>
+      {userChatDetails?.length > 0 ? (
+        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
+          <CustomImage
+            src={userChatDetails?.anotherParticipant?.image}
+            width={50}
+            height={50}
+            title="avatar"
+          />
+          <div className="font-medium">
+            <h1 className="2xl:text-xl">
+              {userChatDetails?.anotherParticipant?.name}
+            </h1>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200 text-gray-400">
+          No User Found Please select a user
+        </div>
+      )}
 
       {/* Messages */}
-      <MessagesContainer
-        containerRef={containerRef}
-        newMessages={newMessages}
-        myProfile={myProfile}
-        loading={loading}
-        previewImage={previewImage}
-        bottomRef={bottomRef}
-      />
+      {userChatDetails?.length > 0 ? (
+        <>
+          <MessagesContainer
+            containerRef={containerRef}
+            newMessages={newMessages}
+            myProfile={myProfile}
+            loading={loading}
+            previewImage={previewImage}
+            bottomRef={bottomRef}
+          />
 
-      {/* Input */}
-      <div className="border-t">
-        <ChatInput
-          message={userTextMessage}
-          setMessage={setUserTextMessage}
-          onHandle={handleMessageSend}
-          onHandleImage={handleImageUpload}
-          fileInputRef={fileInputRef}
-        />
-      </div>
+          {/* Input */}
+          <div className="border-t">
+            <ChatInput
+              message={userTextMessage}
+              setMessage={setUserTextMessage}
+              onHandle={handleMessageSend}
+              onHandleImage={handleImageUpload}
+              fileInputRef={fileInputRef}
+            />
+          </div>
+        </>
+      ) : (
+        <div className="text-center py-20 text-gray-400">  No User Found Please select a user</div>
+      )}
     </div>
   );
 };

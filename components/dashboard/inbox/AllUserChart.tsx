@@ -24,13 +24,17 @@ const AllUserChart = ({ chatList }: any) => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-2 hide-scrollbar">
-        <div className="mr-4">
-          {chatList?.map((chat: any, index: number) => (
-            <ChatCard key={index} card={chat} />
-          ))}
+      {chatList.length > 0 ? (
+        <div className="flex-1 overflow-y-auto space-y-2 hide-scrollbar">
+          <div className="mr-4">
+            {chatList?.map((chat: any, index: number) => (
+              <ChatCard key={index} card={chat} />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center text-gray-400 mt-20"> No Chats Found </div>
+      )}
     </div>
   );
 };

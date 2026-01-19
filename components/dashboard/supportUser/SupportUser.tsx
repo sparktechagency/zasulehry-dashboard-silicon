@@ -28,68 +28,74 @@ export default function SupportUser({ data }: { data: any }) {
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
         <SearchBar title="Support Request" options={statusOption} />
 
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-blue-100 text-gray-600 ">
-              <TableHead>Unique ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="pl-8">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data?.data?.map((employer: any) => (
-              <TableRow key={employer._id}>
-                <TableCell className="font-medium">#22025</TableCell>
-
-                <TableCell className="flex items-center gap-2">
-                  <CustomImage
-                    src={employer?.attachment}
-                    title={employer.name}
-                    width={40}
-                    height={40}
-                    className="rounded-full w-12 h-12"
-                  />
-                  <Message item={employer} title={employer.name} />
-                </TableCell>
-
-                <TableCell>{employer.email}</TableCell>
-                <TableCell>{employer.phone}</TableCell>
-                <TableCell>{employer.address || "No Location"}</TableCell>
-                <TableCell>
-                  <Badge
-                    className={`${
-                      employer.status === "Resolved"
-                        ? "bg-green-600"
-                        : "bg-[#D21D1D]"
-                    } text-white w-20 h-8 text-sm 2xl:h-10`}
-                  >
-                    {employer.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    <Message item={employer} />
-                    {/* <Delete id={employer?._id} /> */}
-                    <SupportStatusChange
-                      item={employer}
-                      trigger={
-                        employer?.status === "Resolved" ? (
-                          <Unlock className="cursor-pointer" />
-                        ) : (
-                          <Lock className="text-red-600 size-5 2xl:size-7 cursor-pointer" />
-                        )
-                      }
-                    />
-                  </div>
-                </TableCell>
+        {data?.data.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-blue-100 text-gray-600 ">
+                <TableHead>Unique ID</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="pl-8">Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data?.data?.map((employer: any) => (
+                <TableRow key={employer._id}>
+                  <TableCell className="font-medium">#22025</TableCell>
+
+                  <TableCell className="flex items-center gap-2">
+                    <CustomImage
+                      src={employer?.attachment}
+                      title={employer.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full w-12 h-12"
+                    />
+                    <Message item={employer} title={employer.name} />
+                  </TableCell>
+
+                  <TableCell>{employer.email}</TableCell>
+                  <TableCell>{employer.phone || "No Phone"}</TableCell>
+                  <TableCell>{employer.address || "No Location"}</TableCell>
+                  <TableCell>
+                    <Badge
+                      className={`${
+                        employer.status === "Resolved"
+                          ? "bg-green-600"
+                          : "bg-[#D21D1D]"
+                      } text-white w-20 h-8 text-sm 2xl:h-10`}
+                    >
+                      {employer.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <Message item={employer} />
+                      {/* <Delete id={employer?._id} /> */}
+                      <SupportStatusChange
+                        item={employer}
+                        trigger={
+                          employer?.status === "Resolved" ? (
+                            <Unlock className="cursor-pointer" />
+                          ) : (
+                            <Lock className="text-red-600 size-5 2xl:size-7 cursor-pointer" />
+                          )
+                        }
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <p className="text-center text-gray-500 mt-10">
+            No support requests found.
+          </p>
+        )}
       </div>
 
       {/* <Table data={employers} /> */}

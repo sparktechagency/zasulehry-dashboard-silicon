@@ -5,18 +5,21 @@ type Props = {
   searchParams?: {
     name?: string;
     status?: string;
+    page: string;
   };
 };
 
 export default async function AllEmployee({ searchParams }: Props) {
   const name = (await searchParams)?.name || "";
   const status = (await searchParams)?.status || "";
+  const page = (await searchParams)?.page || "";
 
   const params = new URLSearchParams();
   params.append("role", "Employer");
 
   if (name) params.append("searchTerm", name);
   if (status) params.append("status", status);
+  if (page) params.append("page", page);
 
   // let data: any[] = [];
 

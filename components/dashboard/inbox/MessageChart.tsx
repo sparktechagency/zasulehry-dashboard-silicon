@@ -37,6 +37,8 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [myProfile, setMyProfile] = useState<any>(null);
 
+  const { socket } = useSocket();
+
   // Pagination state
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -100,8 +102,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     div.addEventListener("scroll", handleScroll);
     return () => div.removeEventListener("scroll", handleScroll);
   }, [page, hasMore, loading]);
-
-  const { socket } = useSocket();
 
   // get profile
 

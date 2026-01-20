@@ -6,6 +6,8 @@ import { toast } from "sonner";
 
 export default function Message({ id }: { id: string }) {
   const router = useRouter();
+  console.log("id", id);
+
   const handleInbox = async () => {
     try {
       const res = await myFetch(`/chats/create`, {
@@ -28,6 +30,7 @@ export default function Message({ id }: { id: string }) {
       );
     }
   };
+
   return (
     <Button
       onClick={handleInbox}

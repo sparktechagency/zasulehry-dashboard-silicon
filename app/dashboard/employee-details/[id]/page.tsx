@@ -14,6 +14,8 @@ export default async function page({ params }: { params: { id: string } }) {
   const packages = await myFetch("/subscriptions/subscribers");
   const giftSubscription = await myFetch("/subscriptions/subscribers");
 
+  console.log("res", res);
+
   const user = {
     name: res?.data?.user?.name,
     email: res?.data?.user?.email,
@@ -97,7 +99,7 @@ export default async function page({ params }: { params: { id: string } }) {
             user from here.
           </p>
           <div className="flex gap-3">
-            <Message id={res?.data?._id} />
+            <Message id={res?.data?.user?._id} />
             <EmployeeStatusChange id={res?.data?.user?._id} />
           </div>
         </div>

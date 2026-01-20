@@ -190,55 +190,43 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     >
       {/* Header */}
 
-      {userChatDetails?.length > 0 ? (
-        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
-          <CustomImage
-            src={userChatDetails?.anotherParticipant?.image}
-            width={50}
-            height={50}
-            title="avatar"
-          />
-          <div className="font-medium">
-            <h1 className="2xl:text-xl">
-              {userChatDetails?.anotherParticipant?.name}
-            </h1>
-          </div>
+      <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200">
+        <CustomImage
+          src={userChatDetails?.anotherParticipant?.image}
+          width={50}
+          height={50}
+          title="avatar"
+        />
+        <div className="font-medium">
+          <h1 className="2xl:text-xl">
+            {userChatDetails?.anotherParticipant?.name}
+          </h1>
         </div>
-      ) : (
-        <div className="flex items-center gap-2 py-4 px-5 border-b-2 border-gray-200 text-gray-400">
-          No User Found Please select a user
-        </div>
-      )}
+      </div>
 
       {/* Messages */}
-      {userChatDetails?.length > 0 ? (
-        <>
-          <MessagesContainer
-            containerRef={containerRef}
-            newMessages={newMessages}
-            myProfile={myProfile}
-            loading={loading}
-            previewImage={previewImage}
-            bottomRef={bottomRef}
-          />
 
-          {/* Input */}
-          <div className="border-t">
-            <ChatInput
-              message={userTextMessage}
-              setMessage={setUserTextMessage}
-              onHandle={handleMessageSend}
-              onHandleImage={handleImageUpload}
-              fileInputRef={fileInputRef}
-            />
-          </div>
-        </>
-      ) : (
-        <div className="text-center py-20 text-gray-400">
-          {" "}
-          No User Found Please select a user
+      <>
+        <MessagesContainer
+          containerRef={containerRef}
+          newMessages={newMessages}
+          myProfile={myProfile}
+          loading={loading}
+          previewImage={previewImage}
+          bottomRef={bottomRef}
+        />
+
+        {/* Input */}
+        <div className="border-t">
+          <ChatInput
+            message={userTextMessage}
+            setMessage={setUserTextMessage}
+            onHandle={handleMessageSend}
+            onHandleImage={handleImageUpload}
+            fileInputRef={fileInputRef}
+          />
         </div>
-      )}
+      </>
     </div>
   );
 };

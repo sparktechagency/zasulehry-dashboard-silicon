@@ -1,13 +1,12 @@
 import GivePackage from "@/components/dashboard/allEmployeeList/GivePackage";
 import { SwitchDemo } from "@/components/dashboard/allEmployeeList/Switch";
-import Button from "@/components/share/Button";
 import { getImageSrc } from "@/components/share/getImage";
 import { myFetch } from "@/utils/myFetch";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import EmployeeStatusChange from "../EmployeeStatusChange";
+import Message from "./Message";
+import Link from "next/link";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -28,7 +27,7 @@ export default async function page({ params }: { params: { id: string } }) {
     <div>
       <div className="p-6">
         <div className="flex items-center  justify-between gap-2 mb-4">
-          <Link href="/all-employee-list">
+          <Link href="/dashboard/all-employee-list">
             <div className="flex items-center gap-2 mb-4 text-black">
               <ArrowLeft className="w-5 h-5" />
               <h2 className="text-lg font-semibold">View Details</h2>
@@ -98,11 +97,7 @@ export default async function page({ params }: { params: { id: string } }) {
             user from here.
           </p>
           <div className="flex gap-3">
-            <Link href="/dashboard/inbox">
-              <Button className="btn-design text-white  px-6 rounded-full">
-                Message
-              </Button>
-            </Link>
+            <Message id={res?.data?._id} />
             <EmployeeStatusChange id={res?.data?.user?._id} />
           </div>
         </div>

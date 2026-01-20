@@ -10,8 +10,10 @@ import { ArrowLeft } from "lucide-react";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { revalidate } from "@/utils/revalidateTags";
+import { useRouter } from "next/navigation";
 
 export default function JobDetails({ data }: any) {
+  const router = useRouter();
   const user = {
     name: data?.user?.name,
     email: data?.user?.email,
@@ -39,6 +41,29 @@ export default function JobDetails({ data }: any) {
       }
     } catch (err) {
       toast.error(err instanceof Error ? err?.message : "Something went wrong");
+    }
+  };
+
+  const handleInbox = async (appointmentId: string) => {
+    try {
+      const res = await myFetch(`/chats/create`, {
+        method: "POST",
+        body: {
+          participants: [appointmentId],
+        },
+      });
+
+      console.log("res", res);
+
+      // if (res.success) {
+      //   router.push(`/dashboard/inbox`);
+      // } else {
+      //   toast.error((res as any)?.error[0]?.message);
+      // }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "something went wrong",
+      );
     }
   };
   return (
@@ -93,11 +118,13 @@ export default function JobDetails({ data }: any) {
           user from here.
         </p>
         <div className="flex gap-3">
-          <Link href="/dashboard/inbox">
-            <Button className="bg-[#0288A6] text-white  px-6 rounded-full">
-              Message
-            </Button>
-          </Link>
+          <Button
+            onClick={() => handleInbox(data?._id)}
+            className="bg-[#0288A6] text-white  px-6 rounded-full"
+          >
+            Message
+          </Button>
+
           <Button
             onClick={() => handleUpdateStatus(data?.user?._id)}
             className="bg-[#D21D1D]  text-white  px-6 rounded-full"

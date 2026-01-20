@@ -106,6 +106,12 @@ export const sidebarMenu = [
     icon: Phone,
     path: "/dashboard/number-verification",
   },
+  {
+    id: 22,
+    label: "Tax Calculator",
+    icon: Phone,
+    path: "/dashboard/tax",
+  },
 ];
 
 import Image from "next/image";

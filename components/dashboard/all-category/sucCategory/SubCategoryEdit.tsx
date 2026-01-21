@@ -117,6 +117,7 @@ export function SubCategoryEdit({
         );
         revalidate("categories");
         setOpen(false);
+        reset();
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong");

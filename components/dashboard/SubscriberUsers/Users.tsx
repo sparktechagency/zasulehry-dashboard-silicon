@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import dayjs from "dayjs";
 import SelectBar from "@/app/dashboard/verify-request/SelectBar";
+import CustomImage from "@/share/CustomImage";
 
 const statusOption = [
   { label: "All", value: "All" },
@@ -54,14 +55,12 @@ export default function Users({ users }: any) {
                 </TableCell>
 
                 <TableCell className="flex items-center gap-2 h-16">
-                  <Image
-                    src={
-                      `${process.env.NEXT_PUBLIC_IMAGE_URL}${user?.image}` ||
-                      "/default.png "
-                    }
-                    alt="avatar"
+                  <CustomImage
+                    src={user?.image}
+                    title={user.name}
                     width={32}
                     height={32}
+                    className="rounded-full h-12 w-12 object-cover"
                   />
                   <SunscriberDetails
                     item={user}
@@ -72,12 +71,12 @@ export default function Users({ users }: any) {
                 <TableCell>{user?.subscription?.price}</TableCell>
                 <TableCell>
                   {dayjs(user?.subscription?.currentPeriodStart).format(
-                    "YYYY-MM-DD"
+                    "YYYY-MM-DD",
                   )}
                 </TableCell>
                 <TableCell>
                   {dayjs(user?.subscription?.currentPeriodEnd).format(
-                    "YYYY-MM-DD"
+                    "YYYY-MM-DD",
                   )}
                 </TableCell>
                 <TableCell>

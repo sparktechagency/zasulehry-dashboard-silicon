@@ -32,7 +32,7 @@ export default function Page() {
       });
 
       if (res.success) {
-        toast.success(res.message || "Tax percentage updated successfully!");
+        toast.success("Tax percentage updated successfully!");
       } else {
         toast.error(res?.error || "Failed to update tax percentage.");
       }

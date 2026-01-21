@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
         hostname: "kemir.naimulhassan.me",
       },
       {
+        protocol: "https",
+        hostname: "jobsin.naimulhassan.me",
+      },
+      {
         // protocol: "https",
         hostname: "10.10.7.7",
       },

@@ -71,7 +71,7 @@ export default function SunscriberDetails({
                       <li key={index} className="text-xs 2xl:text-lg">
                         {feature}
                       </li>
-                    )
+                    ),
                   )}
                 </ul>
               </div>

@@ -70,7 +70,7 @@ function SubscriptionIdSuscription() {
       if (res?.success) {
         toast.success(res?.message);
         revalidate("package");
-        router.push("/dashboard/subscription");
+        // router.push("/dashboard/subscription");
       } else {
         toast.error(res?.message);
       }

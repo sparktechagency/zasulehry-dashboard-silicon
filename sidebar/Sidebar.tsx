@@ -100,12 +100,12 @@ export const sidebarMenu = [
     path: "/dashboard/sub-admin",
   },
   { id: 8, label: "My Profile", icon: UserPen, path: "/dashboard/my-profile" },
-  {
-    id: 21,
-    label: "My Number",
-    icon: Phone,
-    path: "/dashboard/number-verification",
-  },
+  // {
+  //   id: 21,
+  //   label: "My Number",
+  //   icon: Phone,
+  //   path: "/dashboard/number-verification",
+  // },
   {
     id: 22,
     label: "Tax Calculator",

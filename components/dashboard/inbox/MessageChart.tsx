@@ -113,7 +113,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     fetchData();
   }, []);
 
-  // console.log("userMessage", userMessage);
   useEffect(() => {
     const getMessages = async () => {
       const userMessage = await myFetch(`/messages/chat/${userId}`);
@@ -147,18 +146,25 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     if (userTextMessage) formData.append("text", userTextMessage);
     if (file) formData.append("image", file);
     formData.append("chat", userId);
+    // if (userId) formData.append("isMyMessage", true);
 
     try {
-      await myFetch("/messages/create", {
+      const res = await myFetch("/messages/create", {
         method: "POST",
         body: formData,
       });
 
-      setUserTextMessage("");
-      setFile(null);
-      setPreviewImage(null);
-
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (res.success) {
+        setUserTextMessage("");
+        setFile(null);
+        setPreviewImage(null);
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        setNewMessages((prev) => [
+          { ...res?.data, isMyMessage: true },
+          ,
+          ...prev,
+        ]);
+      }
     } catch (err) {
       console.error("Failed to send message:", err);
     }
@@ -196,6 +202,7 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
           width={50}
           height={50}
           title="avatar"
+          className="rounded-full w-14 h-14"
         />
         <div className="font-medium">
           <h1 className="2xl:text-xl">

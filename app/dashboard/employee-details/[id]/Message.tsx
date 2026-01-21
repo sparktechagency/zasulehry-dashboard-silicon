@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 export default function Message({ id }: { id: string }) {
   const router = useRouter();
-  console.log("id", id);
 
   const handleInbox = async () => {
     try {
@@ -16,8 +15,6 @@ export default function Message({ id }: { id: string }) {
           participants: [id],
         },
       });
-
-      console.log("res", res);
 
       if (res.success) {
         router.push(`/dashboard/inbox`);
@@ -34,7 +31,7 @@ export default function Message({ id }: { id: string }) {
   return (
     <Button
       onClick={handleInbox}
-      className="bg-[#0288A6] text-white  px-6 rounded-full"
+      className="bg-[#0288A6] text-white  px-6 rounded-full cursor-pointer"
     >
       Message
     </Button>

@@ -22,14 +22,12 @@ export const SocketProvider = ({
 
   useEffect(() => {
     if (!token) return;
-    console.log("Token in SocketContext", token);
 
     const newSocket = io(process.env.NEXT_PUBLIC_IMAGE_URL as string, {
       transports: ["websocket"],
       withCredentials: true,
       auth: { token },
     });
-    // console.log("New Socket : ", newSocket);
 
     newSocket.on("connect", () => {
       console.log("Socket connected:", newSocket.id);

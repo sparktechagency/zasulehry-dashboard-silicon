@@ -11,7 +11,6 @@ export const ChatCard = ({ card }: { card: any }) => {
 
   const selectChatId = () => {
     if (!socket) return;
-    console.log("Selected chat ID:", card?._id);
     socket.emit("joinChat", card?._id);
     router.push(`/dashboard/inbox?id=${card?._id}`);
   };

@@ -3,18 +3,16 @@ import { SwitchDemo } from "@/components/dashboard/allEmployeeList/Switch";
 import { getImageSrc } from "@/components/share/getImage";
 import { myFetch } from "@/utils/myFetch";
 import { ArrowLeft } from "lucide-react";
-import Image from "next/image";
 import EmployeeStatusChange from "../EmployeeStatusChange";
 import Message from "./Message";
 import Link from "next/link";
+import CustomImage from "@/share/CustomImage";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
   const res = await myFetch(`/employers/single/${id}`);
   const packages = await myFetch("/subscriptions/subscribers");
   const giftSubscription = await myFetch("/subscriptions/subscribers");
-
-  console.log("res", res);
 
   const user = {
     name: res?.data?.user?.name,
@@ -49,9 +47,9 @@ export default async function page({ params }: { params: { id: string } }) {
         {/* Card */}
         <div className="bg-white p-5 flex flex-col md:flex-row gap-6 items-start rounded-md">
           {/* Avatar */}
-          <Image
+          <CustomImage
             src={getImageSrc(user?.image)}
-            alt={user.name}
+            title={user.name}
             width={200}
             height={200}
             className=" rounded-full object-cover"

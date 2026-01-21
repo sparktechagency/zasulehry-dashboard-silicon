@@ -15,7 +15,6 @@ type FormValues = {
 
 export default function ChangePassword() {
   const [passwordData, setPasswordData] = useState<FormValues | null>(null);
-  console.log("passwordData", passwordData);
 
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,

@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className=" flex items-center justify-center mt-72">
       <form
         onSubmit={handleUpdateTax}
         className="w-full max-w-sm bg-white p-6 rounded-xl shadow-md"

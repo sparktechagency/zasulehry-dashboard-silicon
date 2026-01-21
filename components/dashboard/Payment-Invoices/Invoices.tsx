@@ -1,10 +1,7 @@
-import { ArrowDown, Eye, EyeIcon } from "lucide-react";
-import React from "react";
+import { ArrowDown, EyeIcon } from "lucide-react";
 import dayjs from "dayjs";
 
 export default function Invoices({ invoices }: any) {
-  console.log("invoices", invoices);
-
   return (
     <div className="max-w-sm mt-6">
       {/* Header */}

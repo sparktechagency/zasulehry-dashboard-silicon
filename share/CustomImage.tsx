@@ -38,6 +38,7 @@ export default function CustomImage({
       className={`object-cover ${className}`}
       loading="lazy"
       sizes="100vh"
+      unoptimized={true}
     />
   );
 }

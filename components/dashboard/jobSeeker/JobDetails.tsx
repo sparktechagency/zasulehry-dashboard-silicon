@@ -1,7 +1,5 @@
 "use client";
 import Button from "@/components/share/Button";
-
-import Image from "next/image";
 import PersonalInformation from "./PersonalInformation";
 import WorkInformation from "./WorkInformation";
 import ImageDetailsShow from "./ImageDetailsShow";
@@ -10,10 +8,10 @@ import { ArrowLeft } from "lucide-react";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { revalidate } from "@/utils/revalidateTags";
-import { useRouter } from "next/navigation";
+import Message from "@/app/dashboard/employee-details/[id]/Message";
+import CustomImage from "@/share/CustomImage";
 
 export default function JobDetails({ data }: any) {
-  const router = useRouter();
   const user = {
     name: data?.user?.name,
     email: data?.user?.email,
@@ -44,28 +42,6 @@ export default function JobDetails({ data }: any) {
     }
   };
 
-  const handleInbox = async (appointmentId: string) => {
-    try {
-      const res = await myFetch(`/chats/create`, {
-        method: "POST",
-        body: {
-          participants: [appointmentId],
-        },
-      });
-
-      console.log("res", res);
-
-      // if (res.success) {
-      //   router.push(`/dashboard/inbox`);
-      // } else {
-      //   toast.error((res as any)?.error[0]?.message);
-      // }
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "something went wrong",
-      );
-    }
-  };
   return (
     <section className="sm:max-w-[1000px] mx-auto">
       <Link href="/all-job-seeker">
@@ -78,13 +54,9 @@ export default function JobDetails({ data }: any) {
         <div className="p-6">
           {/* Card */}
           <div className="bg-white p-3 flex flex-col md:flex-row gap-6">
-            <Image
-              src={
-                user?.image
-                  ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${user.image}`
-                  : "/default.png"
-              }
-              alt={user.name}
+            <CustomImage
+              src={user.image}
+              title={user.name}
               width={200}
               height={60}
               className="w-48 h-48 rounded-full object-cover"
@@ -118,12 +90,7 @@ export default function JobDetails({ data }: any) {
           user from here.
         </p>
         <div className="flex gap-3">
-          <Button
-            onClick={() => handleInbox(data?._id)}
-            className="bg-[#0288A6] text-white  px-6 rounded-full"
-          >
-            Message
-          </Button>
+          <Message id={data?.user?._id} />
 
           <Button
             onClick={() => handleUpdateStatus(data?.user?._id)}

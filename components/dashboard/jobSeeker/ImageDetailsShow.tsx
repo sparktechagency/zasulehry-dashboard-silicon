@@ -1,5 +1,4 @@
-import Image from "next/image";
-import React from "react";
+import CustomImage from "@/share/CustomImage";
 
 export default function ImageDetailsShow({ images, data }: any) {
   return (
@@ -8,14 +7,10 @@ export default function ImageDetailsShow({ images, data }: any) {
       <div className="grid grid-cols-[40%_40%_auto] gap-3">
         <div className="grid grid-cols-3 gap-3">
           {images?.map((image: string, index: number) => (
-            <Image
+            <CustomImage
               key={index}
-              src={
-                image
-                  ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${image}`
-                  : "/default.png"
-              }
-              alt="job"
+              src={image}
+              title="name"
               width={220}
               height={220}
               className="rounded-md object-cover"

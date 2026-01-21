@@ -1,7 +1,6 @@
 import { getImageSrc } from "@/components/share/getImage";
 import dayjs from "dayjs";
 import Image from "next/image";
-import React from "react";
 import avatarImg from "../../../public/user.png";
 
 export default function MessagesContainer({
@@ -20,15 +19,13 @@ export default function MessagesContainer({
         {newMessages
           ?.sort(
             (a: any, b: any) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
           )
           ?.map((item: any, index: number) => (
             <div
               key={index}
               className={`flex ${
-                myProfile._id === item?.sender?._id
-                  ? "justify-end"
-                  : "justify-start"
+                item?.isMyMessage ? "justify-end" : "justify-start"
               }`}
             >
               {item.sender === "other" && (
@@ -46,8 +43,8 @@ export default function MessagesContainer({
                 {item.text && (
                   <div
                     className={`whitespace-pre-line px-4 py-1.5 rounded-lg text-xs 2xl:text-lg flex  ${
-                      myProfile._id === item?.sender?._id
-                        ? "bg-cyan-900 rounded-br-none text-white "
+                      item?.isMyMessage
+                        ? "bg-cyan-900 rounded-br-none text-white"
                         : "bg-[#B2D1D8] rounded-bl-none text-[#545454] "
                     }`}
                   >

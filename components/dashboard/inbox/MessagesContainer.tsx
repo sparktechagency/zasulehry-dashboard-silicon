@@ -6,7 +6,6 @@ import avatarImg from "../../../public/user.png";
 export default function MessagesContainer({
   containerRef,
   newMessages,
-  myProfile,
   previewImage,
   bottomRef,
 }: any) {

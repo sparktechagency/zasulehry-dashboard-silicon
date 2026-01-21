@@ -24,7 +24,7 @@ interface Props {
   userChatDetails: any;
 }
 
-const MESSAGES_PER_PAGE = 5;
+const MESSAGES_PER_PAGE = 9;
 
 const ChatMessages = ({ userId, userChatDetails }: Props) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +35,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
   const [userTextMessage, setUserTextMessage] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [myProfile, setMyProfile] = useState<any>(null);
 
   const { socket } = useSocket();
 
@@ -43,15 +42,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  // ------------------- GET MY PROFILE -------------------
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const res = await myFetch("/users/profile");
-      setMyProfile(res?.data);
-    };
-    fetchProfile();
-  }, []);
 
   // ------------------- FETCH MESSAGES -------------------
   const fetchMessages = async (pageNumber: number, firstLoad = false) => {
@@ -103,16 +93,7 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     return () => div.removeEventListener("scroll", handleScroll);
   }, [page, hasMore, loading]);
 
-  // get profile
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await myFetch("/users/profile");
-      setMyProfile(res?.data);
-    };
-    fetchData();
-  }, []);
-
+  // ---------------GET SINGLE BY ID---------------------------
   useEffect(() => {
     const getMessages = async () => {
       const userMessage = await myFetch(`/messages/chat/${userId}`);
@@ -217,7 +198,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
         <MessagesContainer
           containerRef={containerRef}
           newMessages={newMessages}
-          myProfile={myProfile}
           loading={loading}
           previewImage={previewImage}
           bottomRef={bottomRef}

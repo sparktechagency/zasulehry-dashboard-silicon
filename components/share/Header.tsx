@@ -6,7 +6,6 @@ import { Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { myFetch } from "@/utils/myFetch";
 import CustomImage from "@/share/CustomImage";
-import Image from "next/image";
 
 const auth = [
   { path: "/login" },

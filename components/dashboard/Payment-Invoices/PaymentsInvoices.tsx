@@ -1,11 +1,8 @@
-import React from "react";
 import Invoices from "./Invoices";
 import Header from "./Header";
-import { myFetch } from "@/utils/myFetch";
 import TablePagination from "@/components/share/Pagination";
 
-export default async function PaymentsInvoices() {
-  const res = await myFetch("/invoices");
+export default async function PaymentsInvoices({ res }: any) {
   return (
     <div className="p-5">
       <Header />

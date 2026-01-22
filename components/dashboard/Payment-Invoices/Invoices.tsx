@@ -1,5 +1,6 @@
-import { ArrowDown, EyeIcon } from "lucide-react";
+import { ArrowDown, EyeIcon, TrendingUp } from "lucide-react";
 import dayjs from "dayjs";
+import RefoundModal from "@/components/modal/RefoundModal";
 
 export default function Invoices({ invoices }: any) {
   return (
@@ -16,9 +17,7 @@ export default function Invoices({ invoices }: any) {
           {/* Transaction Info */}
           <div className="flex items-center justify-between bg-card p-4 rounded border border-gray-300/30 ">
             <div>
-              <p className="text-lg font-semibold">
-                {item?.stripeInvoiceId.slice(0, 10)}
-              </p>
+              <p className="text-lg font-semibold">{item?.invoiceNumber}</p>
               <p className="text-sm ">
                 {dayjs(item?.createdAt).format("YYYY-MM-DD")}
               </p>
@@ -43,6 +42,15 @@ export default function Invoices({ invoices }: any) {
                   <ArrowDown className="w-5 h-5" />
                 </button>
               </a>
+
+              <RefoundModal
+                id={item?._id}
+                trigger={
+                  <button className="p-1 rounded hover:bg-gray-500 transition cursor-pointer">
+                    <TrendingUp />
+                  </button>
+                }
+              />
             </div>
           </div>
         </div>

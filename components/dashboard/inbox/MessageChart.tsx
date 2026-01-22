@@ -127,7 +127,6 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
     if (userTextMessage) formData.append("text", userTextMessage);
     if (file) formData.append("image", file);
     formData.append("chat", userId);
-    // if (userId) formData.append("isMyMessage", true);
 
     try {
       const res = await myFetch("/messages/create", {

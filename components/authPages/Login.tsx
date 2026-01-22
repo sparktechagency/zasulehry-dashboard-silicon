@@ -10,6 +10,7 @@ import { setCookie } from "cookies-next/client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 type Inputs = {
   email: string;
@@ -20,6 +21,7 @@ type Inputs = {
 export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -27,6 +29,7 @@ export default function LoginForm() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     try {
       const res = await myFetch("/auth/login", {
         method: "POST",
@@ -51,6 +54,8 @@ export default function LoginForm() {
       const message =
         error instanceof Error ? error.message : "An error occurred";
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -107,9 +112,12 @@ export default function LoginForm() {
           </button>
         }
       /> */}
-      <button className="bg-white text-[#0288A6] w-full py-2 cursor-pointer">
+      <Button
+        disabled={loading}
+        className="bg-white text-[#0288A6] w-full py-2 cursor-pointer"
+      >
         Log In
-      </button>
+      </Button>
     </form>
   );
 }

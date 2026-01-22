@@ -22,18 +22,34 @@ export default function EditProfile({
 }) {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<string | null>("");
+  console.log("image", image);
+
   const [file, setFile] = useState<File | null>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file) {
-        const url = URL.createObjectURL(file);
-        setImage(url);
-        setFile(file);
-      }
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+    if (!allowedTypes.includes(selectedFile.type)) {
+      toast.error("Only PNG, JPG, or JPEG images are allowed");
+      e.target.value = ""; // reset input
+      return;
     }
+
+    const url = URL.createObjectURL(selectedFile);
+    setImage(url);
+    setFile(selectedFile);
   };
+
+  useEffect(() => {
+    return () => {
+      if (image?.startsWith("blob:")) {
+        URL.revokeObjectURL(image);
+      }
+    };
+  }, [image]);
 
   const openFileDialog = () => {
     inputFileRef.current?.click();
@@ -68,7 +84,7 @@ export default function EditProfile({
       const payload = new FormData();
 
       payload.append("name", formData.name);
-      payload.append("email", formData.email);
+
       payload.append("phone", formData.phone);
 
       if (file) {
@@ -85,7 +101,9 @@ export default function EditProfile({
         await revalidate("profile");
         window.location.reload();
       } else {
-        toast.success(res?.message || "Failed to update profile.");
+        toast.success(
+          (res as any)?.error[0].message || "Failed to update profile.",
+        );
       }
     } catch (err) {
       const errorMessage =
@@ -99,22 +117,13 @@ export default function EditProfile({
       {/* Image Preview + Upload */}
       <div className="flex flex-col items-center ">
         <div className="w-28 h-28 xl:w-32 xl:h-32 mb-4 relative">
-          {data?.image ? (
-            <Image
-              src={
-                image || `${process.env.NEXT_PUBLIC_IMAGE_URL}${data?.image}`
-              }
-              width={0}
-              height={0}
-              alt="Profile"
-              className="object-cover w-full h-full rounded-full"
-              unoptimized={true}
-            />
-          ) : (
-            <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400 text-xl rounded-full">
-              No Image
-            </div>
-          )}
+          <Image
+            src={image || `${process.env.NEXT_PUBLIC_IMAGE_URL}${data?.image}`}
+            alt="Profile"
+            fill
+            className="object-cover rounded-full"
+            unoptimized
+          />
 
           {/* Edit icon (click করলে ফাইল ইনপুট খুলবে) */}
           <div
@@ -130,7 +139,7 @@ export default function EditProfile({
           ref={inputFileRef}
           id="imageUpload"
           type="file"
-          accept="image/*"
+          accept=".png, .jpg, .jpeg"
           onChange={handleImageChange}
           className="hidden"
         />
@@ -157,6 +166,7 @@ export default function EditProfile({
           </label>
           <Input
             type="email"
+            disabled
             {...register("email", { required: "Email is required" })}
             placeholder="Your email"
             className="w-full rounded-md border border-gray-300 bg-white"

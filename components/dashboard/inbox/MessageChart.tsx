@@ -139,11 +139,11 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
         setFile(null);
         setPreviewImage(null);
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-        setNewMessages((prev) => [
-          { ...res?.data, isMyMessage: true },
-          ,
-          ...prev,
-        ]);
+        // setNewMessages((prev) => [
+        //   { ...res?.data, isMyMessage: true },
+        //   ,
+        //   ...prev,
+        // ]);
       }
     } catch (err) {
       console.error("Failed to send message:", err);

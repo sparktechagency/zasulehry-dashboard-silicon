@@ -112,6 +112,12 @@ export const sidebarMenu = [
     icon: Phone,
     path: "/dashboard/tax",
   },
+  {
+    id: 23,
+    label: "Manage Contact Info",
+    icon: Phone,
+    path: "/dashboard/contact",
+  },
 ];
 
 import Image from "next/image";

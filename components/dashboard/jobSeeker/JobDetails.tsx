@@ -19,10 +19,6 @@ export default function JobDetails({ data }: any) {
     location: data?.user?.address,
     image: data?.user?.image,
   };
-  const work = {
-    category: data?.experiences?.category || "No Data",
-    experience: data?.experiences?.experience || "No Data",
-  };
 
   const handleUpdateStatus = async (id: string) => {
     try {
@@ -68,11 +64,7 @@ export default function JobDetails({ data }: any) {
                 <PersonalInformation user={user} />
               </div>
               <div className="border border-[#0288A6] rounded-xl p-3 flex-1">
-                <WorkInformation
-                  user={work}
-                  resume={data?.resume}
-                  url={data?.resumeUrl}
-                />
+                <WorkInformation user={data} resume={data?.resume} />
               </div>
             </div>
           </div>

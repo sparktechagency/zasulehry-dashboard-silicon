@@ -6,12 +6,12 @@ import pdf from "../../../public/pdf.png";
 export default function WorkInformation({
   user,
   resume,
-  url,
 }: {
   user: any;
   resume?: string;
-  url?: string;
 }) {
+  console.log("user---------", user?.experiences);
+
   return (
     <div className="flex-1 space-y-2 text-gray-800 ">
       <h1 className="text-[#0288A6]  font-medium capitalize underline underline-offset-4">
@@ -19,11 +19,11 @@ export default function WorkInformation({
       </h1>
       <p>
         <span className="font-semibold text-sm">Category</span> :{" "}
-        {user.category}
+        {user?.experiences[0].category}
       </p>
       <p>
         <span className="font-semibold text-sm">Experience</span> :{" "}
-        {user.experience}
+        {user?.experiences[0]?.experience} Years
       </p>
       <div className="flex justify-between items-center">
         <div className="font-semibold flex gap-2">
@@ -36,14 +36,20 @@ export default function WorkInformation({
             "No Resume"
           )}
         </div>
-        <p className="flex gap-2 text-[#0288A6] cursor-pointer">
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            <button className="text-[#0288A6] cursor-pointer">
-              <Eye />
-            </button>
-          </a>
-          <ArrowDownToLine />
-        </p>
+        {user.resumeUrl && (
+          <p className="flex gap-2 text-[#0288A6] cursor-pointer">
+            <a
+              href={`${process.env.BASE_URL}${user.resumeUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="text-[#0288A6] cursor-pointer">
+                <Eye />
+              </button>
+            </a>
+            <ArrowDownToLine />
+          </p>
+        )}
       </div>
       {/* <p>
         <span className="font-semibold">Location</span> : {user.location}

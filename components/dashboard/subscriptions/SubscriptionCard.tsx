@@ -47,7 +47,8 @@ export default async function SubscriptionCard() {
                 </p>
               </div>
               <div className="text-center flex justify-center items-center text-[#0288A6] font-medium gap-1 text-lg">
-                <p>{item?.intervalCount ? item?.intervalCount * 30 : 0}</p>
+                {/* <p>{item?.intervalCount ? item?.intervalCount * 30 : 0}</p> */}
+                <p>{item?.intervalCount ? item?.intervalCount : 0}</p>
                 <p>Days</p>
               </div>
               <div className="mt-6 space-y-3 ">

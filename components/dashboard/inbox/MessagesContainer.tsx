@@ -59,9 +59,7 @@ export default function MessagesContainer({
 
                 <div>
                   <div className="flex justify-end text-gray-400">
-                    <p className="bg-red-600">
-                      {dayjs(item?.createdAt).format("ddd, MMM D")}
-                    </p>
+                    <p>{dayjs(item?.createdAt).format("ddd, MMM D")}</p>
                   </div>
                   {item?.text && (
                     <div

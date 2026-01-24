@@ -106,7 +106,7 @@ function SubscriptionIdSuscription() {
           <div className="flex items-center gap-2 mb-4 text-black">
             <ArrowLeft className="w-5 h-5" />
             <span className="text-xl font-semibold">
-              {id ? "Edit Subscriber" : "Add Subscriber"}
+              {id ? "Edit Subscription" : "Add Subscription"}
             </span>
           </div>
         </Link>

@@ -67,12 +67,14 @@ function SubscriptionIdSuscription() {
         body: add,
       });
 
+      console.log("res", res);
+
       if (res?.success) {
         toast.success(res?.message);
         revalidate("package");
-        // router.push("/dashboard/subscription");
+        router.push("/dashboard/subscription");
       } else {
-        toast.error(res?.message);
+        toast.error((res as any)?.error[0].message);
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");
@@ -84,7 +86,7 @@ function SubscriptionIdSuscription() {
   return (
     <div className="w-[50%] mx-auto">
       <div>
-        <Link href="/subscription">
+        <Link href="/dashboard/subscription">
           <div className="flex items-center gap-2 mb-4 text-black">
             <ArrowLeft className="w-5 h-5" />
             <span className="text-xl font-semibold">
@@ -123,7 +125,7 @@ function SubscriptionIdSuscription() {
 
         <div>
           <label htmlFor="month" className="block text-sm font-medium mb-1">
-            Month
+            Days
           </label>
           <Input
             {...register("intervalCount", { valueAsNumber: true })}
@@ -131,7 +133,6 @@ function SubscriptionIdSuscription() {
             type="number"
             className="w-full bg-white"
             min={0}
-            max={31}
           />
         </div>
         {/* description */}

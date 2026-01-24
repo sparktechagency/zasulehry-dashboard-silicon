@@ -1,63 +1,109 @@
 "use client";
+
 import React, { useState } from "react";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Controller, useForm } from "react-hook-form";
 
-export default function RefoundModal({
+type FormValues = {
+  reason: "duplicate" | "fraudulent" | "requested_by_customer";
+};
+
+const cancelReasons = [
+  { label: "Duplicate", value: "duplicate" },
+  { label: "Fraudulent", value: "fraudulent" },
+  { label: "Requested by customer", value: "requested_by_customer" },
+] as const;
+
+export default function RefundModal({
   id,
   trigger,
 }: {
   id: string;
   trigger: React.ReactNode;
 }) {
-  const [refound, setRefound] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleUpdateTax = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { control, handleSubmit, reset } = useForm<FormValues>({
+    defaultValues: {
+      reason: undefined,
+    },
+  });
 
+  const onSubmit = async (data: FormValues) => {
     try {
       const res = await myFetch("/invoices/refund", {
         method: "POST",
         body: {
           invoiceId: id,
-          reason: refound,
+          reason: data.reason,
         },
       });
 
       if (res.success) {
-        toast.success(res?.message);
+        toast.success(res.message);
+        setOpen(false);
+        reset();
       } else {
-        toast.error(
-          (res as any)?.error[0].message || "Failed to update tax percentage.",
-        );
+        toast.error((res as any)?.error?.[0]?.message || "Refund failed");
       }
     } catch {
-      toast.error("An error occurred while updating tax percentage.");
+      toast.error("Something went wrong");
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>{trigger}</DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+
       <DialogContent>
-        <form onSubmit={handleUpdateTax} className="w-full ">
-          <h1 className="text-lg font-semibold mb-4 text-center">Refound</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <h1 className="text-lg font-semibold text-center">Refund</h1>
 
-          <Input
-            type="text"
-            value={refound}
-            onChange={(e) => setRefound(e.target.value)}
-            placeholder="Enter refound"
-            className="mb-4 bg-white placeholder:text-black"
-          />
+          <div className="space-y-1">
+            <Label>Reason</Label>
 
-          <Button
-            type="submit"
-            className="w-full btn-design text-white py-2 rounded-lg font-medium"
-          >
+            <Controller
+              name="reason"
+              control={control}
+              rules={{ required: "Reason is required" }}
+              render={({ field, fieldState }) => (
+                <>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select reason" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {cancelReasons.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {fieldState.error && (
+                    <p className="text-sm text-red-500">
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <Button type="submit" className="w-full">
             Submit
           </Button>
         </form>

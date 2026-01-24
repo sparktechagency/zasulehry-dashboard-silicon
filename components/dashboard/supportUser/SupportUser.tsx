@@ -23,6 +23,8 @@ const statusOption = [
 ];
 
 export default function SupportUser({ data }: { data: any }) {
+  console.log("employer", data);
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -44,7 +46,9 @@ export default function SupportUser({ data }: { data: any }) {
             <TableBody>
               {data?.data?.map((employer: any) => (
                 <TableRow key={employer._id}>
-                  <TableCell className="font-medium">#22025</TableCell>
+                  <TableCell className="font-medium">
+                    #{employer?._id.slice(0, 5)}
+                  </TableCell>
 
                   <TableCell className="flex items-center gap-2">
                     <CustomImage

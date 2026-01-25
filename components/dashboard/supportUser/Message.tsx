@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 import {
   Dialog,
@@ -8,10 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import CustomImage from "@/share/CustomImage";
 import { myFetch } from "@/utils/myFetch";
+import { revalidate } from "@/utils/revalidateTags";
 import dayjs from "dayjs";
 import { Eye } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -19,19 +19,6 @@ export function Message({ title, item }: { title?: string; item?: any }) {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  // const imageRef = useRef<HTMLInputElement>(null);
-  // const [image, setImage] = useState("");
-
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   setImage(URL.createObjectURL(file!));
-  // };
-
-  // const handleImageUpload = () => {
-  //   if (imageRef.current) {
-  //     imageRef.current.click();
-  //   }
-  // };
 
   const handleReplyMessage = async (id: string) => {
     if (!value) {
@@ -45,12 +32,13 @@ export function Message({ title, item }: { title?: string; item?: any }) {
         method: "PATCH",
 
         body: {
-          status: item?.status,
+          status: "Resolved",
           reply: value,
         },
       });
 
       if (res.success) {
+        await revalidate("support");
         toast.success(res.message || "Reply sent successfully");
         setValue(""); // clear textarea
         setOpen(false); // optionally close dialog
@@ -122,11 +110,11 @@ export function Message({ title, item }: { title?: string; item?: any }) {
 
           <div className="flex justify items-center mb-3">
             {item?.attachment ? (
-              <Image
-                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${item?.attachment}`}
+              <CustomImage
+                src={`${item?.attachment}`}
                 width={100}
                 height={100}
-                alt="image"
+                title="image"
               />
             ) : (
               <span

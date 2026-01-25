@@ -8,6 +8,7 @@ import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { revalidate } from "@/utils/revalidateTags";
 import { useState } from "react";
+import CustomImage from "@/share/CustomImage";
 
 export default function RequestModal({ name, item }: any) {
   const [open, setOpen] = useState(false);
@@ -56,9 +57,9 @@ export default function RequestModal({ name, item }: any) {
           {/* Card */}
           <div className="bg-white p-5 flex flex-col md:flex-row gap-4 items-start">
             {/* Avatar */}
-            <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${users.image}`}
-              alt={users.name}
+            <CustomImage
+              src={`${users.image}`}
+              title={users.name}
               width={200}
               height={200}
               className=" rounded-full w-[150px] h-[150px] object-cover"

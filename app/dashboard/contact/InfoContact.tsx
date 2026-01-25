@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
 import { revalidate } from "@/utils/revalidateTags";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 type Inputs = {
   phone: string;
@@ -39,18 +40,15 @@ export default function InfoContact({ data }: any) {
   }, [data, reset]);
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-    console.log("data", formData);
-
     try {
       const res = await myFetch("/contact", {
-        method: "PATCH",
+        method: "POST",
         body: formData,
       });
 
       if (res.success) {
-        toast.success("Profile updated successfully!");
+        toast.success("admin information updated successfully!");
         await revalidate("profile");
-        window.location.reload();
       } else {
         toast.success(
           (res as any)?.error[0].message || "Failed to update profile.",
@@ -116,13 +114,12 @@ export default function InfoContact({ data }: any) {
         </div>
 
         {/* Edit Button */}
-        <button
+        <Button
           type="submit"
-          // onClick={() => setProfile("edit")}
           className="w-full btn-design rounded-3xl py-2 font-semibold cursor-pointer mt-4 2xl:text-lg"
         >
           Save Changes
-        </button>
+        </Button>
       </form>
     </div>
   );

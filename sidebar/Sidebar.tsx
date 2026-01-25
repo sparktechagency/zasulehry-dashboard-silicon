@@ -17,6 +17,7 @@ import {
   PanelBottom,
   FileTerminal,
   Users,
+  Calculator,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -106,12 +107,12 @@ export const sidebarMenu = [
   //   icon: Phone,
   //   path: "/dashboard/number-verification",
   // },
-  {
-    id: 22,
-    label: "Tax Calculator",
-    icon: Phone,
-    path: "/dashboard/tax",
-  },
+  // {
+  //   id: 22,
+  //   label: "Tax Calculator",
+  //   icon: Calculator,
+  //   path: "/dashboard/tax",
+  // },
   {
     id: 23,
     label: "Manage Contact Info",

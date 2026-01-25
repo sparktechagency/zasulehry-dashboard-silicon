@@ -26,9 +26,11 @@ const cancelReasons = [
 ] as const;
 
 export default function RefundModal({
+  details,
   id,
   trigger,
 }: {
+  details: any;
   id: string;
   trigger: React.ReactNode;
 }) {
@@ -68,7 +70,20 @@ export default function RefundModal({
 
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <h1 className="text-lg font-semibold text-center">Refund</h1>
+          <h1 className="text-2xl font-semibold text-center">Refund</h1>
+
+          <div className="flex gap-3 font-medium">
+            <p>Name : </p>
+            <p>{details?.subscription?.package?.name}</p>
+          </div>
+          <div className="flex gap-3 font-medium">
+            <p>Price : </p>
+            <p>{details?.subscription?.price}</p>
+          </div>
+          <div className="flex gap-3 font-medium">
+            <p>Status : </p>
+            <p>{details?.status}</p>
+          </div>
 
           <div className="space-y-1">
             <Label>Reason</Label>
@@ -103,9 +118,11 @@ export default function RefundModal({
             />
           </div>
 
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
+          {details?.status === "paid" && (
+            <Button type="submit" className="w-full btn-design">
+              Submit
+            </Button>
+          )}
         </form>
       </DialogContent>
     </Dialog>

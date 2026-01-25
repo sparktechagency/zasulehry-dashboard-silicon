@@ -56,6 +56,7 @@ export default function VerifyRequest({ res }: any) {
                       title="avatar"
                       width={40}
                       height={40}
+                      className="h-10 rounded-full"
                     />
                     <RequestModal item={employer} name={employer?.user?.name} />
                   </TableCell>
@@ -69,8 +70,8 @@ export default function VerifyRequest({ res }: any) {
                         employer.status === "Pending"
                           ? "bg-yellow-500"
                           : employer.status === "Approved"
-                          ? "bg-green-500"
-                          : "bg-red-500"
+                            ? "bg-green-500"
+                            : "bg-red-500"
                       } text-white text-sm  2xl:h-10`}
                     >
                       {employer.status}

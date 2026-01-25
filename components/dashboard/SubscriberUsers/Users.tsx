@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 
 import SunscriberDetails from "./SubscriberDetails";
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 import dayjs from "dayjs";

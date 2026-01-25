@@ -1,6 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import Image from "next/image";
-// import userImage from "../../../public/subscriber.png";
+import CustomImage from "@/share/CustomImage";
 
 export default function SunscriberDetails({
   item,
@@ -9,6 +8,8 @@ export default function SunscriberDetails({
   item?: any;
   trigger: React.ReactNode;
 }) {
+  console.log("item", item);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -22,15 +23,12 @@ export default function SunscriberDetails({
           {/* Card */}
           <div className="bg-white p-5 flex  md:flex-row gap-6 items-start">
             {/* Avatar */}
-            <Image
-              src={
-                `${process.env.NEXT_PUBLIC_IMAGE_URL}${item?.image}` ||
-                "/default.png "
-              }
-              alt={item?.name}
+            <CustomImage
+              src={item?.image}
+              title={item.name}
               width={200}
               height={200}
-              className="rounded-full object-cover"
+              className="rounded-full h-56 w-56 object-cover"
             />
 
             {/* Info */}
@@ -60,10 +58,11 @@ export default function SunscriberDetails({
               {/* subscriber details */}
               <div className=" border border-[#0B5162] rounded-md p-4 text-center ">
                 <div className="text-xl 2xl:text-2xl font-bold text-[#0B5162]">
-                  $1.99/<span className="text-sm font-normal">Perday</span>
+                  ${item?.subscription.price}/
+                  <span className="text-sm font-normal">Perday</span>
                 </div>
                 <div className="text-sm 2xl:text-lg xl:font-medium text-[#0B5162]/80 font-light mb-4">
-                  30 Days
+                  {item?.subscription?.package?.intervalCount} Days
                 </div>
                 <ul className="text-left text-gray-700 space-y-2 list-disc list-inside">
                   {item?.subscription?.package?.benefits?.map(

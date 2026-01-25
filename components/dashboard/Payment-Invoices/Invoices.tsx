@@ -44,6 +44,7 @@ export default function Invoices({ invoices }: any) {
               </a>
 
               <RefoundModal
+                details={item}
                 id={item?._id}
                 trigger={
                   <button className="p-1 rounded hover:bg-gray-500 transition cursor-pointer">

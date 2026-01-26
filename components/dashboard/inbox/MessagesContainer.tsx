@@ -5,6 +5,7 @@ import Image from "next/image";
 import avatarImg from "../../../public/user.png";
 import { useEffect, useState } from "react";
 import { myFetch } from "@/utils/myFetch";
+import CustomImage from "@/share/CustomImage";
 
 export default function MessagesContainer({
   containerRef,
@@ -22,6 +23,8 @@ export default function MessagesContainer({
     };
     fetchData();
   }, []);
+
+  console.log("new -message", newMessages);
 
   return (
     <div
@@ -48,9 +51,9 @@ export default function MessagesContainer({
                 className={`flex ${isMe() ? "justify-end" : "justify-start"}`}
               >
                 {item?.sender?._id && (
-                  <Image
-                    src={avatarImg}
-                    alt="avatar"
+                  <CustomImage
+                    src={item?.sender?.image}
+                    title="avatar"
                     className="w-8 h-8 rounded-full mr-2"
                   />
                 )}
@@ -72,9 +75,9 @@ export default function MessagesContainer({
                   )}
                   {item?.image && (
                     <div className="mt-1">
-                      <Image
-                        src={getImageSrc(item?.image)}
-                        alt={item.text || "Message image"}
+                      <CustomImage
+                        src={item?.image}
+                        title={item.text || "Message image"}
                         width={200}
                         height={200}
                         className="rounded object-contain max-h-60"

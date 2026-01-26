@@ -3,7 +3,7 @@ import { getToken } from "./utils/getToken";
 import { myFetch } from "./utils/myFetch";
 import { serverSidebarItem } from "./helper/sidebar";
 
-const allowdPaths = ["/login"];
+const allowdPaths = ["/login", ""];
 export async function middleware(request: NextRequest) {
   // redirect to dashboard by default root path
   if (request.nextUrl.pathname === "/") {
@@ -36,7 +36,8 @@ export async function middleware(request: NextRequest) {
 
   if (
     !urls?.some((item) => item.startsWith(pathname)) &&
-    !allowdPaths.includes(pathname)
+    !allowdPaths.includes(pathname) &&
+    user?.data?.role != "Super Admin"
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }

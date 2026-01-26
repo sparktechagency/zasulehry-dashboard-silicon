@@ -10,8 +10,6 @@ export default function WorkInformation({
   user: any;
   resume?: string;
 }) {
-  console.log("user---------", user?.experiences);
-
   return (
     <div className="flex-1 space-y-2 text-gray-800 ">
       <h1 className="text-[#0288A6]  font-medium capitalize underline underline-offset-4">

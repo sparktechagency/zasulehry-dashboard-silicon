@@ -67,8 +67,6 @@ function SubscriptionIdSuscription() {
         body: add,
       });
 
-      console.log("res", res);
-
       if (res?.success) {
         toast.success(res?.message);
         revalidate("package");

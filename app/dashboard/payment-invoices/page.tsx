@@ -13,8 +13,6 @@ export default async function PaymentInvoices({
   if (page) params.append("page", page);
   if (search) params.append("invoiceNumber", search);
 
-  console.log("search", search);
-
   const res = await myFetch(
     `/invoices${params.toString() ? `?${params.toString()}` : ""}`,
   );

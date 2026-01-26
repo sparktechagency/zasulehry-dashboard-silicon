@@ -20,7 +20,6 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<AdminUser | null>(null);
-  console.log("current user", currentUser);
 
   useEffect(() => {
     const fetch = async () => {

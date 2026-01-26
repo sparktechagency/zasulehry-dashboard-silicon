@@ -4,7 +4,6 @@ import { myFetch } from "@/utils/myFetch";
 
 export default async function page() {
   const res = await myFetch("/contact");
-  console.log("res", res);
 
   return (
     <div className="mt-40">

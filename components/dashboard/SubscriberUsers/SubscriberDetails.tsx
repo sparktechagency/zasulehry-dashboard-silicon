@@ -8,8 +8,6 @@ export default function SunscriberDetails({
   item?: any;
   trigger: React.ReactNode;
 }) {
-  console.log("item", item);
-
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>

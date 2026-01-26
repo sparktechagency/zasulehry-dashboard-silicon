@@ -22,7 +22,6 @@ export default function EditProfile({
 }) {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<string | null>("");
-  console.log("image", image);
 
   const [file, setFile] = useState<File | null>(null);
 

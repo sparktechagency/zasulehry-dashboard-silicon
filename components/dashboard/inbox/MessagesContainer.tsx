@@ -12,8 +12,6 @@ export default function MessagesContainer({
   previewImage,
   bottomRef,
 }: any) {
-  console.log("newMessages", newMessages);
-
   // profile data get
   const [myProfile, setMyProfile] = useState<any>(null);
 

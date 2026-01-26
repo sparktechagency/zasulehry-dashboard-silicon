@@ -17,8 +17,6 @@ export default async function AllEmployeeList() {
     tags: ["admin-list"],
   });
 
-  console.log("res", res);
-
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">

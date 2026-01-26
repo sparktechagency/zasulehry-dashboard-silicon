@@ -11,7 +11,6 @@ export async function middleware(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
-  console.log("pathname", pathname);
 
   const token = await getToken();
 
@@ -34,8 +33,6 @@ export async function middleware(request: NextRequest) {
   const urls = serverSidebarItem
     ?.filter((item) => res?.data?.[0]?.adminPermissions?.includes(item?.path))
     ?.map((item) => item.path);
-
-  console.log("urls----------", urls);
 
   if (
     !urls?.some((item) => item.startsWith(pathname)) &&

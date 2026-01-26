@@ -14,9 +14,9 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
-import { sidebarMenu } from "@/sidebar/Sidebar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { sidebarMenu } from "@/helper/sidebar";
 
 type Inputs = {
   name: string;
@@ -41,7 +41,7 @@ export default function CreateAdmin() {
   ====================== */
   const handleSelect = (value: string) => {
     setSelectedMenus((prev) =>
-      prev.includes(value) ? prev : [...prev, value]
+      prev.includes(value) ? prev : [...prev, value],
     );
   };
 
@@ -142,7 +142,7 @@ export default function CreateAdmin() {
               </SelectTrigger>
 
               <SelectContent>
-                {sidebarMenu.map((item: any) => (
+                {sidebarMenu?.map((item: any) => (
                   <SelectItem
                     key={item.path}
                     value={item.path}

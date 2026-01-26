@@ -3,7 +3,6 @@ import Button from "@/components/settings/Button";
 
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
 export default function Admin() {
   return (

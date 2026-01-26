@@ -102,7 +102,7 @@ export default function InfoContact({ data }: any) {
           </label>
           <Input
             type="whatsApp"
-            {...register("phone")}
+            {...register("whatsApp")}
             placeholder="Your whatsApp number"
             className="w-full rounded-md border border-gray-300 bg-white"
           />

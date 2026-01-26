@@ -16,6 +16,9 @@ export default async function AllEmployeeList() {
   const res = await myFetch("/users?role=Admin", {
     tags: ["admin-list"],
   });
+
+  console.log("res", res);
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -24,7 +27,7 @@ export default async function AllEmployeeList() {
             <TableRow className="bg-blue-100 text-gray-600 ">
               <TableHead>Name</TableHead>
               <TableHead className="pl-16">Email</TableHead>
-              {/* <TableHead>Password</TableHead> */}
+
               <TableHead>Status</TableHead>
               <TableHead className="pl-8">Action</TableHead>
             </TableRow>

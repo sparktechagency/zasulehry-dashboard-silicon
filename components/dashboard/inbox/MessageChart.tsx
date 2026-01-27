@@ -105,6 +105,8 @@ const ChatMessages = ({ userId, userChatDetails }: Props) => {
   // ------------------- SOCKET LISTENER -------------------
   useEffect(() => {
     if (!socket || !userId) return;
+    console.log("socket conect-----------------");
+
     const eventName = `getMessage`;
     const handleIncomingMessage = (message: Message) => {
       console.log("socketworking..", message);

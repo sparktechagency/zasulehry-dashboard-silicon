@@ -1,8 +1,6 @@
 "use client";
-import { getImageSrc } from "@/components/share/getImage";
 import dayjs from "dayjs";
 import Image from "next/image";
-import avatarImg from "../../../public/user.png";
 import { useEffect, useState } from "react";
 import { myFetch } from "@/utils/myFetch";
 import CustomImage from "@/share/CustomImage";
@@ -23,8 +21,6 @@ export default function MessagesContainer({
     };
     fetchData();
   }, []);
-
-  console.log("new -message", newMessages);
 
   return (
     <div

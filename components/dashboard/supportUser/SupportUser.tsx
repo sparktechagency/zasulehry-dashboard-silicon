@@ -23,8 +23,6 @@ const statusOption = [
 ];
 
 export default function SupportUser({ data }: { data: any }) {
-  console.log("employer", data);
-
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">

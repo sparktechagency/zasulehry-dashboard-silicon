@@ -17,8 +17,6 @@ export const ChatCard = ({ card }: { card: any }) => {
 
   const active = card?._id === currentChatId;
 
-  console.log("card-", card);
-
   return (
     <div onClick={selectChatId}>
       <div

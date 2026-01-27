@@ -15,18 +15,26 @@ type Plan = {
 
 interface GivePackageProps {
   packages: any;
+  userId: string;
   trigger?: React.ReactNode;
 }
 
-export default function GivePackage({ packages, trigger }: GivePackageProps) {
+export default function GivePackage({
+  packages,
+  userId,
+  trigger,
+}: GivePackageProps) {
   const [open, setOpen] = useState(false);
+  console.log("packages", packages);
 
   const handleActivate = async (plan: Plan) => {
+    console.log("plan", plan);
+
     setOpen(false);
 
     const result = await Swal.fire({
       html: `
-        <div class="title-box">${plan?.subscription?.package?.name}</div>
+        <div class="title-box">${plan?.name}</div>
         <p class="swal-text">
           Are you sure you want to activate this subscription plan?
         </p>
@@ -49,10 +57,12 @@ export default function GivePackage({ packages, trigger }: GivePackageProps) {
       const res = await myFetch("/subscriptions/gift", {
         method: "POST",
         body: {
-          user: plan?._id,
-          package: plan?.subscription?.package?._id,
+          user: userId,
+          package: plan?._id,
         },
       });
+
+      console.log("res", res);
 
       if (res.success) {
         toast.success(res.message);
@@ -84,7 +94,7 @@ export default function GivePackage({ packages, trigger }: GivePackageProps) {
               onClick={() => handleActivate(plan)}
               className="w-full bg-white text-center py-3 my-2 rounded-md font-semibold text-[#0288A6] hover:bg-gray-100 transition"
             >
-              {plan?.subscription?.package?.name}
+              {plan?.name || "No Packages"}
             </button>
           ))}
         </div>

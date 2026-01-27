@@ -21,6 +21,8 @@ const statusOption = [
 ];
 
 export default function AllEmployeeList({ res }: { res?: any }) {
+  console.log("res", res);
+
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">
@@ -42,7 +44,7 @@ export default function AllEmployeeList({ res }: { res?: any }) {
             {res?.data?.map((employer: any) => (
               <TableRow key={employer?._id}>
                 <TableCell className="font-medium">
-                  #{employer?._id.slice(0, 6)}
+                  #EM{employer?._id.slice(0, 6)}
                 </TableCell>
 
                 <TableCell className="">
@@ -53,8 +55,8 @@ export default function AllEmployeeList({ res }: { res?: any }) {
                 </TableCell>
 
                 <TableCell>{employer.email}</TableCell>
+                <TableCell>{employer.contact || "No"}</TableCell>
                 <TableCell>{employer.address || "No"}</TableCell>
-                <TableCell>{employer.location[0] || "No"}</TableCell>
                 <TableCell>
                   <Badge
                     className={`${

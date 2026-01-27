@@ -11,8 +11,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
   const res = await myFetch(`/employers/single/${id}`);
-  const packages = await myFetch("/subscriptions/subscribers");
+
+  const packages = await myFetch("/packages", {
+    tags: ["package"],
+  });
+
   const giftSubscription = await myFetch("/subscriptions/subscribers");
+  console.log("giftSubscription", giftSubscription);
 
   const user = {
     name: res?.data?.user?.name,
@@ -36,6 +41,7 @@ export default async function page({ params }: { params: { id: string } }) {
           <div>
             <GivePackage
               packages={packages?.data}
+              userId={id}
               trigger={
                 <button className="capitalize btn-design px-5 py-2 cursor-pointer">
                   give package

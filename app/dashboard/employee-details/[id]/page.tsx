@@ -1,6 +1,5 @@
 import GivePackage from "@/components/dashboard/allEmployeeList/GivePackage";
 import { SwitchDemo } from "@/components/dashboard/allEmployeeList/Switch";
-import { getImageSrc } from "@/components/share/getImage";
 import { myFetch } from "@/utils/myFetch";
 import { ArrowLeft } from "lucide-react";
 import EmployeeStatusChange from "../EmployeeStatusChange";
@@ -48,7 +47,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <div className="bg-white p-5 flex flex-col md:flex-row gap-6 items-start rounded-md">
           {/* Avatar */}
           <CustomImage
-            src={getImageSrc(user?.image)}
+            src={user?.image}
             title={user.name}
             width={200}
             height={200}

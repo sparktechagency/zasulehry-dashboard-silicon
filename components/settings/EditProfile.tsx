@@ -1,12 +1,13 @@
 "use client";
-import React, { useState, ChangeEvent, useRef, useEffect } from "react";
+import { useState, ChangeEvent, useRef, useEffect } from "react";
 import { Edit2Icon } from "lucide-react";
-import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
 import { revalidate } from "@/utils/revalidateTags";
+import CustomImage from "@/share/CustomImage";
+import { Button } from "../ui/button";
 
 type Inputs = {
   name: string;
@@ -22,6 +23,7 @@ export default function EditProfile({
 }) {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<string | null>("");
+  const [loading, setLoading] = useState(false);
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -78,7 +80,9 @@ export default function EditProfile({
     }
   }, [data, reset]);
 
+  // handle submit
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    setLoading(true);
     try {
       const payload = new FormData();
 
@@ -108,6 +112,8 @@ export default function EditProfile({
       const errorMessage =
         err instanceof Error ? err.message : "An error occurred";
       toast.error(`Error updating profile: ${errorMessage}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,13 +122,16 @@ export default function EditProfile({
       {/* Image Preview + Upload */}
       <div className="flex flex-col items-center ">
         <div className="w-28 h-28 xl:w-32 xl:h-32 mb-4 relative">
-          <Image
-            src={image || `${process.env.NEXT_PUBLIC_IMAGE_URL}${data?.image}`}
-            alt="Profile"
-            fill
-            className="object-cover rounded-full"
-            unoptimized
-          />
+          {data?.image ? (
+            <CustomImage
+              src={image || data?.image}
+              title="Profile"
+              className="object-cover rounded-full w-40 h-32"
+              // unoptimized
+            />
+          ) : (
+            <p>Loading.....</p>
+          )}
 
           {/* Edit icon (click করলে ফাইল ইনপুট খুলবে) */}
           <div
@@ -192,13 +201,14 @@ export default function EditProfile({
         </div>
 
         {/* Edit Button */}
-        <button
+        <Button
           type="submit"
+          disabled={loading}
           // onClick={() => setProfile("edit")}
           className="w-full btn-design rounded-3xl py-2 font-semibold cursor-pointer mt-4 2xl:text-lg"
         >
           Save Changes
-        </button>
+        </Button>
       </form>
     </div>
   );

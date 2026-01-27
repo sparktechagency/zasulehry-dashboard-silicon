@@ -17,7 +17,7 @@ export default function WorkInformation({
       </h1>
       <p>
         <span className="font-semibold text-sm">Category</span> :{" "}
-        {user?.experiences[0].category}
+        {user?.experiences[0]?.category}
       </p>
       <p>
         <span className="font-semibold text-sm">Experience</span> :{" "}

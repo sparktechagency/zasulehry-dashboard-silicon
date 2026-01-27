@@ -1,7 +1,7 @@
 "use client";
 
+import CustomImage from "@/share/CustomImage";
 import { Input } from "../ui/input";
-import Image from "next/image";
 
 export default function Profile({
   setProfile,
@@ -15,19 +15,11 @@ export default function Profile({
       {/* Profile Image */}
       <div className="flex flex-col items-center">
         <div className="w-28 h-28 xl:w-32 xl:h-32 mb-4 relative">
-          {data?.image ? (
-            <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${data?.image}`}
-              alt="Profile"
-              fill
-              className="object-cover rounded-full"
-              unoptimized
-            />
-          ) : (
-            <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400 text-xl rounded-full">
-              No Image
-            </div>
-          )}
+          <CustomImage
+            src={data?.image}
+            title="Profile"
+            className="object-cover rounded-full w-40 h-32"
+          />
         </div>
       </div>
 

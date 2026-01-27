@@ -6,6 +6,7 @@ import { Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { myFetch } from "@/utils/myFetch";
 import CustomImage from "@/share/CustomImage";
+import { Skeleton } from "../ui/skeleton";
 
 const auth = [
   { path: "/login" },
@@ -60,23 +61,27 @@ export default function Header() {
               </Link>
             </div>
 
-            <Link href="/dashboard/my-profile">
-              <div className="flex items-center gap-2">
-                <CustomImage
-                  src={data?.image}
-                  width={40}
-                  height={40}
-                  title="User Avatar"
-                  className="w-10 h-10 rounded-full"
-                />
-                <div className="leading-tight ">
-                  <p className="font-semibold text-sm text-gray-700">
-                    {data?.name}
-                  </p>
-                  <p className=" text-[12px] text-gray-700">{data?.role}</p>
+            {data ? (
+              <Link href="/dashboard/my-profile">
+                <div className="flex items-center gap-2">
+                  <CustomImage
+                    src={data?.image}
+                    width={40}
+                    height={40}
+                    title="User Avatar"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="leading-tight ">
+                    <p className="font-semibold text-sm text-gray-700">
+                      {data?.name}
+                    </p>
+                    <p className=" text-[12px] text-gray-700">{data?.role}</p>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            ) : (
+              <Skeleton className="w-12 h-12 bg-gray-200 rounded-full" />
+            )}
           </div>
         </div>
       )}

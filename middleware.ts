@@ -3,7 +3,12 @@ import { getToken } from "./utils/getToken";
 import { myFetch } from "./utils/myFetch";
 import { serverSidebarItem } from "./helper/sidebar";
 
-const allowdPaths = ["/login", ""];
+const allowdPaths = [
+  "/login",
+  "/dashboard/my-profile",
+  "/dashboard/inbox",
+  "/dashboard/notification",
+];
 export async function middleware(request: NextRequest) {
   // redirect to dashboard by default root path
   if (request.nextUrl.pathname === "/") {
@@ -46,5 +51,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/dashboard/:path*"],
+  matcher: ["/", "/dashboard/:path((?!employee-details/).*)"],
 };

@@ -6,6 +6,7 @@ import EmployeeStatusChange from "../EmployeeStatusChange";
 import Message from "./Message";
 import Link from "next/link";
 import CustomImage from "@/share/CustomImage";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -46,13 +47,17 @@ export default async function page({ params }: { params: { id: string } }) {
         {/* Card */}
         <div className="bg-white p-5 flex flex-col md:flex-row gap-6 items-start rounded-md">
           {/* Avatar */}
-          <CustomImage
-            src={user?.image}
-            title={user.name}
-            width={200}
-            height={200}
-            className=" rounded-full object-cover"
-          />
+          {user?.image ? (
+            <CustomImage
+              src={user?.image}
+              title={user.name}
+              width={200}
+              height={200}
+              className="w-40 h-40 rounded-full object-cover"
+            />
+          ) : (
+            <Skeleton className="w-40 h-40 rounded-full" />
+          )}
 
           {/* Info */}
           <div className="flex-1 space-y-2 text-gray-800">

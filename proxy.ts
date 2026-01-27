@@ -9,7 +9,7 @@ const allowdPaths = [
   "/dashboard/inbox",
   "/dashboard/notification",
 ];
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // redirect to dashboard by default root path
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));

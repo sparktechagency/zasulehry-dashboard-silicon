@@ -40,7 +40,7 @@ export default function JobDetails({ data }: any) {
 
   return (
     <section className="sm:max-w-[1000px] mx-auto">
-      <Link href="/all-job-seeker">
+      <Link href="/dashboard/all-job-seeker">
         <div className="flex items-center gap-2 mb-2 text-black">
           <ArrowLeft className="w-5 h-5" />
           <h2 className="text-lg font-semibold">View Details</h2>

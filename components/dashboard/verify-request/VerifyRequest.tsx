@@ -78,7 +78,7 @@ export default function VerifyRequest({ res }: any) {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center justify-center mr-3">
+                    <div className="flex items-center justify-center w-20">
                       <RequestModal item={employer} />
                       {/* <Delete /> */}
                     </div>

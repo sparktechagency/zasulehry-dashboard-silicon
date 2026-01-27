@@ -3,13 +3,21 @@ import React, { Suspense, useState } from "react";
 import { ArrowLeft, CheckCircle2, MinusCircle, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { revalidate } from "@/utils/revalidateTags";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 type FormData = {
   name: string;
@@ -25,16 +33,17 @@ function SubscriptionIdSuscription() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      description: "",
-      dailyPrice: 0,
-      intervalCount: 0,
-      benefits: [],
-      newOffer: "",
-    },
-  });
+  const { register, handleSubmit, watch, setValue, control } =
+    useForm<FormData>({
+      defaultValues: {
+        name: "",
+        description: "",
+        dailyPrice: 0,
+        intervalCount: 0,
+        benefits: [],
+        newOffer: "",
+      },
+    });
 
   const benefits = watch("benefits");
   const newOffer = watch("newOffer"); // Add this line
@@ -56,10 +65,12 @@ function SubscriptionIdSuscription() {
       name: data.name,
       interval: "month",
       dailyPrice: Number(data.dailyPrice),
-      intervalCount: data.intervalCount,
+      intervalCount: Number(data.intervalCount),
       description: data.description,
       benefits: data.benefits,
     };
+
+    console.log("add", add);
 
     try {
       const res = await myFetch(`/packages/create`, {
@@ -96,19 +107,31 @@ function SubscriptionIdSuscription() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <div>
-          <label htmlFor="planName" className="block text-sm font-medium mb-1">
+          <Label htmlFor="planName" className="block text-sm font-medium mb-1">
             Plan Name
-          </label>
-          <Input
-            {...register("name")}
-            className="bg-white placeholder-black"
-            placeholder="Title"
+          </Label>
+
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full bg-white !h-10">
+                  <SelectValue placeholder="plan name" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Basic">Basic</SelectItem>
+                  <SelectItem value="Standard">Standard</SelectItem>
+                  <SelectItem value="Booster">Booster</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           />
         </div>
 
         <div>
           <label htmlFor="price" className="block text-sm font-medium mb-1">
-            Per Day Price
+            Per Day Price ($)
           </label>
           <div>
             <Input
@@ -122,15 +145,30 @@ function SubscriptionIdSuscription() {
         </div>
 
         <div>
-          <label htmlFor="month" className="block text-sm font-medium mb-1">
-            Days
-          </label>
-          <Input
-            {...register("intervalCount", { valueAsNumber: true })}
-            id="month"
-            type="number"
-            className="w-full bg-white"
-            min={0}
+          <Label htmlFor="month" className="block text-sm font-medium mb-1">
+            Month
+          </Label>
+
+          <Controller
+            name="intervalCount"
+            control={control}
+            render={({ field }) => (
+              <Select
+                onValueChange={(val) => field.onChange(Number(val))}
+                value={String(field.value)}
+              >
+                <SelectTrigger className="w-full bg-white !h-10">
+                  <SelectValue placeholder="plan name" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="6">6</SelectItem>
+                  <SelectItem value="12">12</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           />
         </div>
         {/* description */}

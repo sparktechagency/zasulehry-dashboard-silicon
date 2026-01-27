@@ -1,7 +1,6 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
-import Image from "next/image";
 import PdfViewer from "@/share/ViewerPdf";
 import { Button } from "@/components/ui/button";
 import { myFetch } from "@/utils/myFetch";
@@ -45,8 +44,8 @@ export default function RequestModal({ name, item }: any) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
-          className={`${
-            name ? "" : "bg-[#0288A6]"
+          className={` ${
+            name ? "" : "bg-[#0288A6] "
           } m-1 p-1 rounded cursor-pointer`}
         >
           {name ? name : <Eye className=" text-white size-5 2xl:size-7" />}

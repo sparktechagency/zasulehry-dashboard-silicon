@@ -9,7 +9,7 @@ const allowdPaths = [
   "/dashboard/inbox",
   "/dashboard/notification",
 ];
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // redirect to dashboard by default root path
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -26,6 +26,8 @@ export async function proxy(request: NextRequest) {
 
   // check if user role is admin
   const user = await myFetch("/users/profile");
+
+  console.log("--------user", user);
 
   if (user?.data?.role !== "Admin" && user?.data?.role !== "Super Admin") {
     request.cookies.delete("accessToken");

@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { myFetch } from "@/utils/myFetch";
 import { revalidate } from "@/utils/revalidateTags";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 type Inputs = {
@@ -15,6 +15,7 @@ type Inputs = {
 };
 
 export default function InfoContact({ data }: any) {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,6 +41,7 @@ export default function InfoContact({ data }: any) {
   }, [data, reset]);
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    setLoading(true);
     try {
       const res = await myFetch("/contact", {
         method: "POST",
@@ -58,6 +60,8 @@ export default function InfoContact({ data }: any) {
       const errorMessage =
         err instanceof Error ? err.message : "An error occurred";
       toast.error(`Error updating profile: ${errorMessage}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,9 +120,10 @@ export default function InfoContact({ data }: any) {
         {/* Edit Button */}
         <Button
           type="submit"
+          disabled={loading}
           className="w-full btn-design rounded-3xl py-2 font-semibold cursor-pointer mt-4 2xl:text-lg"
         >
-          Save Changes
+          Save Change
         </Button>
       </form>
     </div>

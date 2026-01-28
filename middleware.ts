@@ -27,8 +27,6 @@ export async function middleware(request: NextRequest) {
   // check if user role is admin
   const user = await myFetch("/users/profile");
 
-  console.log("--------user", user);
-
   if (user?.data?.role !== "Admin" && user?.data?.role !== "Super Admin") {
     request.cookies.delete("accessToken");
     return NextResponse.redirect(new URL("/login", request.url));

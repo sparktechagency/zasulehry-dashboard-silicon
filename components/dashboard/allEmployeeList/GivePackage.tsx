@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Swal from "sweetalert2";
 import { myFetch } from "@/utils/myFetch";
 import { toast } from "sonner";
+import { revalidate } from "@/utils/revalidateTags";
 
 type Plan = {
   _id: string;
@@ -25,11 +26,8 @@ export default function GivePackage({
   trigger,
 }: GivePackageProps) {
   const [open, setOpen] = useState(false);
-  console.log("packages", packages);
 
   const handleActivate = async (plan: Plan) => {
-    console.log("plan", plan);
-
     setOpen(false);
 
     const result = await Swal.fire({
@@ -62,10 +60,9 @@ export default function GivePackage({
         },
       });
 
-      console.log("res", res);
-
       if (res.success) {
         toast.success(res.message);
+        await revalidate("gift");
       } else {
         toast.error(res.message);
       }

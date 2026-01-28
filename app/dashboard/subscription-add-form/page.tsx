@@ -70,8 +70,6 @@ function SubscriptionIdSuscription() {
       benefits: data.benefits,
     };
 
-    console.log("add", add);
-
     try {
       const res = await myFetch(`/packages/create`, {
         method: "POST",

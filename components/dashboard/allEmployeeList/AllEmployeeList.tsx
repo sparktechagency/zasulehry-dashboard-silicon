@@ -21,8 +21,6 @@ const statusOption = [
 ];
 
 export default function AllEmployeeList({ res }: { res?: any }) {
-  console.log("res", res);
-
   return (
     <>
       <div className="bg-[#f9f9f9] p-6 rounded-lg">

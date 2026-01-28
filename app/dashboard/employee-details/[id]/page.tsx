@@ -16,8 +16,9 @@ export default async function page({ params }: { params: { id: string } }) {
     tags: ["package"],
   });
 
-  const giftSubscription = await myFetch("/subscriptions/subscribers");
-  console.log("giftSubscription", giftSubscription);
+  const giftSubscription = await myFetch("/subscriptions/subscribers", {
+    tags: ["gift"],
+  });
 
   const user = {
     name: res?.data?.user?.name,

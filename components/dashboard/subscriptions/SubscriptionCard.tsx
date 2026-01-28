@@ -11,8 +11,6 @@ export default async function SubscriptionCard() {
     tags: ["package"],
   });
 
-  console.log("res", res);
-
   return (
     <>
       <div className="grid grid-cols-3 gap-16 ">

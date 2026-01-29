@@ -44,12 +44,12 @@ export async function middleware(request: NextRequest) {
     !allowdPaths.includes(pathname) &&
     user?.data?.role != "Super Admin"
   ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/", "/dashboard/:path((?!employee-details/).*)"],
+  matcher: ["/", "/dashboard/:path*", "/dashboard"],
 };

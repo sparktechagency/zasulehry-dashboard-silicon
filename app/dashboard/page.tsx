@@ -3,7 +3,6 @@ import Chart from "@/components/dashboard/overview/Chart";
 import CircleChart from "@/components/dashboard/overview/CircleChart";
 import GreenAreaChart from "@/components/dashboard/overview/RevenueChart";
 import { myFetch } from "@/utils/myFetch";
-import React from "react";
 
 export default async function Home({
   searchParams,
@@ -19,11 +18,11 @@ export default async function Home({
   const circleData = await myFetch(`/analytics/user-growth?year=${circle}`);
 
   const subscribers = await myFetch(
-    `/analytics/subscribers-growth?year=${subscriber}`
+    `/analytics/subscribers-growth?year=${subscriber}`,
   );
 
   const revenueChart = await myFetch(
-    `/analytics/revenue-growth?year=${revenue}`
+    `/analytics/revenue-growth?year=${revenue}`,
   );
 
   return (
